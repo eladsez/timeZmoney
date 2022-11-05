@@ -29,6 +29,13 @@
             {
               "client_id": "518913465132-eg2296323pglpaknaquj4e35n33q18sp.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "518913465132-4u4ds8sm55kdqr7alm3raacfe34vj0ue.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.timeZMoney"
+              }
             }
           ]
         }
