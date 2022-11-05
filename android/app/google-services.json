@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "518913465132",
+    "project_id": "timezmoney",
+    "storage_bucket": "timezmoney.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:518913465132:android:8ace2ab8cdf9fe3b4cea89",
+        "android_client_info": {
+          "package_name": "com.arielac.time_z_money"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "518913465132-eg2296323pglpaknaquj4e35n33q18sp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTijFlXXyo9bWDjVq7lQv0I1aDYHDteDY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "518913465132-eg2296323pglpaknaquj4e35n33q18sp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
