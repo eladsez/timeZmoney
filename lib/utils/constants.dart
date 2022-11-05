@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
+
 // Colors
-const kBackgroundColor = Color(0xFFD2FFF4);
-const kPrimaryColor = Color(0xFF2D5D70);
-const kSecondaryColor = Color(0xFF265DAB);
+ const kBackgroundColor = Color(0xFFD2FFF4);
+ const loginUnBoldColor = Color(0xFF2C2C28);
+ const loginTextColor = Color(0xFF232121);
+ const loginButtonColor = Color(0xFF6abda6);
+
+

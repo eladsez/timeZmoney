@@ -1,11 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
-
+import 'package:time_z_money/screens/login&signup/login_screen.dart';
+import 'package:time_z_money/utils/constants.dart';
+import 'utils/firebase_options.dart';
 import 'package:flutter/material.dart';
-import 'screens/login_screen/login_screen.dart';
-import 'utils/constants.dart';
 
-Future<void> main() async {
+void main(){
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
@@ -18,9 +17,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        scaffoldBackgroundColor: kBackgroundColor,
+        scaffoldBackgroundColor: Colors.white,
         textTheme: Theme.of(context).textTheme.apply(
-              bodyColor: kPrimaryColor,
               fontFamily: 'Montserrat',
             ),
       ),

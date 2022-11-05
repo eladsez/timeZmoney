@@ -54,7 +54,7 @@ class _BottomTextState extends State<BottomText> {
                       ? 'Already have an account? '
                       : 'Don\'t have an account? ',
                   style: const TextStyle(
-                    color: kPrimaryColor,
+                    color: loginUnBoldColor,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -64,7 +64,7 @@ class _BottomTextState extends State<BottomText> {
                       ? 'Log In'
                       : 'Sign Up',
                   style: const TextStyle(
-                    color: kSecondaryColor,
+                    color: loginTextColor,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

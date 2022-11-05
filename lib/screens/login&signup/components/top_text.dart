@@ -3,14 +3,14 @@ import '../../../utils/helper_functions.dart';
 import '../animations/change_screen_animation.dart';
 import 'login_content.dart';
 
-class TopText extends StatefulWidget {
-  const TopText({Key? key}) : super(key: key);
+class TopLogo extends StatefulWidget {
+  const TopLogo({Key? key}) : super(key: key);
 
   @override
-  State<TopText> createState() => _TopTextState();
+  State<TopLogo> createState() => _TopLogoState();
 }
 
-class _TopTextState extends State<TopText> {
+class _TopLogoState extends State<TopLogo> {
   @override
   void initState() {
     ChangeScreenAnimation.topTextAnimation.addStatusListener((status) {
@@ -28,13 +28,14 @@ class _TopTextState extends State<TopText> {
       animation: ChangeScreenAnimation.topTextAnimation,
       child: Text(
         ChangeScreenAnimation.currentScreen == Screens.createAccount
-            ? 'TimeZMoney\nCreate Account'
-            : 'Welcome\nBack',
+            ? 'Create Account'
+            : 'Welcome Back',
         style: const TextStyle(
           fontSize: 40,
           fontWeight: FontWeight.w600,
         ),
       ),
+      // child: Image.asset("assets/images/appLogo.png"),
     );
   }
 }

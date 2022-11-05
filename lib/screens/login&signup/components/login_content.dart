@@ -60,9 +60,9 @@ class _LoginContentState extends State<LoginContent>
       child: ElevatedButton(
         onPressed: () {},
         style: ElevatedButton.styleFrom(
+          backgroundColor: loginButtonColor,
           padding: const EdgeInsets.symmetric(vertical: 14),
           shape: const StadiumBorder(),
-          primary: kSecondaryColor,
           elevation: 8,
           shadowColor: Colors.black87,
         ),
@@ -85,7 +85,7 @@ class _LoginContentState extends State<LoginContent>
           Flexible(
             child: Container(
               height: 1,
-              color: kPrimaryColor,
+              color: loginUnBoldColor,
             ),
           ),
           const Padding(
@@ -101,7 +101,7 @@ class _LoginContentState extends State<LoginContent>
           Flexible(
             child: Container(
               height: 1,
-              color: kPrimaryColor,
+              color: loginUnBoldColor,
             ),
           ),
         ],
@@ -115,9 +115,17 @@ class _LoginContentState extends State<LoginContent>
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset('assets/images/facebook.png'),
+          InkWell(
+            onTap: () {},
+            borderRadius: BorderRadius.circular(20.0),
+            child: Image.asset('assets/images/facebook.png'),
+          ),
           const SizedBox(width: 24),
-          Image.asset('assets/images/google.png'),
+          InkWell(
+            onTap: () {},
+            borderRadius: BorderRadius.circular(20.0),
+            child: Image.asset('assets/images/google.png'),
+          ),
         ],
       ),
     );
@@ -133,7 +141,7 @@ class _LoginContentState extends State<LoginContent>
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w600,
-            color: kSecondaryColor,
+            color: loginTextColor,
           ),
         ),
       ),
@@ -191,10 +199,12 @@ class _LoginContentState extends State<LoginContent>
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        const Positioned(
-          top: 136,
-          left: 24,
-          child: TopText(),
+        const Align(
+          alignment: Alignment.topCenter,
+          child: Padding(
+            padding: EdgeInsets.only(top: 100),
+            child: TopLogo(),
+          ),
         ),
         Padding(
           padding: const EdgeInsets.only(top: 100),
