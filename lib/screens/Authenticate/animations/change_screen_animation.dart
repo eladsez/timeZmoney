@@ -16,7 +16,7 @@ class ChangeScreenAnimation {
   static final List<Animation<Offset>> loginAnimations = [];
 
   static var isPlaying = false;
-  static var currentScreen = Screens.createAccount;
+  static var currentScreen = SignupLoginState.createAccount;
 
   static Animation<Offset> _createAnimation({
     required Offset begin,

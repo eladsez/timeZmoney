@@ -1,13 +1,15 @@
+import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:time_z_money/data_access/auth.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/helper_functions.dart';
 import '../animations/change_screen_animation.dart';
 import 'bottom_text.dart';
 import 'top_text.dart';
 
-enum Screens {
+enum SignupLoginState {
   createAccount,
   welcomeBack,
 }
@@ -21,8 +23,12 @@ class LoginContent extends StatefulWidget {
 
 class _LoginContentState extends State<LoginContent>
     with TickerProviderStateMixin {
-  late final List<Widget> createAccountContent;
-  late final List<Widget> loginContent;
+  late final Map<String, Widget> createAccountContent;
+  late final Map<String, Widget> loginContent;
+  final List<Widget> loginContentAnimated = [];
+  final List<Widget> createAccountContentAnimated = [];
+
+  final AuthService _auth = AuthService();
 
   Widget inputField(String hint, IconData iconData, bool passwd) {
     return Padding(
@@ -53,11 +59,11 @@ class _LoginContentState extends State<LoginContent>
     );
   }
 
-  Widget loginButton(String title) {
+  Widget authButton(String title, void Function() handler) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 135, vertical: 16),
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: handler,
         style: ElevatedButton.styleFrom(
           backgroundColor: loginButtonColor,
           padding: const EdgeInsets.symmetric(vertical: 14),
@@ -149,21 +155,25 @@ class _LoginContentState extends State<LoginContent>
 
   @override
   void initState() {
-    createAccountContent = [
-      inputField('Username', Ionicons.person_outline, false),
-      inputField('Email', Ionicons.mail_outline, false),
-      inputField('Password', Ionicons.lock_closed_outline, true),
-      loginButton('Sign Up'),
-      orDivider(),
-      logos(),
-    ];
+    int index = 0;
+    createAccountContent = {
+      "username": inputField('Username', Ionicons.person_outline, false),
+      "email": inputField('Email', Ionicons.mail_outline, false),
+      "password": inputField('Password', Ionicons.lock_closed_outline, true),
+      "signupButton": authButton('Sign Up', () {
+        print(createAccountContent["username"].toString());
+      }),
+      "or": orDivider(),
+      "logos": logos(),
+    };
 
-    loginContent = [
-      inputField('Email / Username', Ionicons.mail_outline, false),
-      inputField('Password', Ionicons.lock_closed_outline, true),
-      loginButton('Log In'),
-      forgotPassword(),
-    ];
+    loginContent = {
+      "EmailUsername":
+          inputField('Email / Username', Ionicons.mail_outline, false),
+      "password": inputField('Password', Ionicons.lock_closed_outline, true),
+      "loginButton": authButton('Log In', () {}),
+      "forgotPasswordButton": forgotPassword(),
+    };
 
     ChangeScreenAnimation.initialize(
       vsync: this,
@@ -171,20 +181,20 @@ class _LoginContentState extends State<LoginContent>
       loginItems: loginContent.length,
     );
 
-    for (var i = 0; i < createAccountContent.length; i++) {
-      createAccountContent[i] = HelperFunctions.wrapWithAnimatedBuilder(
-        animation: ChangeScreenAnimation.createAccountAnimations[i],
-        child: createAccountContent[i],
-      );
-    }
+    createAccountContent.forEach((key, value) {
+      createAccountContentAnimated.add(HelperFunctions.wrapWithAnimatedBuilder(
+          animation: ChangeScreenAnimation.createAccountAnimations[index++],
+          child: value));
+    });
 
-    for (var i = 0; i < loginContent.length; i++) {
-      loginContent[i] = HelperFunctions.wrapWithAnimatedBuilder(
-        animation: ChangeScreenAnimation.loginAnimations[i],
-        child: loginContent[i],
-      );
-    }
+    index = 0;
 
+    loginContent.forEach((key, value) {
+      loginContentAnimated.add(HelperFunctions.wrapWithAnimatedBuilder(
+        animation: ChangeScreenAnimation.loginAnimations[index++],
+        child: value,
+      ));
+    });
     super.initState();
   }
 
@@ -212,12 +222,12 @@ class _LoginContentState extends State<LoginContent>
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: createAccountContent,
+                children: createAccountContentAnimated,
               ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: loginContent,
+                children: loginContentAnimated,
               ),
             ],
           ),

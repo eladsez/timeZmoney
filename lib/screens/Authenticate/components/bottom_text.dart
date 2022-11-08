@@ -30,12 +30,12 @@ class _BottomTextState extends State<BottomText> {
       child: GestureDetector(
         onTap: () {
           if (!ChangeScreenAnimation.isPlaying) {
-            ChangeScreenAnimation.currentScreen == Screens.createAccount
+            ChangeScreenAnimation.currentScreen == SignupLoginState.createAccount
                 ? ChangeScreenAnimation.forward()
                 : ChangeScreenAnimation.reverse();
 
             ChangeScreenAnimation.currentScreen =
-                Screens.values[1 - ChangeScreenAnimation.currentScreen.index];
+                SignupLoginState.values[1 - ChangeScreenAnimation.currentScreen.index];
           }
         },
         behavior: HitTestBehavior.opaque,
@@ -50,7 +50,7 @@ class _BottomTextState extends State<BottomText> {
               children: [
                 TextSpan(
                   text: ChangeScreenAnimation.currentScreen ==
-                          Screens.createAccount
+                          SignupLoginState.createAccount
                       ? 'Already have an account? '
                       : 'Don\'t have an account? ',
                   style: const TextStyle(
@@ -60,7 +60,7 @@ class _BottomTextState extends State<BottomText> {
                 ),
                 TextSpan(
                   text: ChangeScreenAnimation.currentScreen ==
-                          Screens.createAccount
+                          SignupLoginState.createAccount
                       ? 'Log In'
                       : 'Sign Up',
                   style: const TextStyle(
