@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../animations/change_screen_animation.dart';
-import '../../../utils/helper_functions.dart';
 import '../../../utils/constants.dart';
-import 'login_content.dart';
+import '../../../utils/helper_functions.dart';
+import '../animations/change_screen_animation.dart';
+import 'signup&login.dart';
 
 class BottomText extends StatefulWidget {
   const BottomText({Key? key}) : super(key: key);

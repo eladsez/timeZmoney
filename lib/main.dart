@@ -1,7 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:time_z_money/screens/login&signup/login_screen.dart';
-import 'package:time_z_money/utils/constants.dart';
-import 'utils/firebase_options.dart';
+import 'package:time_z_money/screens/Authenticate/Authenticate.dart';
 import 'package:flutter/material.dart';
 
 void main(){
@@ -22,7 +20,7 @@ class MyApp extends StatelessWidget {
               fontFamily: 'Montserrat',
             ),
       ),
-      home: const LoginScreen(),
+      home: const Authenticate(),
     );
   }
 }

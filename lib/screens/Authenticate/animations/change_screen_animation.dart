@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../components/login_content.dart';
+import '../components/signup&login.dart';
 
 class ChangeScreenAnimation {
   static late final AnimationController topTextController;

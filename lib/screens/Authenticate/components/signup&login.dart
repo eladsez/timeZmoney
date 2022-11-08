@@ -1,9 +1,8 @@
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
-import '../../../utils/helper_functions.dart';
 import '../../../utils/constants.dart';
+import '../../../utils/helper_functions.dart';
 import '../animations/change_screen_animation.dart';
 import 'bottom_text.dart';
 import 'top_text.dart';

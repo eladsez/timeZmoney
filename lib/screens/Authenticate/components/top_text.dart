@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../../utils/helper_functions.dart';
+import '/utils/helper_functions.dart';
 import '../animations/change_screen_animation.dart';
-import 'login_content.dart';
+import 'signup&login.dart';
 
 class TopLogo extends StatefulWidget {
   const TopLogo({Key? key}) : super(key: key);
