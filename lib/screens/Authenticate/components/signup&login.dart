@@ -27,10 +27,11 @@ class _LoginContentState extends State<LoginContent>
   late final Map<String, Widget> loginContent;
   final List<Widget> loginContentAnimated = [];
   final List<Widget> createAccountContentAnimated = [];
-
+  String username = '';
+  String password = '';
+  String email = '';
   final AuthService _auth = AuthService();
-
-  Widget inputField(String hint, IconData iconData, bool passwd) {
+  Widget inputField(String hint, IconData iconData, bool passwd, Function onChange) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 8),
       child: SizedBox(
@@ -40,7 +41,10 @@ class _LoginContentState extends State<LoginContent>
           shadowColor: Colors.black87,
           color: Colors.transparent,
           borderRadius: BorderRadius.circular(30),
-          child: TextField(
+          child: TextFormField(
+            onChanged: (val){
+              onChange(val);
+            },
             obscureText: passwd,
             textAlignVertical: TextAlignVertical.bottom,
             decoration: InputDecoration(
@@ -157,11 +161,11 @@ class _LoginContentState extends State<LoginContent>
   void initState() {
     int index = 0;
     createAccountContent = {
-      "username": inputField('Username', Ionicons.person_outline, false),
-      "email": inputField('Email', Ionicons.mail_outline, false),
-      "password": inputField('Password', Ionicons.lock_closed_outline, true),
+      "username": inputField('Username', Ionicons.person_outline, false,(String val){username = val;}),
+      "email": inputField('Email', Ionicons.mail_outline, false,(String val){email = val;}),
+      "password": inputField('Password', Ionicons.lock_closed_outline, true,(String val){password = val;}),
       "signupButton": authButton('Sign Up', () {
-        print(createAccountContent["username"].toString());
+        print(username);print(email);print(password);
       }),
       "or": orDivider(),
       "logos": logos(),
@@ -169,8 +173,8 @@ class _LoginContentState extends State<LoginContent>
 
     loginContent = {
       "EmailUsername":
-          inputField('Email / Username', Ionicons.mail_outline, false),
-      "password": inputField('Password', Ionicons.lock_closed_outline, true),
+          inputField('Email / Username', Ionicons.mail_outline, false,(String val){email = val;}),
+      "password": inputField('Password', Ionicons.lock_closed_outline, true,(String val){password = val;}),
       "loginButton": authButton('Log In', () {}),
       "forgotPasswordButton": forgotPassword(),
     };
