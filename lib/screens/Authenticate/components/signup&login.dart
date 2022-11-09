@@ -1,7 +1,7 @@
-import 'dart:collection';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:time_z_money/Business_Logic/models/User.dart';
 import 'package:time_z_money/data_access/auth.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/helper_functions.dart';
@@ -10,28 +10,29 @@ import 'bottom_text.dart';
 import 'top_text.dart';
 
 enum SignupLoginState {
-  createAccount,
-  welcomeBack,
+  signIn,
+  logIn,
 }
 
-class LoginContent extends StatefulWidget {
-  const LoginContent({Key? key}) : super(key: key);
+class SignupLoginContent extends StatefulWidget {
+  const SignupLoginContent({Key? key}) : super(key: key);
 
   @override
-  State<LoginContent> createState() => _LoginContentState();
+  State<SignupLoginContent> createState() => _SignupLoginContentState();
 }
 
-class _LoginContentState extends State<LoginContent>
+class _SignupLoginContentState extends State<SignupLoginContent>
     with TickerProviderStateMixin {
-  late final Map<String, Widget> createAccountContent;
-  late final Map<String, Widget> loginContent;
-  final List<Widget> loginContentAnimated = [];
-  final List<Widget> createAccountContentAnimated = [];
+  late final List<Widget> createAccountContent;
+  late final List<Widget> loginContent;
+
   String username = '';
   String password = '';
   String email = '';
   final AuthService _auth = AuthService();
-  Widget inputField(String hint, IconData iconData, bool passwd, Function onChange) {
+
+  Widget inputField(
+      String hint, IconData iconData, bool passwd, Function onChange) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 8),
       child: SizedBox(
@@ -42,7 +43,7 @@ class _LoginContentState extends State<LoginContent>
           color: Colors.transparent,
           borderRadius: BorderRadius.circular(30),
           child: TextFormField(
-            onChanged: (val){
+            onChanged: (val) {
               onChange(val);
             },
             obscureText: passwd,
@@ -159,25 +160,38 @@ class _LoginContentState extends State<LoginContent>
 
   @override
   void initState() {
-    int index = 0;
-    createAccountContent = {
-      "username": inputField('Username', Ionicons.person_outline, false,(String val){username = val;}),
-      "email": inputField('Email', Ionicons.mail_outline, false,(String val){email = val;}),
-      "password": inputField('Password', Ionicons.lock_closed_outline, true,(String val){password = val;}),
-      "signupButton": authButton('Sign Up', () {
-        print(username);print(email);print(password);
+    createAccountContent = [
+      inputField('Username', Ionicons.person_outline, false, (String val) {
+        username = val;
       }),
-      "or": orDivider(),
-      "logos": logos(),
-    };
+      inputField('Email', Ionicons.mail_outline, false, (String val) {
+        email = val;
+      }),
+      inputField('Password', Ionicons.lock_closed_outline, true, (String val) {
+        password = val;
+      }),
+      authButton('Sign Up', () {
+        print(username);
+        print(email);
+        print(password);
+      }),
+      orDivider(),
+      logos(),
+    ];
 
-    loginContent = {
-      "EmailUsername":
-          inputField('Email / Username', Ionicons.mail_outline, false,(String val){email = val;}),
-      "password": inputField('Password', Ionicons.lock_closed_outline, true,(String val){password = val;}),
-      "loginButton": authButton('Log In', () {}),
-      "forgotPasswordButton": forgotPassword(),
-    };
+    loginContent = [
+      inputField('Email / Username', Ionicons.mail_outline, false,
+          (String val) {
+        email = val;
+      }),
+      inputField('Password', Ionicons.lock_closed_outline, true, (String val) {
+        password = val;
+      }),
+      authButton('Log In', () {
+        AuthService.emailSignIn(CustomUser(username, email, password, 5, 5));
+      }),
+      forgotPassword(),
+    ];
 
     ChangeScreenAnimation.initialize(
       vsync: this,
@@ -185,20 +199,17 @@ class _LoginContentState extends State<LoginContent>
       loginItems: loginContent.length,
     );
 
-    createAccountContent.forEach((key, value) {
-      createAccountContentAnimated.add(HelperFunctions.wrapWithAnimatedBuilder(
-          animation: ChangeScreenAnimation.createAccountAnimations[index++],
-          child: value));
-    });
-
-    index = 0;
-
-    loginContent.forEach((key, value) {
-      loginContentAnimated.add(HelperFunctions.wrapWithAnimatedBuilder(
-        animation: ChangeScreenAnimation.loginAnimations[index++],
-        child: value,
-      ));
-    });
+    for (int i = 0; i < createAccountContent.length; ++i) {
+      createAccountContent[i] = HelperFunctions.wrapWithAnimatedBuilder(
+          animation: ChangeScreenAnimation.createAccountAnimations[i],
+          child: createAccountContent[i]);
+    }
+    for (int i = 0; i < loginContent.length; ++i) {
+      loginContent[i] = HelperFunctions.wrapWithAnimatedBuilder(
+        animation: ChangeScreenAnimation.loginAnimations[i],
+        child: loginContent[i],
+      );
+    }
     super.initState();
   }
 
@@ -226,12 +237,12 @@ class _LoginContentState extends State<LoginContent>
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: createAccountContentAnimated,
+                children: createAccountContent,
               ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: loginContentAnimated,
+                children: loginContent,
               ),
             ],
           ),

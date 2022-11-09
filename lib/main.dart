@@ -1,9 +1,19 @@
+import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:time_z_money/screens/AppWrapper.dart';
+import 'package:time_z_money/screens/home/home.dart';
+import 'utils/firebase_options.dart';
 import 'package:time_z_money/screens/Authenticate/Authenticate.dart';
 import 'package:flutter/material.dart';
 
-void main(){
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(const MyApp());
 }
 
@@ -20,7 +30,7 @@ class MyApp extends StatelessWidget {
               fontFamily: 'Montserrat',
             ),
       ),
-      home: const Authenticate(),
+      home: const AppWrapper(), // the appWrapper responsible about Auth state update
     );
   }
 }

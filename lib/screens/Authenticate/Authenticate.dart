@@ -12,6 +12,6 @@ class _AuthenticateState extends State<Authenticate> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: LoginContent());
+    return const Scaffold(body: SignupLoginContent());
   }
 }

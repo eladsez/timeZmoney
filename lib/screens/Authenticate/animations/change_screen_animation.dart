@@ -16,7 +16,7 @@ class ChangeScreenAnimation {
   static final List<Animation<Offset>> loginAnimations = [];
 
   static var isPlaying = false;
-  static var currentScreen = SignupLoginState.createAccount;
+  static var currentScreen = SignupLoginState.signIn;
 
   static Animation<Offset> _createAnimation({
     required Offset begin,
@@ -94,7 +94,8 @@ class ChangeScreenAnimation {
   }
 
   static void dispose() {
-    for (final controller in [
+    var controller;
+    for (controller in [
       topTextController,
       bottomTextController,
       ...createAccountControllers,

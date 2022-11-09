@@ -27,7 +27,7 @@ class _TopLogoState extends State<TopLogo> {
     return HelperFunctions.wrapWithAnimatedBuilder(
       animation: ChangeScreenAnimation.topTextAnimation,
       child: Text(
-        ChangeScreenAnimation.currentScreen == SignupLoginState.createAccount
+        ChangeScreenAnimation.currentScreen == SignupLoginState.signIn
             ? 'Create Account'
             : 'Welcome Back',
         style: const TextStyle(
