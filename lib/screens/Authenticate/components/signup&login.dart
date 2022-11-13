@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:time_z_money/Business_Logic/models/User.dart';
@@ -26,13 +25,13 @@ class _SignupLoginContentState extends State<SignupLoginContent>
   late final List<Widget> createAccountContent;
   late final List<Widget> loginContent;
 
-  String username = '';
-  String password = '';
-  String email = '';
-  final AuthService _auth = AuthService();
+  final emailController = TextEditingController();
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
+  final phoneController = TextEditingController();
 
-  Widget inputField(
-      String hint, IconData iconData, bool passwd, Function onChange) {
+  Widget inputField(String hint, IconData iconData, bool passwd,
+      TextEditingController controller) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 8),
       child: SizedBox(
@@ -42,10 +41,8 @@ class _SignupLoginContentState extends State<SignupLoginContent>
           shadowColor: Colors.black87,
           color: Colors.transparent,
           borderRadius: BorderRadius.circular(30),
-          child: TextFormField(
-            onChanged: (val) {
-              onChange(val);
-            },
+          child: TextField(
+            controller: controller,
             obscureText: passwd,
             textAlignVertical: TextAlignVertical.bottom,
             decoration: InputDecoration(
@@ -161,34 +158,27 @@ class _SignupLoginContentState extends State<SignupLoginContent>
   @override
   void initState() {
     createAccountContent = [
-      inputField('Username', Ionicons.person_outline, false, (String val) {
-        username = val;
-      }),
-      inputField('Email', Ionicons.mail_outline, false, (String val) {
-        email = val;
-      }),
-      inputField('Password', Ionicons.lock_closed_outline, true, (String val) {
-        password = val;
-      }),
+      inputField(
+          'Username', Ionicons.person_outline, false, usernameController),
+      inputField('Email', Ionicons.mail_outline, false, emailController),
+      inputField(
+          'Password', Ionicons.lock_closed_outline, true, passwordController),
       authButton('Sign Up', () {
-        print(username);
-        print(email);
-        print(password);
+        AuthService.regularRegistration(CustomUser(
+            usernameController.text.trim(), emailController.text.trim(),
+            passwordController.text.trim()));
       }),
       orDivider(),
       logos(),
     ];
 
     loginContent = [
-      inputField('Email / Username', Ionicons.mail_outline, false,
-          (String val) {
-        email = val;
-      }),
-      inputField('Password', Ionicons.lock_closed_outline, true, (String val) {
-        password = val;
-      }),
+      inputField('Email', Ionicons.mail_outline, false, emailController),
+      inputField(
+          'Password', Ionicons.lock_closed_outline, true, passwordController),
       authButton('Log In', () {
-        AuthService.emailSignIn(CustomUser(username, email, password, 5, 5));
+        AuthService.emailSignIn(CustomUser(usernameController.text.trim(),
+            emailController.text.trim(), passwordController.text.trim()));
       }),
       forgotPassword(),
     ];

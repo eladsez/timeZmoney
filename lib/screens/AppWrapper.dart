@@ -1,3 +1,4 @@
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:time_z_money/data_access/auth.dart';
@@ -10,12 +11,12 @@ class AppWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
         body: StreamBuilder<User?>(
-          stream: AuthService.getUser(),
+          stream: AuthService.getLogInState(),
             builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return Home();
+            return const Home();
           } else {
-            return Authenticate();
+            return const Authenticate();
           }
         }),
       );

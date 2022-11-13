@@ -6,7 +6,7 @@ enum AuthProblems { userNotFound, passwordNotValid, networkError }
 
 class AuthService {
 
-  static Stream<User?> getUser(){
+  static Stream<User?> getLogInState(){
     return FirebaseAuth.instance.authStateChanges();
   }
 
@@ -19,7 +19,10 @@ class AuthService {
       );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-      } else if (e.code == 'email-already-in-use') {}
+
+      } else if (e.code == 'email-already-in-use') {
+
+      }
     } catch (e) {
       print(e);
     }

@@ -10,8 +10,8 @@ class CustomUser {
   var _hashPassword;
 
   CustomUser(
-      this._username, this._email, this._hashPassword, this._gender, this._age,
-      [this._phoneNum]);
+      this._username, this._email, this._hashPassword, [this._gender, this._age,
+      this._phoneNum]);
 
   userFromFirebaseUser(User firebaseUser) {}
 
