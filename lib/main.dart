@@ -13,34 +13,40 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
-  runApp(const MyApp());
+    runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+
   const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
-
      return MaterialApp(
-       home: CustomPaint (
-         painter: GreenPainter(),
-       ),
 
+       // home: CustomPaint (
+       //   painter: GreenPainter(),
+       // ),
       debugShowCheckedModeBanner: false,
-
       theme: ThemeData(
-       scaffoldBackgroundColor: Colors.greenAccent[100],
-
+        scaffoldBackgroundColor: Colors.transparent,
         textTheme: Theme.of(context).textTheme.apply(
               fontFamily: 'ProstoOne',
             ),
       ),
-    // home: const AppWrapper(),
-       // , // the appWrapper responsible about Auth state update
+     home: const AppWrapper(),
+
+        // the appWrapper responsible about Auth state update
     );
   }
 
+  Widget back(BuildContext context) {
+    return const DecoratedBox(
+      decoration: BoxDecoration(
+        image: DecorationImage(image: AssetImage("assets/images/appLogo.jpg"), fit: BoxFit.cover),
+      ),
+      child: Center(child: FlutterLogo(size: 300)),
+
+    );
+  }
 }

@@ -214,6 +214,12 @@ class _SignupLoginContentState extends State<SignupLoginContent>
   Widget build(BuildContext context) {
     return Stack(
       children: [
+        Image.asset(
+          "assets/images/background.png",
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          fit: BoxFit.cover,
+        ),
         const Align(
           alignment: Alignment.topCenter,
           child: Padding(
@@ -222,6 +228,7 @@ class _SignupLoginContentState extends State<SignupLoginContent>
           ),
         ),
         Padding(
+
           padding: const EdgeInsets.only(top: 100),
           child: Stack(
             children: [

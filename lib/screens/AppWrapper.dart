@@ -8,20 +8,22 @@ import 'package:time_z_money/screens/home/home.dart';
 class AppWrapper extends StatelessWidget {
   const AppWrapper({Key? key}) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) => Scaffold(
+
         body: StreamBuilder<User?>(
-          stream: AuthService.getLogInState(),
+
+            stream: AuthService.getLogInState(),
             builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return const Home();
-          } else {
-            return const Authenticate();
-          }
-        }),
-      );
+              if (snapshot.hasData) {
+                return const Home();
+              } else {
+                return const Authenticate();
+              }
+            })
+     );
 }
+
 
 class GreenPainter extends CustomPainter {
   @override
@@ -62,17 +64,3 @@ class GreenPainter extends CustomPainter {
   }
 
 }
-// class MyPainter extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Lines'),
-//       ),
-//       body: CustomPaint(
-//       // painter: ShapePainter(),
-//         child: Container(),
-//       ),
-//     );
-//   }
-// }

@@ -102,6 +102,7 @@ flutter:
     - assets/images/facebook.png
     - assets/images/google.png
     - assets/images/appLogo.png
+    - assets/images/background.png
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
