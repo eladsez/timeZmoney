@@ -31,6 +31,7 @@ class _TopLogoState extends State<TopLogo> {
             ? 'Create Account'
             : 'Welcome Back',
         style: const TextStyle(
+          fontFamily: 'ProstoOne',
           fontSize: 40,
           fontWeight: FontWeight.w600,
         ),

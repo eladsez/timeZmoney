@@ -22,15 +22,25 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+
+
+     return MaterialApp(
+       home: CustomPaint (
+         painter: GreenPainter(),
+       ),
+
       debugShowCheckedModeBanner: false,
+
       theme: ThemeData(
-        scaffoldBackgroundColor: Colors.white,
+       scaffoldBackgroundColor: Colors.greenAccent[100],
+
         textTheme: Theme.of(context).textTheme.apply(
-              fontFamily: 'Montserrat',
+              fontFamily: 'ProstoOne',
             ),
       ),
-      home: const AppWrapper(), // the appWrapper responsible about Auth state update
+    // home: const AppWrapper(),
+       // , // the appWrapper responsible about Auth state update
     );
   }
+
 }

@@ -33,6 +33,7 @@ class _SignupLoginContentState extends State<SignupLoginContent>
   Widget inputField(String hint, IconData iconData, bool passwd,
       TextEditingController controller) {
     return Padding(
+      // Boxes in 'Create account' page
       padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 8),
       child: SizedBox(
         height: 50,
