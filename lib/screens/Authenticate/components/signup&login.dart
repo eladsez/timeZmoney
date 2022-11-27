@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:time_z_money/Business_Logic/models/User.dart';
+import 'package:time_z_money/Business_Logic/models/CustomUser.dart';
 import 'package:time_z_money/data_access/auth.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/helper_functions.dart';

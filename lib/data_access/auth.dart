@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:time_z_money/Business_Logic/models/User.dart';
+import 'package:time_z_money/Business_Logic/models/CustomUser.dart';
 
 enum AuthProblems { userNotFound, passwordNotValid, networkError }
 
@@ -17,6 +17,9 @@ class AuthService {
         email: newUser.getEmail(),
         password: newUser.getHashPassword(),
       );
+      if (userCredential != null){
+
+      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
 
