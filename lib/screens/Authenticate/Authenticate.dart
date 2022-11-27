@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../AppWrapper.dart';
 import 'components/signup&login.dart';
 
 class Authenticate extends StatefulWidget {
@@ -9,9 +10,22 @@ class Authenticate extends StatefulWidget {
 }
 
 class _AuthenticateState extends State<Authenticate> {
+  Widget back(BuildContext context) {
+    return const DecoratedBox(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+            image: AssetImage("assets/images/appLogo.jpg"), fit: BoxFit.cover),
+      ),
+      child: Center(child: FlutterLogo(size: 300)),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: SignupLoginContent());
+    return Scaffold(
+      body: Stack(children: const [
+        SignupLoginContent()
+      ]),
+    );
   }
 }
