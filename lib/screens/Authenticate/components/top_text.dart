@@ -11,6 +11,7 @@ class TopLogo extends StatefulWidget {
 }
 
 class _TopLogoState extends State<TopLogo> {
+
   @override
   void initState() {
     ChangeScreenAnimation.topTextAnimation.addStatusListener((status) {

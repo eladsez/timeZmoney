@@ -17,9 +17,6 @@ class AuthService {
         email: newUser.getEmail(),
         password: newUser.getHashPassword(),
       );
-      if (userCredential != null){
-
-      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
 

@@ -1,10 +1,11 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:time_z_money/data_access/DAL.dart';
 import 'package:time_z_money/screens/AppWrapper.dart';
 import 'package:time_z_money/screens/home/home.dart';
 import 'utils/firebase_options.dart';
-import 'package:time_z_money/screens/Authenticate/Authenticate.dart';
+import 'package:time_z_money/screens/Authenticate/Authenticate_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
@@ -22,15 +23,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        scaffoldBackgroundColor: Colors.white,
-        textTheme: Theme.of(context).textTheme.apply(
-              fontFamily: 'Montserrat',
-            ),
-      ),
-      home: const AppWrapper(), // the appWrapper responsible about Auth state update
+      initialRoute: '/',
+      routes: {
+        '/' : (context) => const AppWrapper(),
+      },
     );
   }
 }

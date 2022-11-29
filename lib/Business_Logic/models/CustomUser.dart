@@ -7,19 +7,24 @@ class CustomUser {
   var _phoneNum;
   var _gender;
   var _age;
-  var _hashPassword;
+  var _hashPass;
 
   CustomUser(
-      this._username, this._email, this._hashPassword, [this._gender, this._age,
+      this._username, this._email, this._hashPass,[this._gender, this._age,
       this._phoneNum]);
 
-  userFromFirebaseUser(User firebaseUser) {}
+  Map<String,dynamic> toMap()
+  {
+    return {"username":_username,"email":_email,"phone":_phoneNum,"gender":_gender,"age":_age};
+  }
 
   String getEmail() {
     return _email;
   }
 
-  String getHashPassword() {
-    return _hashPassword;
+  String getHashPassword()
+  {
+    return _hashPass;
   }
+
 }

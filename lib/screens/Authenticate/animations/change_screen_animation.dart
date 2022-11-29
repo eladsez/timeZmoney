@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import '../components/signup&login.dart';
 
 class ChangeScreenAnimation {
+
+  static bool initState = false;
+
   static late final AnimationController topTextController;
   static late final Animation<Offset> topTextAnimation;
 

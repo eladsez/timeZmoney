@@ -22,13 +22,13 @@ class SignupLoginContent extends StatefulWidget {
 
 class _SignupLoginContentState extends State<SignupLoginContent>
     with TickerProviderStateMixin {
-  late final List<Widget> createAccountContent;
-  late final List<Widget> loginContent;
-
-  final emailController = TextEditingController();
-  final usernameController = TextEditingController();
-  final passwordController = TextEditingController();
-  final phoneController = TextEditingController();
+  late List<Widget> createAccountContent;
+  late List<Widget> loginContent;
+  late TextEditingController emailController;
+  late TextEditingController usernameController;
+  late TextEditingController passwordController;
+  late TextEditingController phoneController;
+  late ChangeScreenAnimation animation;
 
   Widget inputField(String hint, IconData iconData, bool passwd,
       TextEditingController controller) {
@@ -157,6 +157,11 @@ class _SignupLoginContentState extends State<SignupLoginContent>
 
   @override
   void initState() {
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+    usernameController = TextEditingController();
+    phoneController = TextEditingController();
+
     createAccountContent = [
       inputField(
           'Username', Ionicons.person_outline, false, usernameController),
@@ -165,7 +170,8 @@ class _SignupLoginContentState extends State<SignupLoginContent>
           'Password', Ionicons.lock_closed_outline, true, passwordController),
       authButton('Sign Up', () {
         AuthService.regularRegistration(CustomUser(
-            usernameController.text.trim(), emailController.text.trim(),
+            usernameController.text.trim(),
+            emailController.text.trim(),
             passwordController.text.trim()));
       }),
       orDivider(),
@@ -183,11 +189,14 @@ class _SignupLoginContentState extends State<SignupLoginContent>
       forgotPassword(),
     ];
 
-    ChangeScreenAnimation.initialize(
-      vsync: this,
-      createAccountItems: createAccountContent.length,
-      loginItems: loginContent.length,
-    );
+    if (!ChangeScreenAnimation.initState) {
+      ChangeScreenAnimation.initialize(
+        vsync: this,
+        createAccountItems: createAccountContent.length,
+        loginItems: loginContent.length,
+      );
+      ChangeScreenAnimation.initState = true;
+    }
 
     for (int i = 0; i < createAccountContent.length; ++i) {
       createAccountContent[i] = HelperFunctions.wrapWithAnimatedBuilder(
@@ -200,12 +209,19 @@ class _SignupLoginContentState extends State<SignupLoginContent>
         child: loginContent[i],
       );
     }
+
     super.initState();
   }
 
   @override
   void dispose() {
     ChangeScreenAnimation.dispose();
+    emailController.dispose();
+    usernameController.dispose();
+    phoneController.dispose();
+    passwordController.dispose();
+    createAccountContent = [];
+    loginContent = [];
     super.dispose();
   }
 
