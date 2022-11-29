@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:time_z_money/data_access/DAL.dart';
 import 'package:time_z_money/screens/AppWrapper.dart';
 import 'package:time_z_money/screens/home/home.dart';
+import 'package:time_z_money/screens/splash_screen.dart';
 import 'utils/firebase_options.dart';
 import 'package:time_z_money/screens/Authenticate/Authenticate_screen.dart';
 import 'package:flutter/material.dart';
@@ -25,9 +26,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        scaffoldBackgroundColor: Colors.white,
+        textTheme: Theme.of(context).textTheme.apply(
+          fontFamily: 'Montserrat',
+        ),
+      ),
       initialRoute: '/',
       routes: {
-        '/' : (context) => const AppWrapper(),
+        '/' : (context) => const SplashScreen(),
+
       },
     );
   }
