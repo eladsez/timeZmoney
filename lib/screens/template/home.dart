@@ -3,6 +3,14 @@ import 'dashboard.dart';
 import 'explore.dart';
 import 'settings.dart';
 
+
+enum BottomNavigationBarState{
+  dashboard,
+  explore,
+  setting,
+  more,   // need to modify
+}
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
@@ -11,15 +19,15 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int selectedNavBarIndex = 0;
+  BottomNavigationBarState selectedNavBar = BottomNavigationBarState.dashboard;
 
-  Widget screen(int index) {
-    switch (index) {
-      case 0:
+  Widget screen(BottomNavigationBarState currState) {
+    switch (currState) {
+      case BottomNavigationBarState.dashboard:
         return const Dashboard();
-      case 1:
+      case BottomNavigationBarState.explore:
         return const Explore();
-      case 2:
+      case BottomNavigationBarState.setting:
         return const Settings();
       default:
         return Container();
@@ -29,7 +37,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: screen(selectedNavBarIndex),
+      body: screen(selectedNavBar),
       bottomNavigationBar: Container(
         margin: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
         width: double.infinity,
@@ -42,43 +50,43 @@ class _MyHomePageState extends State<MyHomePage> {
             IconButton(
                 onPressed: () {
                   setState(() {
-                    selectedNavBarIndex = 0;
+                    selectedNavBar = BottomNavigationBarState.dashboard;
                   });
                 },
-                color: selectedNavBarIndex == 0
+                color: selectedNavBar == BottomNavigationBarState.dashboard
                     ? Theme.of(context).primaryColor
                     : Colors.black26,
                 icon: const Icon(Icons.home_filled)),
             IconButton(
                 onPressed: () {
                   setState(() {
-                    selectedNavBarIndex = 1;
+                    selectedNavBar = BottomNavigationBarState.explore;
                   });
                 },
-                color: selectedNavBarIndex == 1
+                color: selectedNavBar == BottomNavigationBarState.explore
                     ? Theme.of(context).primaryColor
                     : Colors.black26,
                 icon: const Icon(Icons.explore)),
-            // IconButton(
-            //     onPressed: () {
-            //       setState(() {
-            //         selectedNavBarIndex = 2;
-            //       });
-            //     },
-            //     color: selectedNavBarIndex == 2
-            //         ? Theme.of(context).primaryColor
-            //         : Colors.black26,
-            //     icon: const Icon(Icons.favorite)),
             IconButton(
                 onPressed: () {
                   setState(() {
-                    selectedNavBarIndex = 2;
+                    selectedNavBar = BottomNavigationBarState.setting;
                   });
                 },
-                color: selectedNavBarIndex == 2
+                color: selectedNavBar == BottomNavigationBarState.setting
                     ? Theme.of(context).primaryColor
                     : Colors.black26,
-                icon: const Icon(Icons.settings))
+                icon: const Icon(Icons.settings)),
+            IconButton(
+                onPressed: () {
+                  setState(() {
+                    selectedNavBar = BottomNavigationBarState.more;
+                  });
+                },
+                color: selectedNavBar == BottomNavigationBarState.more
+                    ? Theme.of(context).primaryColor
+                    : Colors.black26,
+                icon: const Icon(Icons.favorite)),
           ],
         ),
       ),

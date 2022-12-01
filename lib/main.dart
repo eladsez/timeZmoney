@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:time_z_money/screens/home_template/home.dart';
 import 'package:time_z_money/screens/splash_screen.dart';
+import 'package:time_z_money/screens/template/home.dart';
 import 'utils/firebase_options.dart';
 import 'package:flutter/material.dart';
 

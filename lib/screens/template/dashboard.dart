@@ -3,7 +3,6 @@ import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:firebase_core/firebase_core.dart';
 import '../../Business_Logic/models/destination.dart';
 import 'package:time_z_money/data_access/dummy_data/destinations/caves.dart';
 import 'package:time_z_money/data_access/dummy_data/destinations/dams.dart';
@@ -171,9 +170,9 @@ class _DashboardState extends State<Dashboard> {
         title: const Text('Tourist Personal Assistant'),
         elevation: 0,
         backgroundColor: Colors.transparent,
-        // actions: [
-          // IconButton(
-              // onPressed: () {
+        actions: [
+          IconButton(
+              onPressed: () {
               //   showModalBottomSheet(
               //       barrierColor: Colors.black.withOpacity(0.3),
               //       context: context,
@@ -216,19 +215,19 @@ class _DashboardState extends State<Dashboard> {
               //                             .toList(),
               //                       ),
               //               )))));
-              // },
-              // icon: Badge(
-              //   badgeContent: Text(
-              //     "${notifications.length}",
-              //     style: const TextStyle(color: Colors.white),
-              //   ),
-              //   showBadge: notifications.isNotEmpty,
-              //   child: const Icon(
-              //     Icons.notifications,
-              //     color: Colors.black26,
-              //   ),
-              // ))
-        // ],
+              },
+              icon: Badge(
+                badgeContent: const Text(
+                  "3",
+                  style: TextStyle(color: Colors.white),
+                ),
+                showBadge: true,
+                child: const Icon(
+                  Icons.notifications,
+                  color: Colors.black26,
+                ),
+              ))
+        ],
       ),
       body: Column(
         children: [
