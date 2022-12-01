@@ -109,6 +109,7 @@ flutter:
     - assets/images/appLogo.png
     - assets/images/app_logo.png
     - assets/images/logolarge.png
+    - assets/images/back.png
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
