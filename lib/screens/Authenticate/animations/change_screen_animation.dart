@@ -4,19 +4,17 @@ import '../components/signup&login.dart';
 
 class ChangeScreenAnimation {
 
-  static bool initState = false;
+  static late AnimationController topTextController;
+  static late Animation<Offset> topTextAnimation;
 
-  static late final AnimationController topTextController;
-  static late final Animation<Offset> topTextAnimation;
+  static late AnimationController bottomTextController;
+  static late Animation<Offset> bottomTextAnimation;
 
-  static late final AnimationController bottomTextController;
-  static late final Animation<Offset> bottomTextAnimation;
+  static List<AnimationController> createAccountControllers = [];
+  static  List<Animation<Offset>> createAccountAnimations = [];
 
-  static final List<AnimationController> createAccountControllers = [];
-  static final List<Animation<Offset>> createAccountAnimations = [];
-
-  static final List<AnimationController> loginControllers = [];
-  static final List<Animation<Offset>> loginAnimations = [];
+  static List<AnimationController> loginControllers = [];
+  static List<Animation<Offset>> loginAnimations = [];
 
   static var isPlaying = false;
   static var currentScreen = SignupLoginState.signIn;
@@ -106,6 +104,10 @@ class ChangeScreenAnimation {
     ]) {
       controller.dispose();
     }
+    loginControllers = [];
+    createAccountControllers = [];
+    loginAnimations = [];
+    createAccountAnimations = [];
   }
 
   static Future<void> forward() async {

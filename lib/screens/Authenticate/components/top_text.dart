@@ -36,7 +36,6 @@ class _TopLogoState extends State<TopLogo> {
           fontWeight: FontWeight.w600,
         ),
       ),
-      // child: Image.asset("assets/images/appLogo.png"),
     );
   }
 }

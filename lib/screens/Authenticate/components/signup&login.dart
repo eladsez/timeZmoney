@@ -28,7 +28,6 @@ class _SignupLoginContentState extends State<SignupLoginContent>
   late TextEditingController usernameController;
   late TextEditingController passwordController;
   late TextEditingController phoneController;
-  late ChangeScreenAnimation animation;
 
   Widget inputField(String hint, IconData iconData, bool passwd,
       TextEditingController controller) {
@@ -189,14 +188,11 @@ class _SignupLoginContentState extends State<SignupLoginContent>
       forgotPassword(),
     ];
 
-    if (!ChangeScreenAnimation.initState) {
-      ChangeScreenAnimation.initialize(
-        vsync: this,
-        createAccountItems: createAccountContent.length,
-        loginItems: loginContent.length,
-      );
-      ChangeScreenAnimation.initState = true;
-    }
+    ChangeScreenAnimation.initialize(
+      vsync: this,
+      createAccountItems: createAccountContent.length,
+      loginItems: loginContent.length,
+    );
 
     for (int i = 0; i < createAccountContent.length; ++i) {
       createAccountContent[i] = HelperFunctions.wrapWithAnimatedBuilder(
@@ -216,12 +212,13 @@ class _SignupLoginContentState extends State<SignupLoginContent>
   @override
   void dispose() {
     ChangeScreenAnimation.dispose();
+    ChangeScreenAnimation.currentScreen = SignupLoginState.signIn;
     emailController.dispose();
     usernameController.dispose();
     phoneController.dispose();
     passwordController.dispose();
-    createAccountContent = [];
     loginContent = [];
+    createAccountContent = [];
     super.dispose();
   }
 
