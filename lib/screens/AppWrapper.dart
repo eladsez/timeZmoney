@@ -35,7 +35,8 @@ class _AppWrapperState extends State<AppWrapper> {
                       return const ProfileChooserScreen();  // next we build the Profile chooser screen
                     }
                     else {// in case we in signIn
-                      return const Home();
+                      // return const Home();
+                      return const Authenticate();
                     }
                   });
             }
