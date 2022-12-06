@@ -6,16 +6,16 @@ enum AuthProblems { userNotFound, passwordNotValid, networkError }
 
 class AuthService {
 
-  static Stream<User?> getLogInState(){
+  static Stream<User?> getAuthState(){
     return FirebaseAuth.instance.authStateChanges();
   }
 
-  static Future regularRegistration(CustomUser newUser) async {
+  Future regularRegistration(CustomUser newUser) async {
     try {
       UserCredential userCredential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: newUser.getEmail(),
-        password: newUser.getHashPassword(),
+        email: newUser.email,
+        password: newUser.hashPass,
       );
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -28,10 +28,10 @@ class AuthService {
     }
   }
 
-  static Future emailSignIn(CustomUser user) async {
+  Future emailSignIn(CustomUser user) async {
     try {
       FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: user.getEmail(), password: user.getHashPassword());
+          email: user.email, password: user.hashPass);
     } catch (e) {
       AuthProblems errorType;
       print(e);

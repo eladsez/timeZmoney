@@ -7,6 +7,7 @@ class Destination {
   String? imgUrl;
   double? rating;
   String? tag;
+  String? location;
   Destination(
       {this.title,
       this.subtitle,
@@ -15,5 +16,6 @@ class Destination {
       this.coverUrl,
       this.imgUrl,
       this.rating,
-      this.tag});
+      this.tag,
+      this.location});
 }

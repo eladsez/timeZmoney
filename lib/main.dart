@@ -1,6 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:time_z_money/screens/Authenticate/components/profile_chooser.dart';
 import 'package:time_z_money/screens/splash_screen.dart';
 import 'package:time_z_money/screens/template/home.dart';
+import 'Business_Logic/models/CustomUser.dart';
+import 'data_access/DAL.dart';
 import 'utils/firebase_options.dart';
 import 'package:flutter/material.dart';
 
@@ -30,8 +33,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/' : (context) => const MyHomePage(),
-
+        '/' : (context) => const SplashScreen(),
       },
     );
   }

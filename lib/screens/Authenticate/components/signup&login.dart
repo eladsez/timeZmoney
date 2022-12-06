@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:time_z_money/Business_Logic/actions/auth_actions.dart';
 import 'package:time_z_money/Business_Logic/models/CustomUser.dart';
 import 'package:time_z_money/data_access/auth.dart';
 import '../../../utils/constants.dart';
@@ -28,6 +29,7 @@ class _SignupLoginContentState extends State<SignupLoginContent>
   late TextEditingController usernameController;
   late TextEditingController passwordController;
   late TextEditingController phoneController;
+  AuthActions authActions = AuthActions();
 
   Widget inputField(String hint, IconData iconData, bool passwd,
       TextEditingController controller) {
@@ -168,10 +170,11 @@ class _SignupLoginContentState extends State<SignupLoginContent>
       inputField(
           'Password', Ionicons.lock_closed_outline, true, passwordController),
       authButton('Sign Up', () {
-        AuthService.regularRegistration(CustomUser(
-            usernameController.text.trim(),
-            emailController.text.trim(),
-            passwordController.text.trim()));
+        authActions.signupFirstStage(CustomUser(
+          username: usernameController.text.trim(),
+          email: emailController.text.trim(),
+          hashPass: passwordController.text.trim(),
+        ));
       }),
       orDivider(),
       logos(),
@@ -182,8 +185,12 @@ class _SignupLoginContentState extends State<SignupLoginContent>
       inputField(
           'Password', Ionicons.lock_closed_outline, true, passwordController),
       authButton('Log In', () {
-        AuthService.emailSignIn(CustomUser(usernameController.text.trim(),
-            emailController.text.trim(), passwordController.text.trim()));
+        authActions.login(
+          CustomUser(
+              username: usernameController.text.trim(),
+              email: emailController.text.trim(),
+              hashPass: passwordController.text.trim()),
+        );
       }),
       forgotPassword(),
     ];

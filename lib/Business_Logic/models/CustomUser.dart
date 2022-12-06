@@ -1,30 +1,33 @@
-import 'package:firebase_auth/firebase_auth.dart';
-
 class CustomUser {
-  var _uid;
-  var _username;
-  var _email;
-  var _phoneNum;
-  var _gender;
-  var _age;
-  var _hashPass;
+  String? uid;
+  String username;
+  String hashPass;
+  String email;
+  String? phoneNum;
+  String? gender;
+  int? age;
+  String? userType;
 
   CustomUser(
-      this._username, this._email, this._hashPass,[this._gender, this._age,
-      this._phoneNum]);
+      {required this.username,
+      required this.email,
+      required this.hashPass,
+      this.uid = " ",
+      this.gender = " ",
+      this.age = 18,
+      this.phoneNum = " ",
+      this.userType = " "});
 
-  Map<String,dynamic> toMap()
-  {
-    return {"username":_username,"email":_email,"phone":_phoneNum,"gender":_gender,"age":_age};
+  Map<String, dynamic> toMap() {
+    return {
+      "uid":uid ,
+      "username": username,
+      "email": email,
+      "phone": phoneNum,
+      "gender": gender,
+      "age": age,
+      "user type": userType,
+      "hashPass": hashPass,
+    };
   }
-
-  String getEmail() {
-    return _email;
-  }
-
-  String getHashPassword()
-  {
-    return _hashPass;
-  }
-
 }
