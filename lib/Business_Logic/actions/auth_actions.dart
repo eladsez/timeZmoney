@@ -13,6 +13,7 @@ class AuthActions {
   login(CustomUser user) {
     currUser = user;
     auth.emailSignIn(user);
+    currUser.uid = auth.getCurrUserUid();
     currUser.hashPass = HelperFunctions.generateMd5(currUser.hashPass);
   }
 
@@ -30,7 +31,7 @@ class AuthActions {
   /// This function update the profile type of the user in firestore after the user singup and choose one from profileChooserScreen
   /// called after the signupSecondStage()
   chooseProfile(UserProfile profileType) async {
-    await das.updateUser(currUser.username, "user type",
+    await das.updateUser(currUser.uid!, "user type",
         profileType == UserProfile.employer ? "employer" : "worker");
   }
 

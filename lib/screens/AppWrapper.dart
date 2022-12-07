@@ -26,7 +26,6 @@ class _AppWrapperState extends State<AppWrapper> {
           initialData: FirebaseAuth.instance.currentUser,
           builder: (context, snapshot) {
             if (snapshot.hasData) { // we got a user
-              AuthActions.currUser.uid = snapshot.data?.uid; // save the uid of the firebase_auth user on the customUser for fireStore
               return FutureBuilder( // check if we already had the user in fireStore
                   future: authActions.whichStateChange(snapshot.data),
                   builder: (_, snap) {
@@ -35,8 +34,8 @@ class _AppWrapperState extends State<AppWrapper> {
                       return const ProfileChooserScreen();  // next we build the Profile chooser screen
                     }
                     else {// in case we in signIn
-                      // return const Home();
-                      return const Authenticate();
+                      return const Home();
+                      // return const Authenticate();
                     }
                   });
             }
