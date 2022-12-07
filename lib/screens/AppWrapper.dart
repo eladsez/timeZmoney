@@ -5,7 +5,7 @@ import 'package:time_z_money/data_access/auth.dart';
 import 'package:time_z_money/screens/Authenticate/Authenticate_screen.dart';
 import 'package:time_z_money/screens/home/home.dart';
 import 'Authenticate/components/profile_chooser.dart';
-import 'error_screens/auth_error.dart';
+import 'Loading_Screens/clock_loader_particles.dart';
 
 class AppWrapper extends StatefulWidget {
   const AppWrapper({Key? key}) : super(key: key);
@@ -40,7 +40,13 @@ class _AppWrapperState extends State<AppWrapper> {
                       // in case we in signIn
                       return const Home();
                     } else {
-                      return const AuthError();
+                      return ClockLoader(
+                        clockLoaderModel: ClockLoaderModel(
+                          shapeOfParticles: ShapeOfParticlesEnum.circle,
+                          mainHandleColor: Colors.white,
+                          particlesColor: Colors.white,
+                        ),
+                      );;
                     }
                   });
             }

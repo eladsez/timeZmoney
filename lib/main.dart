@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:time_z_money/screens/Loading_Screens/clock_loader_particles.dart';
 import 'package:time_z_money/screens/splash_screen.dart';
 import 'utils/firebase_options.dart';
 import 'package:flutter/material.dart';
@@ -18,18 +19,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,
         textTheme: Theme.of(context).textTheme.apply(
-          fontFamily: 'Montserrat',
-        ),
+              fontFamily: 'Montserrat',
+            ),
       ),
       initialRoute: '/',
       routes: {
-        '/' : (context) => const SplashScreen(),
+        '/': (context) => ClockLoader(
+              clockLoaderModel: ClockLoaderModel(
+                shapeOfParticles: ShapeOfParticlesEnum.circle,
+                mainHandleColor: Colors.white,
+                particlesColor: Colors.white,
+              ),
+            ),
       },
     );
   }

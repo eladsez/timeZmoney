@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../utils/BackgroundGenerator.dart';
 import 'components/signup&login.dart';
 
 class Authenticate extends StatefulWidget {
@@ -12,6 +13,8 @@ class _AuthenticateState extends State<Authenticate> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: SignupLoginContent());
+    return Scaffold(
+        body: CustomPaint(painter:GreenPainter(),
+        child: const SignupLoginContent(),));
   }
 }
