@@ -8,11 +8,9 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("home page for now"),
-
-      ),
+      body: const Center(child: Text("Home page for now")),
       floatingActionButton: FloatingActionButton(
+        child: const Text("sign out"),
         onPressed:(){
           FirebaseAuth.instance.signOut();
           Navigator.pop(context);
