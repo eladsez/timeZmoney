@@ -14,6 +14,10 @@ class AuthService {
     return FirebaseAuth.instance.currentUser?.uid;
   }
 
+  User? getCurrFireBaseUser(){
+    return FirebaseAuth.instance.currentUser;
+  }
+
   Future regularRegistration(CustomUser newUser) async {
     try {
       UserCredential userCredential =

@@ -16,26 +16,25 @@ class AppWrapper extends StatefulWidget {
 class _AppWrapperState extends State<AppWrapper> {
   final AuthActions authActions = AuthActions();
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: StreamBuilder<User?>(
           stream: AuthService.getAuthState(),
-          initialData: FirebaseAuth.instance.currentUser,
           builder: (context, snapshot) {
             if (snapshot.hasData) { // we got a user
+              if (snapshot.data is User){
+
+              }
               return FutureBuilder( // check if we already had the user in fireStore
                   future: authActions.whichStateChange(snapshot.data),
                   builder: (_, snap) {
                     if (snap.hasData && snap.data == false){  // we don't have it in fireStore, so we in signup state
-                      authActions.signupSecondStage(); // create the firestore entry for th user
+                      authActions.signupSecondStage(); // create the firestore entry for the user
                       return const ProfileChooserScreen();  // next we build the Profile chooser screen
                     }
-                    else {// in case we in signIn
+                    else { // in case we in signIn
                       return const Home();
-                      // return const Authenticate();
                     }
                   });
             }

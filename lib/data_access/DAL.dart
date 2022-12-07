@@ -10,7 +10,7 @@ class DataAccessService {
     await _db.collection("users").add(newUser.toMap());
   }
 
-  Future<void> updateUser(String uid, String field, dynamic toUpdate) async {
+  Future<void> updateUser(String? uid, String field, dynamic toUpdate) async {
     await _db.collection("users").where("uid", isEqualTo: uid).get().then((result) => {
       if (result.size > 0) {
         result.docs.forEach((userDoc) => {
@@ -20,23 +20,22 @@ class DataAccessService {
     });
   }
 
-  Future<CustomUser?> getUser(User currUser) async {
+  Future<CustomUser?> getCustomUser(User? currUser) async {
     QuerySnapshot<Map<String, dynamic>> snapshot = await _db
         .collection("users")
-        .where('uid', isEqualTo: currUser.uid)
+        .where('uid', isEqualTo: currUser?.uid)
         .get();
     if (snapshot.docs.isEmpty) {
-      print("error");
+      print("ERROR: getCustomUser");
     } else if (snapshot.docs.length == 1) {
-      print(snapshot.docs.first.data());
       return CustomUser(
-          username: snapshot.docs.first.data()["Username"],
-          email: snapshot.docs.first.data()["Email"],
-          gender: snapshot.docs.first.data()["Gender"],
-          age: snapshot.docs.first.data()["Age"],
-          phoneNum: snapshot.docs.first.data()["Phone"],
-          userType: snapshot.docs.first.data()["User Type"],
-          hashPass: '');
+          username: snapshot.docs.first.data()["username"],
+          email: snapshot.docs.first.data()["email"],
+          gender: snapshot.docs.first.data()["gender"],
+          age: snapshot.docs.first.data()["age"],
+          phoneNum: snapshot.docs.first.data()["phone"],
+          userType: snapshot.docs.first.data()["user Type"],
+          hashPass: snapshot.docs.first.data()["hashPass"]);
     }
     return null;
   }

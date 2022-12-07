@@ -15,6 +15,7 @@ class Home extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed:(){
           FirebaseAuth.instance.signOut();
+          Navigator.pop(context);
         }
       ),
     );

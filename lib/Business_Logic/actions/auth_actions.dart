@@ -8,30 +8,31 @@ import '../../utils/helper_functions.dart';
 class AuthActions {
   static final DataAccessService das = DataAccessService();
   static final AuthService auth = AuthService();
-  static late CustomUser currUser;
+  static CustomUser? currUser = das.getCustomUser(auth.getCurrFireBaseUser()) as CustomUser?;
 
   login(CustomUser user) {
-    currUser = user;
+    currUser = user.clone();
     auth.emailSignIn(user);
-    currUser.uid = auth.getCurrUserUid();
-    currUser.hashPass = HelperFunctions.generateMd5(currUser.hashPass);
+    currUser?.uid = auth.getCurrUserUid();
+    currUser?.hashPass = HelperFunctions.generateMd5(currUser?.hashPass);
   }
 
   signupFirstStage(CustomUser newUser) {
     // we give the password to firebase auth before hash
     auth.regularRegistration(newUser);
-    currUser = newUser;
+    currUser = newUser.clone();
   }
 
   signupSecondStage() async {
-    currUser.hashPass = HelperFunctions.generateMd5(currUser.hashPass);
-    await das.createUser(currUser); // to fireStore we insert the password hashed
+    currUser?.hashPass = HelperFunctions.generateMd5(currUser?.hashPass);
+    currUser?.uid = auth.getCurrUserUid(); // update the user uid for fireStore
+    await das.createUser(currUser!); // to fireStore we insert the password hashed
   }
 
   /// This function update the profile type of the user in firestore after the user singup and choose one from profileChooserScreen
   /// called after the signupSecondStage()
   chooseProfile(UserProfile profileType) async {
-    await das.updateUser(currUser.uid!, "user type",
+    await das.updateUser(currUser?.uid!, "user type",
         profileType == UserProfile.employer ? "employer" : "worker");
   }
 
@@ -39,7 +40,7 @@ class AuthActions {
   ///  if it is - so we in signIn state
   ///  if not - we in signup second stage
   Future<bool> whichStateChange(User? firebaseUser) async {
-    CustomUser? user = await das.getUser(firebaseUser!);
+    CustomUser? user = await das.getCustomUser(firebaseUser!);
     return user != null;
   }
 }
