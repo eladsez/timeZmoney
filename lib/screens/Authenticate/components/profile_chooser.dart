@@ -110,13 +110,10 @@ class _ProfileChooserScreenState extends State<ProfileChooserScreen> {
               typeButton("Employer", employerColor, employerChoice),
             ],
           )),
-      floatingActionButton: FloatingActionButton(onPressed: () async {
+      floatingActionButton: FloatingActionButton(onPressed: () async{
         if (selectedUserProfile == null) return; // in case he didn't choose anything (should be popup or something)
         await authActions.chooseProfile(selectedUserProfile!);
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const Home()),
-        );
+        Navigator.pop(context); // pop the profileChooserScreen
       }),
     );
   }

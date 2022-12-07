@@ -13,7 +13,6 @@ class Home extends StatelessWidget {
         child: const Text("sign out"),
         onPressed:(){
           FirebaseAuth.instance.signOut();
-          Navigator.pop(context);
         }
       ),
     );

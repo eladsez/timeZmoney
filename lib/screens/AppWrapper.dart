@@ -5,6 +5,7 @@ import 'package:time_z_money/data_access/auth.dart';
 import 'package:time_z_money/screens/Authenticate/Authenticate_screen.dart';
 import 'package:time_z_money/screens/home/home.dart';
 import 'Authenticate/components/profile_chooser.dart';
+import 'error_screens/auth_error.dart';
 
 class AppWrapper extends StatefulWidget {
   const AppWrapper({Key? key}) : super(key: key);
@@ -21,20 +22,25 @@ class _AppWrapperState extends State<AppWrapper> {
     return Scaffold(
       body: StreamBuilder<User?>(
           stream: AuthService.getAuthState(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) { // we got a user
-              if (snapshot.data is User){
-
-              }
-              return FutureBuilder( // check if we already had the user in fireStore
-                  future: authActions.whichStateChange(snapshot.data),
-                  builder: (_, snap) {
-                    if (snap.hasData && snap.data == false){  // we don't have it in fireStore, so we in signup state
-                      authActions.signupSecondStage(); // create the firestore entry for the user
-                      return const ProfileChooserScreen();  // next we build the Profile chooser screen
-                    }
-                    else { // in case we in signIn
+          builder: (context, authState) {
+            if (authState.hasData && authState.data is User) {
+              // we got a user
+              return FutureBuilder(
+                  // check if we already had the user in fireStore
+                  future: authActions.whichStateChange(authState.data),
+                  builder: (_, signUpState) {
+                    if (signUpState.hasData && signUpState.data == false) { // we don't have it in fireStore, so we in signup state
+                      return FutureBuilder(  // create the fireStore entry for the user and only then build home
+                        future: authActions.signupSecondStage(),
+                        builder: (context, dummy) {
+                          return const Home();
+                        },
+                      );
+                    } else if (signUpState.hasData && signUpState.data == true) {
+                      // in case we in signIn
                       return const Home();
+                    } else {
+                      return const AuthError();
                     }
                   });
             }

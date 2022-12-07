@@ -3,6 +3,7 @@ import 'package:ionicons/ionicons.dart';
 import 'package:time_z_money/Business_Logic/actions/auth_actions.dart';
 import 'package:time_z_money/Business_Logic/models/CustomUser.dart';
 import 'package:time_z_money/data_access/auth.dart';
+import 'package:time_z_money/screens/Authenticate/components/profile_chooser.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/helper_functions.dart';
 import '../animations/change_screen_animation.dart';
@@ -167,14 +168,18 @@ class _SignupLoginContentState extends State<SignupLoginContent>
       inputField(
           'Username', Ionicons.person_outline, false, usernameController),
       inputField('Email', Ionicons.mail_outline, false, emailController),
-      inputField(
-          'Password', Ionicons.lock_closed_outline, true, passwordController),
+      inputField( 'Password', Ionicons.lock_closed_outline, true, passwordController),
       authButton('Sign Up', () {
-        authActions.signupFirstStage(CustomUser(
+        // when signup is pressed it set the currUser and push the ProfileChooserScreen
+        AuthActions.setCurrUser(CustomUser(
           username: usernameController.text.trim(),
           email: emailController.text.trim(),
           hashPass: passwordController.text.trim(),
         ));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const ProfileChooserScreen()));
       }),
       orDivider(),
       logos(),
@@ -184,8 +189,8 @@ class _SignupLoginContentState extends State<SignupLoginContent>
       inputField('Email', Ionicons.mail_outline, false, emailController),
       inputField(
           'Password', Ionicons.lock_closed_outline, true, passwordController),
-      authButton('Log In', () {
-        authActions.login(
+      authButton('Log In', () async {
+        await authActions.login(
           CustomUser(
               username: usernameController.text.trim(),
               email: emailController.text.trim(),

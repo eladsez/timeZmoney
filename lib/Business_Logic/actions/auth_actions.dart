@@ -10,30 +10,39 @@ class AuthActions {
   static final AuthService auth = AuthService();
   static CustomUser? currUser = das.getCustomUser(auth.getCurrFireBaseUser()) as CustomUser?;
 
-  login(CustomUser user) {
+  static setCurrUser(CustomUser user){
     currUser = user.clone();
-    auth.emailSignIn(user);
+  }
+
+  login(CustomUser user) async{
+    setCurrUser(user);
+    await auth.emailSignIn(user);
     currUser?.uid = auth.getCurrUserUid();
     currUser?.hashPass = HelperFunctions.generateMd5(currUser?.hashPass);
   }
 
-  signupFirstStage(CustomUser newUser) {
+  /*
+  The first stage signup sign the new user in fireBase auth and trigger the appWrapper stream
+   */
+  signupFirstStage() async {
     // we give the password to firebase auth before hash
-    auth.regularRegistration(newUser);
-    currUser = newUser.clone();
+    await auth.regularRegistration(currUser!);
   }
 
-  signupSecondStage() async {
-    currUser?.hashPass = HelperFunctions.generateMd5(currUser?.hashPass);
+  Future<void> signupSecondStage() async {
+    currUser?.hashPass = HelperFunctions.generateMd5(currUser?.hashPass); // to fireStore we insert the password hashed
     currUser?.uid = auth.getCurrUserUid(); // update the user uid for fireStore
-    await das.createUser(currUser!); // to fireStore we insert the password hashed
+    await das.createUser(currUser!);
   }
 
-  /// This function update the profile type of the user in firestore after the user singup and choose one from profileChooserScreen
-  /// called after the signupSecondStage()
+/*
+  This function update the profile of the signed up currUser and call the first stage signup
+ */
   chooseProfile(UserProfile profileType) async {
-    await das.updateUser(currUser?.uid!, "user type",
-        profileType == UserProfile.employer ? "employer" : "worker");
+    currUser?.userType = (profileType == UserProfile.employer) ? "employer" : "worker";
+    // await das.updateUser(currUser?.uid!, "user type",
+    //     profileType == UserProfile.employer ? "employer" : "worker");
+    await signupFirstStage();
   }
 
   /// This function will check if the uid of a firebase_auth user is already in fireStore

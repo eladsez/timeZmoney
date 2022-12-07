@@ -38,7 +38,7 @@ class AuthService {
 
   Future emailSignIn(CustomUser user) async {
     try {
-      FirebaseAuth.instance.signInWithEmailAndPassword(
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: user.email, password: user.hashPass);
     } catch (e) {
       AuthProblems errorType;
