@@ -9,7 +9,7 @@ class GreenPainter extends CustomPainter {
 
     Path mainBackground = Path();
     mainBackground.addRect(Rect.fromLTRB(0, 0, width, height));
-    paint.color = Colors.greenAccent.shade100;
+    paint.color = const Color(0xFFAAFFCE);
     canvas.drawPath(mainBackground, paint);
 
     Path ovalPath = Path();
@@ -29,7 +29,7 @@ class GreenPainter extends CustomPainter {
     // Close line to reset it back
     ovalPath.close();
 
-    paint.color = Colors.greenAccent;
+    paint.color = const Color(0xFF57FFAB);
     canvas.drawPath(ovalPath, paint);
   }
 

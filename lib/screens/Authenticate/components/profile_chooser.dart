@@ -33,7 +33,7 @@ class _ProfileChooserScreenState extends State<ProfileChooserScreen> {
         textAlign: TextAlign.center,
         style: TextStyle(fontFamily: 'IBMPlex', fontSize: 25),
       );
-      workerColor = Colors.greenAccent;
+      workerColor = const Color(0xFFEB9F40);
       employerColor = Colors.grey;
     });
   }
@@ -46,7 +46,7 @@ class _ProfileChooserScreenState extends State<ProfileChooserScreen> {
         textAlign: TextAlign.center,
         style: TextStyle(fontFamily: 'IBMPlex', fontSize: 25),
       );
-      employerColor = Colors.greenAccent;
+      employerColor = const Color(0xFFEB9F40);
       workerColor = Colors.grey;
     });
   }
@@ -56,8 +56,8 @@ class _ProfileChooserScreenState extends State<ProfileChooserScreen> {
       "Choose your profile",
       style: TextStyle(
         color: Colors.black,
-        fontSize: 40,
-        fontFamily: 'SecularOne',
+        fontSize: 35,
+        fontFamily: 'ProstoOne',
       ),
     );
   }
@@ -112,7 +112,7 @@ class _ProfileChooserScreenState extends State<ProfileChooserScreen> {
               const SizedBox(
                 height: 50,
               ),
-              typeButton("worker", workerColor, workerChoice),
+              typeButton("Worker", workerColor, workerChoice),
               const SizedBox(
                 height: 20,
               ),

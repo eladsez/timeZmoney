@@ -108,6 +108,9 @@ flutter:
           weight: 600
         - asset: assets/fonts/Montserrat-Bold.otf
           weight: 700
+    - family: ProstoOne
+      fonts:
+          - asset: assets/fonts/ProstoOne-Regular.ttf
 
   assets:
     - assets/images/facebook.png
