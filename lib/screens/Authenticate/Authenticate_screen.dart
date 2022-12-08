@@ -10,11 +10,13 @@ class Authenticate extends StatefulWidget {
 }
 
 class _AuthenticateState extends State<Authenticate> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: CustomPaint(painter:GreenPainter(),
-        child: const SignupLoginContent(),));
+      body: CustomPaint(
+        painter: GreenPainter(),
+        child: const SignupLoginContent(),
+      ),
+    );
   }
 }

@@ -33,7 +33,7 @@ class _ProfileChooserScreenState extends State<ProfileChooserScreen> {
         textAlign: TextAlign.center,
         style: TextStyle(fontFamily: 'IBMPlex', fontSize: 25),
       );
-      workerColor = Colors.blue;
+      workerColor = Colors.greenAccent;
       employerColor = Colors.grey;
     });
   }
@@ -46,7 +46,7 @@ class _ProfileChooserScreenState extends State<ProfileChooserScreen> {
         textAlign: TextAlign.center,
         style: TextStyle(fontFamily: 'IBMPlex', fontSize: 25),
       );
-      employerColor = Colors.blue;
+      employerColor = Colors.greenAccent;
       workerColor = Colors.grey;
     });
   }
@@ -85,39 +85,42 @@ class _ProfileChooserScreenState extends State<ProfileChooserScreen> {
   Widget build(BuildContext context) {
     widthScreenSize = MediaQuery.of(context).size.width;
     return Scaffold(
-        floatingActionButton: FloatingActionButton(onPressed: () async {
-          if (selectedUserProfile == null) return; // in case he didn't choose anything (should be popup or something)
-          await authActions.chooseProfile(selectedUserProfile!);
-          Navigator.pop(context); // pop the profileChooserScreen
-        }),
-        body: CustomPaint(
-          painter: GreenPainter(),
-          child: Container(
-              // margin: const EdgeInsets.only(top: 100),
-              alignment: Alignment.topCenter,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  getTitle(),
-                  const SizedBox(
-                    height: 50,
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 10),
-                    width: 300,
-                    child: Center(child: description),
-                  ),
-                  const SizedBox(
-                    height: 50,
-                  ),
-                  typeButton("worker", workerColor, workerChoice),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  typeButton("Employer", employerColor, employerChoice),
-                ],
-              )),
-        ));
+      floatingActionButton: FloatingActionButton(onPressed: () async {
+        if (selectedUserProfile == null)
+          return; // in case he didn't choose anything (should be popup or something)
+        await authActions.chooseProfile(selectedUserProfile!);
+        Navigator.pop(context); // pop the profileChooserScreen
+      }),
+      body: CustomPaint(
+        painter: GreenPainter(),
+        child: Container(
+          // margin: const EdgeInsets.only(top: 100),
+          alignment: Alignment.topCenter,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              getTitle(),
+              const SizedBox(
+                height: 50,
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 10),
+                width: 300,
+                child: Center(child: description),
+              ),
+              const SizedBox(
+                height: 50,
+              ),
+              typeButton("worker", workerColor, workerChoice),
+              const SizedBox(
+                height: 20,
+              ),
+              typeButton("Employer", employerColor, employerChoice),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

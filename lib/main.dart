@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:time_z_money/screens/Loading_Screens/clock_loader_particles.dart';
+import 'package:time_z_money/screens/Loading_Screens/auth_loading.dart';
 import 'package:time_z_money/screens/splash_screen.dart';
+import 'package:time_z_money/utils/BackgroundGenerator.dart';
 import 'utils/firebase_options.dart';
 import 'package:flutter/material.dart';
 
@@ -29,13 +30,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => ClockLoader(
-              clockLoaderModel: ClockLoaderModel(
-                shapeOfParticles: ShapeOfParticlesEnum.circle,
-                mainHandleColor: Colors.white,
-                particlesColor: Colors.white,
-              ),
-            ),
+        '/': (context) => const SplashScreen()
       },
     );
   }
