@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:time_z_money/screens/Loading_Screens/auth_loading.dart';
 import 'package:time_z_money/screens/splash_screen.dart';
-import 'package:time_z_money/utils/BackgroundGenerator.dart';
+import 'package:time_z_money/screens/template1/home.dart';
 import 'utils/firebase_options.dart';
 import 'package:flutter/material.dart';
 

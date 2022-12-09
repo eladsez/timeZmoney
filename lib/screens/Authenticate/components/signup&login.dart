@@ -189,13 +189,14 @@ class _SignupLoginContentState extends State<SignupLoginContent>
       inputField('Email', Ionicons.mail_outline, false, emailController),
       inputField(
           'Password', Ionicons.lock_closed_outline, true, passwordController),
-      authButton('Log In', () async {
-        await authActions.login(
+      authButton('Log In', () {
+        authActions.login(
           CustomUser(
               username: usernameController.text.trim(),
               email: emailController.text.trim(),
               hashPass: passwordController.text.trim()),
         );
+        FocusScope.of(context).requestFocus(FocusNode());
       }),
       forgotPassword(),
     ];

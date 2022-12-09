@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:time_z_money/Business_Logic/actions/auth_actions.dart';
 import 'package:time_z_money/utils/BackgroundGenerator.dart';
@@ -86,8 +85,7 @@ class _ProfileChooserScreenState extends State<ProfileChooserScreen> {
     widthScreenSize = MediaQuery.of(context).size.width;
     return Scaffold(
       floatingActionButton: FloatingActionButton(onPressed: () async {
-        if (selectedUserProfile == null)
-          return; // in case he didn't choose anything (should be popup or something)
+        if (selectedUserProfile == null) return; // in case he didn't choose anything (should be popup or something)
         await authActions.chooseProfile(selectedUserProfile!);
         Navigator.pop(context); // pop the profileChooserScreen
       }),

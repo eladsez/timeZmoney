@@ -1,5 +1,4 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:time_z_money/screens/AppWrapper.dart';
 
@@ -29,7 +28,7 @@ class SplashScreen extends StatelessWidget {
       // const Color(0xFFAFF5C3),
       nextScreen: const AppWrapper(),
       splashIconSize: 250,
-      duration: 4000,
+      duration: 2500,
       splashTransition: SplashTransition.fadeTransition,
       animationDuration: const Duration(seconds: 1),
     );

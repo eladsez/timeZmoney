@@ -21,10 +21,7 @@ class DataAccessService {
   }
 
   Future<CustomUser?> getCustomUser(User? currUser) async {
-    QuerySnapshot<Map<String, dynamic>> snapshot = await _db
-        .collection("users")
-        .where('uid', isEqualTo: currUser?.uid)
-        .get();
+    QuerySnapshot<Map<String, dynamic>> snapshot = await _db.collection("users").where('uid', isEqualTo: currUser?.uid).get();
     if (snapshot.docs.isEmpty) {
       print("ERROR: getCustomUser");
     } else if (snapshot.docs.length == 1) {

@@ -67,7 +67,7 @@ class ColorLoader2State extends State<ColorLoader2>
               turns: animation1,
               child: CustomPaint(
                 painter: Arc1Painter(widget.color1),
-                child: Container(
+                child: const SizedBox(
                   width: 50.0,
                   height: 50.0,
                 ),
@@ -77,7 +77,7 @@ class ColorLoader2State extends State<ColorLoader2>
               turns: animation2,
               child: CustomPaint(
                 painter: Arc2Painter(widget.color2),
-                child: Container(
+                child: const SizedBox(
                   width: 50.0,
                   height: 50.0,
                 ),
@@ -87,7 +87,7 @@ class ColorLoader2State extends State<ColorLoader2>
               turns: animation3,
               child: CustomPaint(
                 painter: Arc3Painter(widget.color3),
-                child: Container(
+                child: const SizedBox(
                   width: 50.0,
                   height: 50.0,
                 ),

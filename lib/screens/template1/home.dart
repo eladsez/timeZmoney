@@ -3,12 +3,11 @@ import 'dashboard.dart';
 import 'explore.dart';
 import 'settings.dart';
 
-
-enum BottomNavigationBarState{
+enum BottomNavigationBarState {
   dashboard,
   explore,
   setting,
-  more,   // need to modify
+  more, // need to modify
 }
 
 class MyHomePage extends StatefulWidget {
@@ -43,7 +42,9 @@ class _MyHomePageState extends State<MyHomePage> {
         width: double.infinity,
         height: 50,
         decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(8)),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [

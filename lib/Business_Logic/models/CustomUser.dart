@@ -18,7 +18,8 @@ class CustomUser {
       this.phoneNum = " ",
       this.userType = " "});
 
-  CustomUser clone() {  // deep copy of the object
+  CustomUser clone() {
+    // deep copy of the object
     return CustomUser(
         username: username,
         email: email,
