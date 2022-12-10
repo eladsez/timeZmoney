@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:time_z_money/Business_Logic/actions/auth_actions.dart';
 import 'package:time_z_money/data_access/auth.dart';
 import 'package:time_z_money/screens/Authenticate/Authenticate_screen.dart';
-import 'package:time_z_money/screens/home/home_screen.dart';
 import 'package:time_z_money/screens/main_screen.dart';
-import '../utils/BackgroundGenerator.dart';
-import 'Loading_Screens/auth_loading.dart';
 import 'Loading_Screens/loading_logo.dart';
 
 class AppWrapper extends StatefulWidget {
@@ -37,6 +34,7 @@ class _AppWrapperState extends State<AppWrapper> {
                         // create the fireStore entry for the user and only then build home
                         future: authActions.signupSecondStage(),
                         builder: (context, dummy) {
+                          print("blabla");
                           return const MainScreen();
                         },
                       );

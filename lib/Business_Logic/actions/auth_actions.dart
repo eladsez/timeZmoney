@@ -8,7 +8,7 @@ import '../../utils/helper_functions.dart';
 class AuthActions {
   static final DataAccessService das = DataAccessService();
   static final AuthService auth = AuthService();
-  static CustomUser? currUser = das.getCustomUser(auth.getCurrFireBaseUser()) as CustomUser?;
+  static late CustomUser currUser;
 
   static setCurrUser(CustomUser user){
     currUser = user.clone();
@@ -17,8 +17,8 @@ class AuthActions {
   login(CustomUser user) async{
     setCurrUser(user);
     await auth.emailSignIn(user);
-    currUser?.uid = auth.getCurrUserUid();
-    currUser?.hashPass = HelperFunctions.generateMd5(currUser?.hashPass);
+    currUser.uid = auth.getCurrUserUid();
+    currUser.hashPass = HelperFunctions.generateMd5(currUser.hashPass);
   }
 
   /*
@@ -26,20 +26,20 @@ class AuthActions {
    */
   signupFirstStage() async {
     // we give the password to firebase auth before hash
-    await auth.regularRegistration(currUser!);
+    await auth.regularRegistration(currUser);
   }
 
   Future<void> signupSecondStage() async {
-    currUser?.hashPass = HelperFunctions.generateMd5(currUser?.hashPass); // to fireStore we insert the password hashed
-    currUser?.uid = auth.getCurrUserUid(); // update the user uid for fireStore
-    await das.createUser(currUser!);
+    currUser.hashPass = HelperFunctions.generateMd5(currUser.hashPass); // to fireStore we insert the password hashed
+    currUser.uid = auth.getCurrUserUid(); // update the user uid for fireStore
+    await das.createUser(currUser);
   }
 
 /*
   This function update the profile of the signed up currUser and call the first stage signup
  */
   chooseProfile(UserProfile profileType) async {
-    currUser?.userType = (profileType == UserProfile.employer) ? "employer" : "worker";
+    currUser.userType = (profileType == UserProfile.employer) ? "employer" : "worker";
     // await das.updateUser(currUser?.uid!, "user type",
     //     profileType == UserProfile.employer ? "employer" : "worker");
     await signupFirstStage();
@@ -50,6 +50,12 @@ class AuthActions {
   ///  if not - we in signup second stage
   Future<bool> whichStateChange(User? firebaseUser) async {
     CustomUser? user = await das.getCustomUser(firebaseUser!);
-    return user != null;
+    if (user == null){
+      return false;
+    }
+    else{
+      setCurrUser(user);
+      return true;
+    }
   }
 }

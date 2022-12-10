@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:time_z_money/Business_Logic/actions/auth_actions.dart';
 import 'components/profile_widget.dart';
 import 'components/textfield_widget.dart';
 
@@ -30,14 +31,14 @@ class EditProfileScreenState extends State<EditProfileScreen> {
           ),
           const SizedBox(height: 24),
           TextFieldWidget(
-            label: 'Full Name',
-            text: "Anton",
+            label: 'UserName',
+            text: AuthActions.currUser.username,
             onChanged: (name) {},
           ),
           const SizedBox(height: 24),
           TextFieldWidget(
             label: 'Email',
-            text: "Anton@gmail.com",
+            text: AuthActions.currUser.email,
             onChanged: (email) {},
           ),
           const SizedBox(height: 24),

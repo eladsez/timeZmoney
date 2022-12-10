@@ -1,6 +1,8 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 
+import '../../Business_Logic/actions/auth_actions.dart';
+
 class HomeAppbar extends StatelessWidget {
   const HomeAppbar({Key? key}) : super(key: key);
 
@@ -17,18 +19,18 @@ class HomeAppbar extends StatelessWidget {
             padding: const EdgeInsets.only(left: 30.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text(
+              children: [
+                const Text(
                   'Welcome Home',
                   style: TextStyle(
                       color: Colors.grey, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Text(
-                  'Rick Sanchez',
-                  style: TextStyle(
+                  AuthActions.currUser.username,
+                  style: const TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
                       color: Colors.black),

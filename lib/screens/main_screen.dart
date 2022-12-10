@@ -6,6 +6,7 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:time_z_money/screens/profile/profile_screen.dart';
+import '../Business_Logic/actions/auth_actions.dart';
 import 'home/home_screen.dart';
 
 enum BottomNavigationBarState {
@@ -25,7 +26,14 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  BottomNavigationBarState selectedNavBar = BottomNavigationBarState.profile;
+
+  BottomNavigationBarState selectedNavBar = BottomNavigationBarState.home;
+
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   /*
   This function build the body of are app depend on the selectedNavBar
