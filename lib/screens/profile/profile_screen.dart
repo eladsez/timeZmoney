@@ -19,8 +19,11 @@ class ProfileScreenState extends State<ProfileScreen> {
       body: ListView(
         physics: const BouncingScrollPhysics(),
         children: [
+          Align(
+              alignment: Alignment.centerRight,
+              child: buildSettingButton()),
           const SizedBox(
-            height: 20,
+            height: 10,
           ),
           ProfileWidget(
             imagePath:
@@ -34,7 +37,6 @@ class ProfileScreenState extends State<ProfileScreen> {
           const SizedBox(height: 24),
           buildName(CustomUser(username: "", email: "", hashPass: "")),
           const SizedBox(height: 24),
-          Center(child: buildUpgradeButton()),
           const SizedBox(height: 24),
           NumbersWidget(),
           const SizedBox(height: 48),
@@ -58,9 +60,9 @@ class ProfileScreenState extends State<ProfileScreen> {
         ],
       );
 
-  Widget buildUpgradeButton() => ButtonWidget(
-        text: 'hehehe',
-        onClicked: () {},
+  Widget buildSettingButton() => IconButton(
+        icon: const Icon(Icons.settings, size: 26, color: Color(0xff01b2b8)),
+        onPressed: () {},
       );
 
   Widget buildAbout(CustomUser user) => Container(

@@ -25,7 +25,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  BottomNavigationBarState selectedNavBar = BottomNavigationBarState.home;
+  BottomNavigationBarState selectedNavBar = BottomNavigationBarState.profile;
 
   /*
   This function build the body of are app depend on the selectedNavBar
