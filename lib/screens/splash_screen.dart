@@ -11,7 +11,7 @@ class SplashScreen extends StatelessWidget {
       splash: Column(
         children: [
           //Lottie.asset('assets/images/billet.json'),
-          Image.asset('assets/images/logolarge.png'),
+          Image.asset('assets/images/app_logo.png'),
           const Text(
             'timeZmoney',
             style: TextStyle(
