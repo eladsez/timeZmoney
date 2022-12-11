@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:time_z_money/screens/home/theme/colors.dart';
 import '../template2/widgets/searchbar.dart';
 import '../template2/widgets/tag_list.dart';
 import 'home_bar.dart';
