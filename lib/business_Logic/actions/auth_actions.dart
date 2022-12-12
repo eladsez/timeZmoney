@@ -21,6 +21,11 @@ class AuthActions {
     currUser = user.clone();
   }
 
+  void insureCurrUser(User? user) async {
+    CustomUser? curr = await das.getCustomUser(user);
+    setCurrUser(curr!);
+  }
+
   login(CustomUser user) async {
     setCurrUser(user);
     await auth.emailSignIn(user);

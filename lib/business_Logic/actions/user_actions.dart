@@ -7,11 +7,10 @@ class UserActions{
 
   void updateCurrUser(String field, dynamic toUpdate) async{
     await das.updateUser(AuthActions.currUser.uid, field, toUpdate); // update fireStore
-    if (field == "age"){
-      AuthActions.currUser.age = toUpdate;
-      return;
-    }
     switch (field){ // update the current costume user
+      case "age":
+        AuthActions.currUser.age = toUpdate;
+        break;
       case "gender":
         AuthActions.currUser.gender = toUpdate;
         break;

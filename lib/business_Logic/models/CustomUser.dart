@@ -30,7 +30,8 @@ class CustomUser {
         gender: gender,
         age: age,
         phoneNum: phoneNum,
-        userType: userType);
+        userType: userType,
+        about: about);
   }
 
   Map<String, dynamic> toMap() {

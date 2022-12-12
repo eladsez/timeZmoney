@@ -88,12 +88,12 @@ class EditProfileScreenState extends State<EditProfileScreen> {
               onPrimary: Colors.white,
               padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
             ),
-            onPressed: () async {
-              setState(() {
+            onPressed: () {
                 userActions.updateCurrUser("age", int.parse(ageController.text));
                 userActions.updateCurrUser("about", aboutController.text);
                 userActions.updateCurrUser("gender", genderController.text);
-              });
+                setState(() {});
+                Navigator.of(context).pop();
             },
             child: const Text("Save"),
           )
