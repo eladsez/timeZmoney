@@ -7,16 +7,18 @@ class CustomUser {
   String? gender;
   int? age;
   String? userType;
+  String about;
 
   CustomUser(
       {required this.username,
       required this.email,
       required this.hashPass,
-      this.uid = " ",
-      this.gender = " ",
+      this.uid = "ERROR",
+      this.gender = "Empty",
       this.age = 18,
-      this.phoneNum = " ",
-      this.userType = " "});
+      this.phoneNum = "Empty",
+      this.userType,
+      this.about = "Empty"});
 
   CustomUser clone() {
     // deep copy of the object
@@ -41,6 +43,7 @@ class CustomUser {
       "age": age,
       "user type": userType,
       "hashPass": hashPass,
+      "about": about,
     };
   }
 }

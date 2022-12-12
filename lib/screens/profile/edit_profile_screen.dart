@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../business_Logic/actions/auth_actions.dart';
-import 'components/profile_widget.dart';
+import 'components/profile_circle.dart';
 import 'components/textfield_widget.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -49,7 +49,17 @@ class EditProfileScreenState extends State<EditProfileScreen> {
             maxLines: 5,
             onChanged: (about) {},
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xff01b2b8),
+              shape: const StadiumBorder(),
+              onPrimary: Colors.white,
+              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+            ),
+            onPressed: () {},
+            child: const Text("Save"),
+          )
         ],
       ),
     );

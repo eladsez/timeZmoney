@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 
-class NumbersWidget extends StatelessWidget {
+class Stats extends StatelessWidget {
+  const Stats({super.key});
+
   @override
   Widget build(BuildContext context) => Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          buildButton(context, '4.8', 'Ranking'),
+          buildButton(context, '4.8', 'Rank'),
           buildDivider(),
-          buildButton(context, '35', 'Following'),
+          buildButton(context, '35', 'Current Jobs'),
           buildDivider(),
-          buildButton(context, '50', 'Followers'),
+          buildButton(context, '50', 'Past Jobs'),
         ],
       );
   Widget buildDivider() => const SizedBox(

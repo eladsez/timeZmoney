@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../business_Logic/actions/auth_actions.dart';
-import 'components/numbers_widget.dart';
-import 'components/profile_widget.dart';
+import 'components/stats.dart';
+import 'components/profile_circle.dart';
 import 'edit_profile_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -12,7 +12,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class ProfileScreenState extends State<ProfileScreen> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +36,7 @@ class ProfileScreenState extends State<ProfileScreen> {
           buildName(),
           const SizedBox(height: 24),
           const SizedBox(height: 24),
-          NumbersWidget(),
+          Stats(),
           const SizedBox(height: 48),
           buildAbout(),
         ],
@@ -63,7 +62,7 @@ class ProfileScreenState extends State<ProfileScreen> {
         icon: const Icon(Icons.settings, size: 26, color: Color(0xff01b2b8)),
         onPressed: () {
           // Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-          //   return const EasySettingsWidget();
+          //   return const ProfileSetting(); // add this shit
           // }));
         },
       );
@@ -72,15 +71,25 @@ class ProfileScreenState extends State<ProfileScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 48),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            Text(
+          children: [
+            const Text(
               'About',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Text(
-              "Anton is a CS student, very important person, love every one \nAnd every one loves him",
-              style: TextStyle(fontSize: 16, height: 1.4),
+              AuthActions.currUser.about == "Empty"
+                  ? "Your about is currently empty, Press the edit button to write it!"
+                  : AuthActions.currUser.about,
+              style: TextStyle(
+                  fontSize: 16,
+                  height: 1.4,
+                  color: AuthActions.currUser.about == "Empty"
+                      ? Colors.red
+                      : Colors.black),
             ),
           ],
         ),
