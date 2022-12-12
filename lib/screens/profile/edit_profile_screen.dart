@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import '../../business_Logic/actions/auth_actions.dart';
 import '../../business_Logic/actions/user_actions.dart';
@@ -88,7 +90,7 @@ class EditProfileScreenState extends State<EditProfileScreen> {
             ),
             onPressed: () async {
               setState(() {
-                userActions.updateCurrUser("age", ageController.text);
+                userActions.updateCurrUser("age", int.parse(ageController.text));
                 userActions.updateCurrUser("about", aboutController.text);
                 userActions.updateCurrUser("gender", genderController.text);
               });

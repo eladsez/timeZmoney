@@ -34,7 +34,6 @@ class _AppWrapperState extends State<AppWrapper> {
                         // create the fireStore entry for the user and only then build home
                         future: authActions.signupSecondStage(),
                         builder: (context, dummy) {
-                          print("blabla");
                           return const MainScreen();
                         },
                       );

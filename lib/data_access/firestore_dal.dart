@@ -24,7 +24,7 @@ class DataAccessService {
   Future<CustomUser?> getCustomUser(User? currUser) async {
     QuerySnapshot<Map<String, dynamic>> snapshot = await _db.collection("users").where('uid', isEqualTo: currUser?.uid).get();
     if (snapshot.docs.isEmpty) {
-      print("ERROR: getCustomUser");
+      print("User doesn't exist yet\n");
     } else if (snapshot.docs.length == 1) {
       return CustomUser(
           username: snapshot.docs.first.data()["username"],

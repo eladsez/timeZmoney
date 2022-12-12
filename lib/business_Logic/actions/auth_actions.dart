@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:time_z_money/data_access/auth.dart';
 import 'package:time_z_money/screens/Authenticate/components/profile_chooser.dart';
-import '../../data_access/Firestore_dal.dart';
+import '../../data_access/firestore_dal.dart';
 import '../../utils/helper_functions.dart';
 import '../models/CustomUser.dart';
 
