@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:time_z_money/data_access/auth.dart';
 import 'package:time_z_money/screens/Authenticate/components/profile_chooser.dart';
-import '../../data_access/DAL.dart';
+import '../../data_access/Firestore_dal.dart';
 import '../../utils/helper_functions.dart';
 import '../models/CustomUser.dart';
 
@@ -13,9 +13,9 @@ import '../models/CustomUser.dart';
 */
 
 class AuthActions {
-  static final DataAccessService das = DataAccessService();
-  static final AuthService auth = AuthService();
-  static late CustomUser currUser;
+  final DataAccessService das = DataAccessService();
+  final AuthService auth = AuthService();
+  static dynamic currUser;
 
   static setCurrUser(CustomUser user){
     currUser = user.clone();
@@ -23,9 +23,13 @@ class AuthActions {
 
   login(CustomUser user) async{
     setCurrUser(user);
-    await auth.emailSignIn(user);
-    currUser.uid = auth.getCurrUserUid();
-    currUser.hashPass = HelperFunctions.generateMd5(currUser.hashPass);
+    if(user is CustomUser)
+      {
+        await auth.emailSignIn(user);
+        currUser?.uid = auth.getCurrUserUid();
+        currUser?.hashPass = HelperFunctions.generateMd5(currUser?.hashPass);
+      }
+
   }
 
   /*
