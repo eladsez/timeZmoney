@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:time_z_money/Business_Logic/models/CustomUser.dart';
+
+import '../business_Logic/models/CustomUser.dart';
 
 class DataAccessService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;

@@ -1,7 +1,6 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
-
-import '../../Business_Logic/actions/auth_actions.dart';
+import '../../business_Logic/actions/auth_actions.dart';
 
 class HomeAppbar extends StatelessWidget {
   const HomeAppbar({Key? key}) : super(key: key);

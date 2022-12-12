@@ -4,6 +4,11 @@ import '../../../utils/helper_functions.dart';
 import '../animations/change_screen_animation.dart';
 import 'signup&login.dart';
 
+/*
+  This class build the bottom Text of the signup and login screen
+  Its wrap with animation for the transition between the signUp and login
+ */
+
 class BottomText extends StatefulWidget {
   const BottomText({Key? key}) : super(key: key);
 
@@ -45,7 +50,6 @@ class _BottomTextState extends State<BottomText> {
             text: TextSpan(
               style: const TextStyle(
                 fontSize: 16,
-                fontFamily: 'Montserrat',
               ),
               children: [
                 TextSpan(

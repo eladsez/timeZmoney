@@ -6,7 +6,6 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:time_z_money/screens/profile/profile_screen.dart';
-import '../Business_Logic/actions/auth_actions.dart';
 import 'home/home_screen.dart';
 
 enum BottomNavigationBarState {

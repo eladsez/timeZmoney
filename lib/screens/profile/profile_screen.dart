@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:time_z_money/Business_Logic/actions/auth_actions.dart';
-import 'package:time_z_money/Business_Logic/models/CustomUser.dart';
+import '../../business_Logic/actions/auth_actions.dart';
 import 'components/numbers_widget.dart';
-import 'components/profile_setting.dart';
 import 'components/profile_widget.dart';
 import 'edit_profile_screen.dart';
 

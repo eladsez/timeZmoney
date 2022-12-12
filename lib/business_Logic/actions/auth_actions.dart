@@ -1,9 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:time_z_money/Business_Logic/models/CustomUser.dart';
 import 'package:time_z_money/data_access/auth.dart';
 import 'package:time_z_money/screens/Authenticate/components/profile_chooser.dart';
 import '../../data_access/DAL.dart';
 import '../../utils/helper_functions.dart';
+import '../models/CustomUser.dart';
+
+/*
+  This class is responsible about the Authentication process
+  It connects the presentation layer with the firebase_auth and fireStore
+  It uses the DataAccessService and AuthService to implement an abstraction
+  for the Authentication process (simple functions like login, signupFirstStage and signupSecondStage)
+*/
 
 class AuthActions {
   static final DataAccessService das = DataAccessService();
@@ -23,7 +30,7 @@ class AuthActions {
 
   /*
   The first stage signup sign the new user in fireBase auth and trigger the appWrapper stream
-   */
+  */
   signupFirstStage() async {
     // we give the password to firebase auth before hash
     await auth.regularRegistration(currUser);

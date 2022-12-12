@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:time_z_money/Business_Logic/actions/auth_actions.dart';
 import 'package:time_z_money/utils/BackgroundGenerator.dart';
 
+import '../../../business_Logic/actions/auth_actions.dart';
 import '../../home/home_screen.dart';
 
 enum UserProfile {

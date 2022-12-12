@@ -33,8 +33,7 @@ class _TopLogoState extends State<TopLogo> {
             : 'Welcome Back',
         style: const TextStyle(
           fontSize: 37,
-          fontFamily: 'ProstoOne',
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.bold,
         ),
       ),
     );

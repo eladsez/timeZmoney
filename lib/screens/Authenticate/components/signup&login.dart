@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:time_z_money/Business_Logic/actions/auth_actions.dart';
-import 'package:time_z_money/Business_Logic/models/CustomUser.dart';
-import 'package:time_z_money/data_access/auth.dart';
 import 'package:time_z_money/screens/Authenticate/components/profile_chooser.dart';
+import '../../../business_Logic/actions/auth_actions.dart';
+import '../../../business_Logic/models/CustomUser.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/helper_functions.dart';
 import '../animations/change_screen_animation.dart';

@@ -1,6 +1,6 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
-import '../../Business_Logic/models/destination.dart';
+import 'destination.dart';
 
 
 class DestinationDetails extends StatefulWidget {

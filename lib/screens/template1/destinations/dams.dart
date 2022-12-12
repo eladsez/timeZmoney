@@ -1,5 +1,7 @@
 
-import '../../../Business_Logic/models/destination.dart';
+
+
+import '../destination.dart';
 
 List<Destination> dams = [
   Destination(

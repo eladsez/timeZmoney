@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:time_z_money/Business_Logic/actions/auth_actions.dart';
 import 'package:time_z_money/data_access/auth.dart';
 import 'package:time_z_money/screens/Authenticate/Authenticate_screen.dart';
 import 'package:time_z_money/screens/main_screen.dart';
+import '../business_Logic/actions/auth_actions.dart';
 import 'Loading_Screens/loading_logo.dart';
 
 class AppWrapper extends StatefulWidget {

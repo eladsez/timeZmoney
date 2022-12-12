@@ -3,13 +3,13 @@ import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import '../../Business_Logic/models/destination.dart';
-import 'package:time_z_money/data_access/dummy_data/destinations/caves.dart';
-import 'package:time_z_money/data_access/dummy_data/destinations/dams.dart';
-import 'package:time_z_money/data_access/dummy_data/destinations/mines.dart';
-import 'package:time_z_money/data_access/dummy_data/destinations/mountains.dart';
-import 'package:time_z_money/data_access/dummy_data/destinations/national_parks.dart';
-import 'package:time_z_money/data_access/dummy_data/destinations/water_falls.dart';
+import 'destination.dart';
+import 'destinations/caves.dart';
+import 'destinations/dams.dart';
+import 'destinations/mines.dart';
+import 'destinations/mountains.dart';
+import 'destinations/national_parks.dart';
+import 'destinations/water_falls.dart';
 import 'details.dart';
 
 class Dashboard extends StatefulWidget {
