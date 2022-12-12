@@ -17,19 +17,15 @@ class AuthActions {
   final AuthService auth = AuthService();
   static dynamic currUser;
 
-  static setCurrUser(CustomUser user){
+  static setCurrUser(CustomUser user) {
     currUser = user.clone();
   }
 
-  login(CustomUser user) async{
+  login(CustomUser user) async {
     setCurrUser(user);
-    if(user is CustomUser)
-      {
-        await auth.emailSignIn(user);
-        currUser?.uid = auth.getCurrUserUid();
-        currUser?.hashPass = HelperFunctions.generateMd5(currUser?.hashPass);
-      }
-
+    await auth.emailSignIn(user);
+    currUser?.uid = auth.getCurrUserUid();
+    currUser?.hashPass = HelperFunctions.generateMd5(currUser?.hashPass);
   }
 
   /*
@@ -41,7 +37,8 @@ class AuthActions {
   }
 
   Future<void> signupSecondStage() async {
-    currUser.hashPass = HelperFunctions.generateMd5(currUser.hashPass); // to fireStore we insert the password hashed
+    currUser.hashPass = HelperFunctions.generateMd5(
+        currUser.hashPass); // to fireStore we insert the password hashed
     currUser.uid = auth.getCurrUserUid(); // update the user uid for fireStore
     await das.createUser(currUser);
   }
@@ -50,7 +47,8 @@ class AuthActions {
   This function update the profile of the signed up currUser and call the first stage signup
  */
   chooseProfile(UserProfile profileType) async {
-    currUser.userType = (profileType == UserProfile.employer) ? "employer" : "worker";
+    currUser.userType =
+        (profileType == UserProfile.employer) ? "employer" : "worker";
     // await das.updateUser(currUser?.uid!, "user type",
     //     profileType == UserProfile.employer ? "employer" : "worker");
     await signupFirstStage();
@@ -61,10 +59,9 @@ class AuthActions {
   ///  if not - we in signup second stage
   Future<bool> whichStateChange(User? firebaseUser) async {
     CustomUser? user = await das.getCustomUser(firebaseUser!);
-    if (user == null){
+    if (user == null) {
       return false;
-    }
-    else{
+    } else {
       setCurrUser(user);
       return true;
     }

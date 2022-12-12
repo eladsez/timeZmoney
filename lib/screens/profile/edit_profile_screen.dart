@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../business_Logic/actions/auth_actions.dart';
+import '../../business_Logic/actions/user_actions.dart';
 import 'components/profile_circle.dart';
 import 'components/textfield_widget.dart';
 
@@ -11,6 +12,32 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class EditProfileScreenState extends State<EditProfileScreen> {
+  late final TextEditingController aboutController;
+  late final TextEditingController ageController;
+  late final TextEditingController genderController;
+  final userActions = UserActions();
+
+  @override
+  void initState() {
+    aboutController = TextEditingController();
+    genderController = TextEditingController();
+    ageController = TextEditingController();
+    aboutController.text = AuthActions.currUser.about == "Empty"
+        ? "Your about is currently empty, Press the edit button to write it!"
+        : AuthActions.currUser.about;
+    genderController.text = AuthActions.currUser.gender;
+    ageController.text = AuthActions.currUser.age.toString();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    aboutController.dispose();
+    genderController.dispose();
+    ageController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,23 +58,25 @@ class EditProfileScreenState extends State<EditProfileScreen> {
           ),
           const SizedBox(height: 24),
           TextFieldWidget(
-            label: 'UserName',
-            text: AuthActions.currUser.username,
-            onChanged: (name) {},
+            align: TextAlign.center,
+            label: 'Age',
+            text: ageController.text,
+            controller: ageController,
           ),
           const SizedBox(height: 24),
           TextFieldWidget(
-            label: 'Email',
-            text: AuthActions.currUser.email,
-            onChanged: (email) {},
+            align: TextAlign.center,
+            label: 'Gender',
+            text: genderController.text,
+            controller: genderController,
           ),
           const SizedBox(height: 24),
           TextFieldWidget(
+            align: TextAlign.left,
             label: 'About',
-            text:
-                "Anton is a CS student, very important person, love every one \nAnd every one loves him",
             maxLines: 5,
-            onChanged: (about) {},
+            controller: aboutController,
+            text: aboutController.text,
           ),
           const SizedBox(height: 20),
           ElevatedButton(
@@ -57,7 +86,13 @@ class EditProfileScreenState extends State<EditProfileScreen> {
               onPrimary: Colors.white,
               padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
             ),
-            onPressed: () {},
+            onPressed: () async {
+              setState(() {
+                userActions.updateCurrUser("age", ageController.text);
+                userActions.updateCurrUser("about", aboutController.text);
+                userActions.updateCurrUser("gender", genderController.text);
+              });
+            },
             child: const Text("Save"),
           )
         ],
