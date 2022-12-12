@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:time_z_money/Business_Logic/actions/storage_actions.dart';
 import 'package:time_z_money/screens/main_screen.dart';
 import 'package:time_z_money/screens/splash_screen.dart';
 import 'package:time_z_money/screens/template1/dashboard.dart';
@@ -21,6 +22,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    StorageAccess test = StorageAccess();
+    test.uploadImage("test");
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
