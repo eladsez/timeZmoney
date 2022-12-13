@@ -7,7 +7,8 @@ import 'components/profile_circle.dart';
 import 'components/textfield_widget.dart';
 
 class EditProfileScreen extends StatefulWidget {
-  const EditProfileScreen({super.key});
+
+  const EditProfileScreen({super.key,});
 
   @override
   EditProfileScreenState createState() => EditProfileScreenState();
@@ -92,7 +93,6 @@ class EditProfileScreenState extends State<EditProfileScreen> {
                 userActions.updateCurrUser("age", int.parse(ageController.text));
                 userActions.updateCurrUser("about", aboutController.text);
                 userActions.updateCurrUser("gender", genderController.text);
-                setState(() {});
                 Navigator.of(context).pop();
             },
             child: const Text("Save"),

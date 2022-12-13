@@ -36,7 +36,7 @@ class ProfileScreenState extends State<ProfileScreen> {
           buildName(),
           const SizedBox(height: 24),
           const SizedBox(height: 24),
-          Stats(),
+          const Stats(),
           const SizedBox(height: 48),
           buildAbout(),
         ],
