@@ -21,16 +21,10 @@ class AuthActions {
     currUser = user.clone();
   }
 
-  void insureCurrUser(User? user) async {
-    CustomUser? curr = await das.getCustomUser(user);
-    setCurrUser(curr!);
-  }
-
   login(CustomUser user) async {
-    setCurrUser(user);
     await auth.emailSignIn(user);
-    currUser?.uid = auth.getCurrUserUid();
-    currUser?.hashPass = HelperFunctions.generateMd5(currUser?.hashPass);
+    CustomUser? curr = await das.getCustomUser(auth.getCurrFireBaseUser());
+    setCurrUser(curr!);
   }
 
   /*
