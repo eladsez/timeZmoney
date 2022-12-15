@@ -5,7 +5,7 @@ import 'date_picker_config.dart';
 import 'platform_widgets.dart';
 import './date_utils.dart';
 import './simple_gesture_detector.dart';
-import './calendar_tile.dart';
+import 'calendar_tile.dart';
 import './neat_and_clean_calendar_event.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
