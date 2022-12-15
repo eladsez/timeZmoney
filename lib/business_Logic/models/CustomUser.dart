@@ -8,6 +8,7 @@ class CustomUser {
   int? age;
   String? userType;
   String about;
+  String profileImageURL;
 
   CustomUser(
       {required this.username,
@@ -18,7 +19,9 @@ class CustomUser {
       this.age = 18,
       this.phoneNum = "Empty",
       this.userType,
-      this.about = "Empty"});
+      this.about = "Empty",
+      this.profileImageURL =
+          "https://firebasestorage.googleapis.com/v0/b/timezmoney.appspot.com/o/profileImages%2Favatar.png?alt=media&token=afb28a2b-1189-4dac-b114-e09c68b5b82e"});
 
   CustomUser clone() {
     // deep copy of the object
@@ -31,7 +34,8 @@ class CustomUser {
         age: age,
         phoneNum: phoneNum,
         userType: userType,
-        about: about);
+        about: about,
+        profileImageURL: profileImageURL);
   }
 
   Map<String, dynamic> toMap() {
@@ -45,6 +49,7 @@ class CustomUser {
       "user type": userType,
       "hashPass": hashPass,
       "about": about,
+      "profileImageURL": profileImageURL,
     };
   }
 }

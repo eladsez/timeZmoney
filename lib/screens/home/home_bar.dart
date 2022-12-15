@@ -67,7 +67,7 @@ class HomeAppbar extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: ClipOval(
-                  child: Image.asset('assets/images/avatar.png', width: 50),
+                  child: Image.network(AuthActions.currUser.profileImageURL, width: 50,),
                 ),
               ),
             ],

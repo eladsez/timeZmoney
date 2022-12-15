@@ -1,14 +1,18 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../business_Logic/actions/auth_actions.dart';
+import '../../business_Logic/actions/permission_handleds.dart';
 import '../../business_Logic/actions/user_actions.dart';
+import '../../data_access/storage_dal.dart';
 import 'components/profile_circle.dart';
 import 'components/textfield_widget.dart';
 
 class EditProfileScreen extends StatefulWidget {
-
-  const EditProfileScreen({super.key,});
+  const EditProfileScreen({
+    super.key,
+  });
 
   @override
   EditProfileScreenState createState() => EditProfileScreenState();
@@ -44,61 +48,74 @@ class EditProfileScreenState extends State<EditProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: const BackButton(color: Color(0xff01b2b8)),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-      body: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 32),
-        physics: const BouncingScrollPhysics(),
-        children: [
-          ProfileWidget(
-            imagePath:
-                "https://images.unsplash.com/photo-1554151228-14d9def656e4?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=333&q=80'",
-            isEdit: true,
-            onClicked: () async {},
-          ),
-          const SizedBox(height: 24),
-          TextFieldWidget(
-            align: TextAlign.center,
-            label: 'Age',
-            text: ageController.text,
-            controller: ageController,
-          ),
-          const SizedBox(height: 24),
-          TextFieldWidget(
-            align: TextAlign.center,
-            label: 'Gender',
-            text: genderController.text,
-            controller: genderController,
-          ),
-          const SizedBox(height: 24),
-          TextFieldWidget(
-            align: TextAlign.left,
-            label: 'About',
-            maxLines: 5,
-            controller: aboutController,
-            text: aboutController.text,
-          ),
-          const SizedBox(height: 20),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xff01b2b8),
-              shape: const StadiumBorder(),
-              onPrimary: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+        appBar: AppBar(
+          leading: const BackButton(color: Color(0xff01b2b8)),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+        ),
+        body: ListView(
+          padding: const EdgeInsets.symmetric(horizontal: 32),
+          physics: const BouncingScrollPhysics(),
+          children: [
+            ProfileWidget(
+                imagePath: AuthActions.currUser.profileImageURL,
+                isEdit: true,
+                onClicked: () async {
+                  await userActions.updateProfileImage();
+                  setState(() {});
+                }),
+            const SizedBox(height: 24),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(
+                  width: 100,
+                  child: TextFieldWidget(
+                    align: TextAlign.center,
+                    label: 'Age',
+                    text: ageController.text,
+                    controller: ageController,
+                  ),
+                ),
+                const SizedBox(width: 24),
+                SizedBox(
+                  width: 100,
+                  child: TextFieldWidget(
+                    align: TextAlign.center,
+                    label: 'Gender',
+                    text: genderController.text,
+                    controller: genderController,
+                  ),
+                ),
+              ],
             ),
-            onPressed: () {
-                userActions.updateCurrUser("age", int.parse(ageController.text));
+            const SizedBox(height: 24),
+            TextFieldWidget(
+              align: TextAlign.left,
+              label: 'About',
+              maxLines: 5,
+              controller: aboutController,
+              text: aboutController.text,
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xff01b2b8),
+                shape: const StadiumBorder(),
+                onPrimary: Colors.white,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+              ),
+              onPressed: () {
+                userActions.updateCurrUser(
+                    "age", int.parse(ageController.text));
                 userActions.updateCurrUser("about", aboutController.text);
                 userActions.updateCurrUser("gender", genderController.text);
                 Navigator.of(context).pop();
-            },
-            child: const Text("Save"),
-          )
-        ],
-      ),
-    );
+              },
+              child: const Text("Save"),
+            )
+          ],
+        ));
   }
 }
