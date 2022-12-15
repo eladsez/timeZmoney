@@ -49,8 +49,10 @@ dependencies:
   badges: ^2.0.3
   crypto: ^3.0.2
   curved_navigation_bar: ^1.0.1
-  table_calendar: ^3.0.8
-  image_picker: ^0.8.6
+
+
+
+
 
 
 

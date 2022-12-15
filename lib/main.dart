@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:time_z_money/screens/main_screen.dart';
+import 'package:time_z_money/screens/scheduler_screen/scheduler.dart';
 import 'package:time_z_money/screens/splash_screen.dart';
 import 'package:time_z_money/screens/template1/dashboard.dart';
 import 'package:time_z_money/screens/template1/home.dart';
