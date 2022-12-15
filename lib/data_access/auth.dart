@@ -20,7 +20,6 @@ class AuthService {
   }
 
   Future regularRegistration(CustomUser newUser) async {
-    print(newUser.toMap().toString());
     try {
       UserCredential userCredential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
