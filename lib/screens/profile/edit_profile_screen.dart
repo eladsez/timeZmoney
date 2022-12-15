@@ -1,11 +1,7 @@
 import 'dart:ffi';
-
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import '../../business_Logic/actions/auth_actions.dart';
-import '../../business_Logic/actions/permission_handleds.dart';
 import '../../business_Logic/actions/user_actions.dart';
-import '../../data_access/storage_dal.dart';
 import 'components/profile_circle.dart';
 import 'components/textfield_widget.dart';
 
