@@ -23,60 +23,10 @@ class HomeScreen extends StatelessWidget {
           Column(
             children: const [
               HomeAppbar(),
-              // const SizedBox(
-              //   height: 6,
-              // ),
-              // const Text("Find your perfect job",
-              //     textAlign: TextAlign.left,
-              //     style: TextStyle(
-              //         fontSize: 17,
-              //         color: KColors.title,
-              //         fontWeight: FontWeight.bold)),
-              //
-              // const SizedBox(
-              //   height: 10,
-              // ),
-              // Row(
-              //   children: [
-              //     Expanded(
-              //       child: Container(
-              //         padding:
-              //             const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              //         decoration: BoxDecoration(
-              //             color: KColors.lightGrey,
-              //             borderRadius: BorderRadius.circular(5)),
-              //         child: const Text(
-              //           "What are you looking for?",
-              //           style: TextStyle(fontSize: 15, color: KColors.subtitle),
-              //         ),
-              //       ),
-              //     ),
-              //     const SizedBox(
-              //       width: 16,
-              //     ),
-              //     Container(
-              //       decoration: BoxDecoration(
-              //         color: KColors.primary,
-              //         borderRadius: BorderRadius.circular(5),
-              //       ),
-              //       height: 40,
-              //       child: IconButton(
-              //         color: KColors.primary,
-              //         icon: const Icon(Icons.search, color: Colors.white),
-              //         onPressed: () {},
-              //       ),
-              //     )
-                ],
-              // )
-            // ],
+            ],
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-          child: const Text("sign out"),
-          onPressed: () {
-            FirebaseAuth.instance.signOut();
-          }),
     );
   }
 }

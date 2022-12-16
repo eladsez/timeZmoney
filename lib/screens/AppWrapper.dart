@@ -15,7 +15,8 @@ class AppWrapper extends StatefulWidget {
 
 class _AppWrapperState extends State<AppWrapper> {
   
-  final AuthActions authActions = AuthActions();
+  late final AuthActions authActions = AuthActions();
+
 
   @override
   Widget build(BuildContext context) {

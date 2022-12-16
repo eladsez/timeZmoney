@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:time_z_money/screens/scheduler_screen/components/flutter_neat_and_clean_calendar.dart';
-import 'package:time_z_money/screens/scheduler_screen/AddTasksView.dart';
+import 'package:time_z_money/screens/scheduler/components/flutter_neat_and_clean_calendar.dart';
+import 'package:time_z_money/screens/scheduler/AddTasksView.dart';
 
 
 class CalendarScreen extends StatefulWidget {

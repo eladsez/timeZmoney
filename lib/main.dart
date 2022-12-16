@@ -1,12 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:time_z_money/screens/main_screen.dart';
-import 'package:time_z_money/screens/scheduler_screen/scheduler.dart';
 import 'package:time_z_money/screens/splash_screen.dart';
 import 'package:time_z_money/screens/template1/dashboard.dart';
-import 'package:time_z_money/screens/template1/home.dart';
-import 'package:time_z_money/screens/template2/home.dart';
-import 'business_Logic/actions/storage_actions.dart';
-import 'data_access/storage_dal.dart';
 import 'utils/firebase_options.dart';
 import 'package:flutter/material.dart';
 
@@ -33,7 +27,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => const SplashScreen(),
+        '/': (context) => const Dashboard(),
       },
     );
   }

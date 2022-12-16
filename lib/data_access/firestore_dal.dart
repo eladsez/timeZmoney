@@ -36,16 +36,7 @@ class DataAccessService {
     if (snapshot.docs.isEmpty) {
       print("User doesn't exist yet\n");
     } else if (snapshot.docs.length == 1) {
-      return CustomUser(
-          username: snapshot.docs.first.data()["username"],
-          email: snapshot.docs.first.data()["email"],
-          gender: snapshot.docs.first.data()["gender"],
-          age: snapshot.docs.first.data()["age"],
-          phoneNum: snapshot.docs.first.data()["phone"],
-          userType: snapshot.docs.first.data()["user Type"],
-          hashPass: snapshot.docs.first.data()["hashPass"],
-          uid: snapshot.docs.first.data()["uid"],
-          about: snapshot.docs.first.data()["about"]);
+      return CustomUser.fromMap(snapshot.docs.first.data());
     }
     return null;
   }

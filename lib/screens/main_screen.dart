@@ -1,12 +1,7 @@
-/*
- This class is responsible about the app Navigation Bar and the Navigation between the app screens
- Here we will check which user is connected and build the screens for him (also depend if he is worker or employer)
- */
-
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:time_z_money/screens/profile/profile_screen.dart';
-import 'package:time_z_money/screens/scheduler_screen/scheduler.dart';
+import 'package:time_z_money/screens/scheduler/scheduler.dart';
 import 'home/home_screen.dart';
 
 enum BottomNavigationBarState {
@@ -18,7 +13,10 @@ enum BottomNavigationBarState {
   profile, // need to modify
   error
 }
-
+/*
+ This class is responsible about the app Navigation Bar and the Navigation between the app screens
+ Here we will check which user is connected and build the screens for him (also depend if he is worker or employer)
+ */
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
 

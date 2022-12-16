@@ -163,347 +163,348 @@ class _DashboardState extends State<Dashboard> {
     // listenForNotifications();
   }
 
+  Widget buildNotificationsAction() {
+    return IconButton(
+      onPressed: () {
+        //   showModalBottomSheet(
+        //       barrierColor: Colors.black.withOpacity(0.3),
+        //       context: context,
+        //       builder: ((context) => StatefulBuilder(
+        //           builder: ((context, setState) => Container(
+        //                 padding: const EdgeInsets.all(20),
+        //                 child: notifications.isEmpty
+        //                     ? const Text("No new notifications")
+        //                     : ListView(
+        //                         children: notifications
+        //                             .map(
+        //                               (notification) => Column(
+        //                                 children: [
+        //                                   ListTile(
+        //                                     shape: RoundedRectangleBorder(
+        //                                         borderRadius:
+        //                                             BorderRadius.circular(
+        //                                                 20)),
+        //                                     tileColor: Theme.of(context)
+        //                                         .primaryColor,
+        //                                     title: Text(
+        //                                       notification
+        //                                           .notification!.title!,
+        //                                       style: const TextStyle(
+        //                                           color: Colors.white),
+        //                                     ),
+        //                                     subtitle: Text(
+        //                                       notification
+        //                                           .notification!.body!,
+        //                                       style: const TextStyle(
+        //                                           color: Colors.white60),
+        //                                     ),
+        //                                   ),
+        //                                   const Divider(
+        //                                     color: Colors.transparent,
+        //                                   )
+        //                                 ],
+        //                               ),
+        //                             )
+        //                             .toList(),
+        //                       ),
+        //               )))));
+      },
+      icon: Badge(
+        badgeContent: const Text(
+          "3",
+          style: TextStyle(color: Colors.white),
+        ),
+        showBadge: true,
+        child: const Icon(
+          Icons.notifications,
+          color: Colors.black26,
+        ),
+      ),
+    );
+  }
+
+  Widget buildSearchBar() {
+    return Container(
+      margin: const EdgeInsets.all(20),
+      width: double.infinity,
+      padding: const EdgeInsets.only(left: 20, right: 20),
+      height: 50,
+      decoration: BoxDecoration(
+          color: Colors.black12, borderRadius: BorderRadius.circular(20)),
+      child: TextField(
+        controller: searchController,
+        cursorHeight: 20,
+        onTap: () => setState(() {
+          isFocused = true;
+          populateList();
+        }),
+        onChanged: (value) => filterSearchResults(value),
+        onSubmitted: (value) => setState(() {
+          isFocused = false;
+          searchController.clear();
+        }),
+        decoration: InputDecoration(
+            border: InputBorder.none,
+            prefixIcon: const Icon(Icons.search),
+            floatingLabelBehavior: FloatingLabelBehavior.never,
+            label: const Center(child: Text('Search destination')),
+            contentPadding: EdgeInsets.only(
+                bottom: 10, right: MediaQuery.of(context).size.width * 0.1)),
+      ),
+    );
+  }
+
+  Widget buildMajorTabs() {
+    return ListView(
+      scrollDirection: Axis.horizontal,
+      physics: const BouncingScrollPhysics(),
+      controller: _scrollController,
+      children: destinations
+          .map((destination) => GestureDetector(
+                onTap: () {
+                  if (destinations.indexOf(destination) > 2 &&
+                      selectedTabIndex < destinations.indexOf(destination)) {
+                    _scrollController.animateTo(200,
+                        duration: const Duration(seconds: 1),
+                        curve: Curves.ease);
+                  }
+
+                  setState(() {
+                    selectedTabIndex = destinations.indexOf(destination);
+                  });
+                },
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  margin: const EdgeInsets.symmetric(horizontal: 10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: selectedTabIndex == destinations.indexOf(destination)
+                        ? Theme.of(context).primaryColor
+                        : Colors.black12,
+                  ),
+                  child: Text(
+                    destination,
+                    style: TextStyle(
+                        color: selectedTabIndex ==
+                                destinations.indexOf(destination)
+                            ? Colors.white70
+                            : Colors.black38),
+                  ),
+                ),
+              ))
+          .toList(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Tourist Personal Assistant'),
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        actions: [
-          IconButton(
-              onPressed: () {
-              //   showModalBottomSheet(
-              //       barrierColor: Colors.black.withOpacity(0.3),
-              //       context: context,
-              //       builder: ((context) => StatefulBuilder(
-              //           builder: ((context, setState) => Container(
-              //                 padding: const EdgeInsets.all(20),
-              //                 child: notifications.isEmpty
-              //                     ? const Text("No new notifications")
-              //                     : ListView(
-              //                         children: notifications
-              //                             .map(
-              //                               (notification) => Column(
-              //                                 children: [
-              //                                   ListTile(
-              //                                     shape: RoundedRectangleBorder(
-              //                                         borderRadius:
-              //                                             BorderRadius.circular(
-              //                                                 20)),
-              //                                     tileColor: Theme.of(context)
-              //                                         .primaryColor,
-              //                                     title: Text(
-              //                                       notification
-              //                                           .notification!.title!,
-              //                                       style: const TextStyle(
-              //                                           color: Colors.white),
-              //                                     ),
-              //                                     subtitle: Text(
-              //                                       notification
-              //                                           .notification!.body!,
-              //                                       style: const TextStyle(
-              //                                           color: Colors.white60),
-              //                                     ),
-              //                                   ),
-              //                                   const Divider(
-              //                                     color: Colors.transparent,
-              //                                   )
-              //                                 ],
-              //                               ),
-              //                             )
-              //                             .toList(),
-              //                       ),
-              //               )))));
-              },
-              icon: Badge(
-                badgeContent: const Text(
-                  "3",
-                  style: TextStyle(color: Colors.white),
-                ),
-                showBadge: true,
-                child: const Icon(
-                  Icons.notifications,
-                  color: Colors.black26,
-                ),
-              ))
-        ],
-      ),
       body: Column(
         children: [
-          Container(
-            margin: const EdgeInsets.all(20),
-            width: double.infinity,
-            padding: const EdgeInsets.only(left: 20, right: 20),
+          const SizedBox(
             height: 50,
-            decoration: BoxDecoration(
-                color: Colors.black12, borderRadius: BorderRadius.circular(20)),
-            child: TextField(
-              controller: searchController,
-              cursorHeight: 20,
-              onTap: () => setState(() {
-                isFocused = true;
-                populateList();
-              }),
-              onChanged: (value) => filterSearchResults(value),
-              onSubmitted: (value) => setState(() {
-                isFocused = false;
-                searchController.clear();
-              }),
-              decoration: InputDecoration(
-                  border: InputBorder.none,
-                  prefixIcon: const Icon(Icons.search),
-                  floatingLabelBehavior: FloatingLabelBehavior.never,
-                  label: const Center(child: Text('Search destination')),
-                  contentPadding: EdgeInsets.only(
-                      bottom: 10, right: MediaQuery.of(context).size.width * 0.1)),
-            ),
           ),
+          buildSearchBar(),
           const SizedBox(
             height: 10,
           ),
           SizedBox(
             width: MediaQuery.of(context).size.width,
             height: 35,
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              physics: const BouncingScrollPhysics(),
-              controller: _scrollController,
-              children: destinations
-                  .map((destination) => GestureDetector(
-                        onTap: () {
-                          if (destinations.indexOf(destination) > 2 &&
-                              selectedTabIndex <
-                                  destinations.indexOf(destination)) {
-                            _scrollController.animateTo(200,
-                                duration: const Duration(seconds: 1),
-                                curve: Curves.ease);
-                          }
-
-                          setState(() {
-                            selectedTabIndex =
-                                destinations.indexOf(destination);
-                          });
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
-                          margin: const EdgeInsets.symmetric(horizontal: 10),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: selectedTabIndex ==
-                                    destinations.indexOf(destination)
-                                ? Theme.of(context).primaryColor
-                                : Colors.black12,
-                          ),
-                          child: Text(
-                            destination,
-                            style: TextStyle(
-                                color: selectedTabIndex ==
-                                        destinations.indexOf(destination)
-                                    ? Colors.white70
-                                    : Colors.black38),
-                          ),
-                        ),
-                      ))
-                  .toList(),
-            ),
+            child: buildMajorTabs(),
           ),
           const SizedBox(
             height: 20,
           ),
           Expanded(
-              child: isFocused
-                  ? ListView(
-                      children: searchItems
-                          .map((destination) => ListTile(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              DestinationDetails(
-                                                  destination: destination)));
-                                },
-                                leading: const Icon(
-                                  Icons.location_on,
-                                  color: Colors.black26,
-                                ),
-                                title: Text(destination.title!),
-                                subtitle: Text(destination.district!),
-                              ))
-                          .toList(),
-                    )
-                  : PageView(
-                      physics: const BouncingScrollPhysics(),
-                      controller: _pageController,
-                      onPageChanged: ((value) => setState(() {
-                            selectedTabIndex = value;
-                          })),
-                      children: destinations
-                          .map((e) => GridView.count(
-                                childAspectRatio: 0.7,
-                                controller:
-                                    ScrollController(keepScrollOffset: false),
-                                physics: const BouncingScrollPhysics(),
-                                crossAxisCount: 2,
-                                children: tabs(selectedTabIndex)
-                                    .map((destination) => Animate(
-                                          effects: const [
-                                            FadeEffect(),
-                                            SlideEffect(
-                                                duration:
-                                                    Duration(milliseconds: 200))
-                                          ],
-                                          child: Container(
-                                            margin: const EdgeInsets.symmetric(
-                                                horizontal: 20, vertical: 10),
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 10, horizontal: 10),
-                                            width: MediaQuery.of(context).size.width * 0.4,
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(30),
-                                                color: Theme.of(context)
-                                                    .scaffoldBackgroundColor,
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                      color: Colors.black
-                                                          .withOpacity(0.1),
-                                                      blurRadius: 10,
-                                                      spreadRadius: 0,
-                                                      offset:
-                                                          const Offset(0, 1))
-                                                ]),
-                                            child: OpenContainer(
-                                                closedElevation: 0,
-                                                middleColor: Colors.white,
-                                                closedColor: Colors.transparent,
-                                                closedBuilder: (context,
-                                                        action) =>
-                                                    Column(
-                                                      children: [
-                                                        ClipRRect(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(15),
-                                                          child: Image(
-                                                              height: 110,
-                                                              width: 140,
-                                                              fit: BoxFit.cover,
-                                                              image: ResizeImage(
-                                                                  AssetImage(
-                                                                      destination
-                                                                          .coverUrl!),
-                                                                  height: 110,
-                                                                  width: 140)),
-                                                        ),
-                                                        const SizedBox(
-                                                          height: 10,
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(5),
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              Text(
+            child: isFocused
+                ? ListView(
+                    children: searchItems
+                        .map((destination) => ListTile(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            DestinationDetails(
+                                                destination: destination)));
+                              },
+                              leading: const Icon(
+                                Icons.location_on,
+                                color: Colors.black26,
+                              ),
+                              title: Text(destination.title!),
+                              subtitle: Text(destination.district!),
+                            ))
+                        .toList(),
+                  )
+                : PageView(
+                    physics: const BouncingScrollPhysics(),
+                    controller: _pageController,
+                    onPageChanged: ((value) => setState(() {
+                          selectedTabIndex = value;
+                        })),
+                    children: destinations
+                        .map(
+                          (e) => GridView.count(
+                            childAspectRatio: 0.7,
+                            controller:
+                                ScrollController(keepScrollOffset: false),
+                            physics: const BouncingScrollPhysics(),
+                            crossAxisCount: 2,
+                            children: tabs(selectedTabIndex)
+                                .map(
+                                  (destination) => Animate(
+                                    effects: const [
+                                      FadeEffect(),
+                                      SlideEffect(
+                                          duration: Duration(milliseconds: 200))
+                                    ],
+                                    child: Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 20, vertical: 10),
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 10, horizontal: 10),
+                                      width: MediaQuery.of(context).size.width *
+                                          0.4,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(30),
+                                          color: Theme.of(context)
+                                              .scaffoldBackgroundColor,
+                                          boxShadow: [
+                                            BoxShadow(
+                                                color: Colors.black
+                                                    .withOpacity(0.1),
+                                                blurRadius: 10,
+                                                spreadRadius: 0,
+                                                offset: const Offset(0, 1))
+                                          ]),
+                                      child: OpenContainer(
+                                          closedElevation: 0,
+                                          middleColor: Colors.white,
+                                          closedColor: Colors.transparent,
+                                          closedBuilder: (context, action) =>
+                                              Column(
+                                                children: [
+                                                  ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15),
+                                                    child: Image(
+                                                        height: 110,
+                                                        width: 140,
+                                                        fit: BoxFit.cover,
+                                                        image: ResizeImage(
+                                                            AssetImage(
                                                                 destination
-                                                                    .title!,
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
-                                                                style: const TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold),
-                                                              ),
-                                                            ],
-                                                          ),
+                                                                    .coverUrl!),
+                                                            height: 110,
+                                                            width: 140)),
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(5),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          destination.title!,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          style: const TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
                                                         ),
-                                                        const SizedBox(
-                                                          height: 10,
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  right: 5,
-                                                                  bottom: 10),
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .start,
-                                                            children: [
-                                                              Row(
-                                                                children: [
-                                                                  const Icon(
-                                                                      Icons
-                                                                          .location_on,
-                                                                      color: Colors
-                                                                          .black45),
-                                                                  const SizedBox(
-                                                                    width: 5,
-                                                                  ),
-                                                                  Text(
-                                                                    destination
-                                                                        .district!,
-                                                                    style: const TextStyle(
-                                                                        color: Colors
-                                                                            .black45),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        ElevatedButton.icon(
-                                                            onPressed: () {
-                                                              // _checkConnection()
-                                                              //     .then(
-                                                              //         (connect) {
-                                                              //   if (connect) {
-                                                              //     Navigator.of(
-                                                              //             context)
-                                                              //         .push(
-                                                              //             MaterialPageRoute(
-                                                              //       builder:
-                                                              //           (context) =>
-                                                              //               MyMap(
-                                                              //         destination:
-                                                              //             destination,
-                                                              //       ),
-                                                              //     ));
-                                                              //   } else {
-                                                              //     ScaffoldMessenger.of(
-                                                              //             context)
-                                                              //         .showSnackBar(const SnackBar(
-                                                              //             content:
-                                                              //                 Text("Please check that you are connected to the internet")));
-                                                              //   }
-                                                              // });
-                                                            },
-                                                            icon: const Icon(
-                                                                Icons
-                                                                    .directions),
-                                                            label: const Text(
-                                                                'Directions'))
                                                       ],
                                                     ),
-                                                openBuilder:
-                                                    (context, action) =>
-                                                        DestinationDetails(
-                                                            destination:
-                                                                destination)),
-                                          ),
-                                        ))
-                                    .toList(),
-                              ))
-                          .toList(),
-                    ))
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            right: 5,
+                                                            bottom: 10),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Row(
+                                                          children: [
+                                                            const Icon(
+                                                                Icons
+                                                                    .location_on,
+                                                                color: Colors
+                                                                    .black45),
+                                                            const SizedBox(
+                                                              width: 5,
+                                                            ),
+                                                            Text(
+                                                              destination
+                                                                  .district!,
+                                                              style: const TextStyle(
+                                                                  color: Colors
+                                                                      .black45),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  ElevatedButton.icon(
+                                                      onPressed: () {
+                                                        // _checkConnection()
+                                                        //     .then(
+                                                        //         (connect) {
+                                                        //   if (connect) {
+                                                        //     Navigator.of(
+                                                        //             context)
+                                                        //         .push(
+                                                        //             MaterialPageRoute(
+                                                        //       builder:
+                                                        //           (context) =>
+                                                        //               MyMap(
+                                                        //         destination:
+                                                        //             destination,
+                                                        //       ),
+                                                        //     ));
+                                                        //   } else {
+                                                        //     ScaffoldMessenger.of(
+                                                        //             context)
+                                                        //         .showSnackBar(const SnackBar(
+                                                        //             content:
+                                                        //                 Text("Please check that you are connected to the internet")));
+                                                        //   }
+                                                        // });
+                                                      },
+                                                      icon: const Icon(
+                                                          Icons.directions),
+                                                      label: const Text(
+                                                          'Directions'))
+                                                ],
+                                              ),
+                                          openBuilder: (context, action) =>
+                                              DestinationDetails(
+                                                  destination: destination)),
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                        )
+                        .toList(),
+                  ),
+          )
         ],
       ),
     );

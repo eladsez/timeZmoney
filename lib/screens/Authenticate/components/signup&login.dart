@@ -147,7 +147,7 @@ class _SignupLoginContentState extends State<SignupLoginContent>
         child: const Text(
           'Forgot Password?',
           style: TextStyle(
-            fontSize: 16,
+            fontSize: 13,
             fontWeight: FontWeight.w600,
             color: loginTextColor,
           ),

@@ -52,4 +52,19 @@ class CustomUser {
       "profileImageURL": profileImageURL,
     };
   }
+
+  static CustomUser fromMap(Map<String, dynamic> user) {
+    return CustomUser(
+      username: user["username"],
+      email: user["email"],
+      gender: user["gender"],
+      age: user["age"],
+      phoneNum: user["phone"],
+      userType: user["user Type"],
+      hashPass: user["hashPass"],
+      uid: user["uid"],
+      about: user["about"],
+      profileImageURL: user["profileImageURL"],
+    );
+  }
 }
