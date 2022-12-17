@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Job {
-  String availableSpots;
+  int availableSpots;
   Timestamp date;
   String description;
   String employerUid;
@@ -10,6 +10,8 @@ class Job {
   List<String> signedWorkers;
   String title;
   String major;
+  String imageUrl;
+  String district;
 
   Job(
       {required this.availableSpots,
@@ -20,10 +22,24 @@ class Job {
       required this.salary,
       required this.signedWorkers,
       required this.title,
-      required this.major});
+      required this.major,
+      required this.imageUrl,
+      required this.district});
 
   Map<String, dynamic> toMap() {
-    return {};
+    return {
+      "availableSpots": availableSpots,
+      "date": date,
+      "description": description,
+      "employerUid": employerUid,
+      "location": location,
+      "salary": salary,
+      "signedWorkers": signedWorkers,
+      "title": title,
+      "major": major,
+      "imageUrl": imageUrl,
+      "district": district
+    };
   }
 
   static Job fromMap(Map<String, dynamic> job) {
@@ -32,11 +48,13 @@ class Job {
       date: job["date"],
       description: job["description"],
       employerUid: job["employerUid"],
-      location: job["loaction"],
+      location: job["location"],
       salary: job["salary"],
       signedWorkers: job["signedWorkers"].map((element) => element).toList(),
       title: job["title"],
       major: job["major"],
+      imageUrl: job["imageUrl"],
+      district: job["district"],
     );
   }
 }

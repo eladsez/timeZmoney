@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 
 import '../business_Logic/models/CustomUser.dart';
 
@@ -35,9 +36,23 @@ class DataAccessService {
         .get();
     if (snapshot.docs.isEmpty) {
       print("User doesn't exist yet\n");
-    } else if (snapshot.docs.length == 1) {
+    } else if (snapshot.docs.isNotEmpty) {
       return CustomUser.fromMap(snapshot.docs.first.data());
     }
     return null;
+  }
+
+
+  /*
+   * This function return list of string
+   * the list contain the job majors available in the database
+   * used to display the majors tabs
+   */
+  Future<List <String>> getJobsMajors() async {
+    QuerySnapshot<Map<String, dynamic>> majorsSnapshot =
+        await _db.collection("jobsMajors").get();
+    return majorsSnapshot.docs
+        .map((doc) => doc.data()["major"].toString())
+        .toList();
   }
 }

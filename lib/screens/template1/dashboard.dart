@@ -247,7 +247,7 @@ class _DashboardState extends State<Dashboard> {
             border: InputBorder.none,
             prefixIcon: const Icon(Icons.search),
             floatingLabelBehavior: FloatingLabelBehavior.never,
-            label: const Center(child: Text('Search destination')),
+            label: const Center(child: Text('Search Jobs')),
             contentPadding: EdgeInsets.only(
                 bottom: 10, right: MediaQuery.of(context).size.width * 0.1)),
       ),

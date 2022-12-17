@@ -1,24 +1,22 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
-import '../../utils/BackgroundGenerator.dart';
-
-class ColorLoader2 extends StatefulWidget {
+class Loading extends StatefulWidget {
   final Color color1;
   final Color color2;
   final Color color3;
 
-  const ColorLoader2(
+  const Loading(
       {super.key,
       this.color1 = Colors.deepOrangeAccent,
       this.color2 = Colors.yellow,
       this.color3 = Colors.lightGreen});
 
   @override
-  ColorLoader2State createState() => ColorLoader2State();
+  LoadingState createState() => LoadingState();
 }
 
-class ColorLoader2State extends State<ColorLoader2>
+class LoadingState extends State<Loading>
     with TickerProviderStateMixin {
   late Animation<double> animation1;
   late Animation<double> animation2;

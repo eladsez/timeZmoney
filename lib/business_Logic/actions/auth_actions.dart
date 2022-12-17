@@ -17,6 +17,12 @@ class AuthActions {
   final AuthService auth = AuthService();
   static dynamic currUser;
 
+  static tryInitCurrUser(){
+    // TODO: consider to init currUser from the beginning
+  }
+
+
+
   static setCurrUser(CustomUser user) {
     currUser = user.clone();
   }

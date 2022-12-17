@@ -1,18 +1,17 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
-import 'destination.dart';
+import '../../../business_Logic/models/Job.dart';
 
+class JobDetails extends StatefulWidget {
+  const JobDetails({super.key, required this.job});
 
-class DestinationDetails extends StatefulWidget {
-  const DestinationDetails({super.key, required this.destination});
-
-  final Destination destination;
+  final Job job;
 
   @override
-  State<DestinationDetails> createState() => _DestinationDetailsState();
+  State<JobDetails> createState() => _JobDetailsState();
 }
 
-class _DestinationDetailsState extends State<DestinationDetails> {
+class _JobDetailsState extends State<JobDetails> {
   Future<bool> _checkConnection() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.mobile) {
@@ -48,7 +47,7 @@ class _DestinationDetailsState extends State<DestinationDetails> {
                     centerTitle: true,
                     titlePadding: const EdgeInsets.all(20),
                     title: Text(
-                      widget.destination.title!.toUpperCase(),
+                      widget.job.title.toUpperCase(),
                       style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -64,10 +63,10 @@ class _DestinationDetailsState extends State<DestinationDetails> {
                         ).createShader(
                             Rect.fromLTRB(0, 0, rect.width, rect.height + 200));
                       },
-                      blendMode: BlendMode.dstIn,
+                      blendMode: BlendMode.dst,
                       child: Image(
                           fit: BoxFit.fill,
-                          image: NetworkImage(widget.destination.imgUrl!)),
+                          image: NetworkImage(widget.job.imageUrl)),
                     ),
                   ),
                 )
@@ -91,7 +90,7 @@ class _DestinationDetailsState extends State<DestinationDetails> {
                         width: 10,
                       ),
                       Text(
-                        widget.destination.district!,
+                        widget.job.district,
                         style: const TextStyle(
                             color: Colors.black38, fontSize: 16),
                       ),
@@ -101,7 +100,7 @@ class _DestinationDetailsState extends State<DestinationDetails> {
                     height: 20,
                   ),
                   Text(
-                    widget.destination.description!,
+                    widget.job.description,
                     style: const TextStyle(fontSize: 18, color: Colors.black54),
                   )
                 ],
@@ -111,23 +110,10 @@ class _DestinationDetailsState extends State<DestinationDetails> {
       persistentFooterAlignment: AlignmentDirectional.center,
       persistentFooterButtons: [
         FloatingActionButton.extended(
-          onPressed: () {
-            // _checkConnection().then((connect) {
-            //   if (connect) {
-            //     Navigator.of(context).push(MaterialPageRoute(
-            //       builder: (context) => MyMap(
-            //         destination: widget.destination,
-            //       ),
-            //     ));
-            //   } else {
-            //     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            //         content: Text(
-            //             "Please check that you are connected to the internet")));
-            //   }
-            // });
-          },
+          onPressed: () {}, // TODO: add map logic and screen
           icon: const Icon(Icons.directions),
           label: const Text("Directions"),
+          backgroundColor: const Color(0xff01b2b8),
         )
       ],
     );
