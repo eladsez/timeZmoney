@@ -55,7 +55,6 @@ class _JobsDashboardScreenState extends State<JobsDashboardScreen> {
                                     duration: const Duration(seconds: 1),
                                     curve: Curves.ease);
                               }
-
                               setState(() {
                                 selectedMajorIndex =
                                     majorsListSnap.data!.indexOf(tab);
@@ -281,12 +280,12 @@ class _JobsDashboardScreenState extends State<JobsDashboardScreen> {
                                         ),
                                       )
                                       .toList()
-                                  : [const Center(child: Loading())],
+                                  : [const Loading()],
                             ),
                           ),
                         )
                         .toList()
-                    : [const Center(child: Loading())],
+                    : [const Loading()],
               ),
             ),
           )

@@ -16,8 +16,7 @@ class Loading extends StatefulWidget {
   LoadingState createState() => LoadingState();
 }
 
-class LoadingState extends State<Loading>
-    with TickerProviderStateMixin {
+class LoadingState extends State<Loading> with TickerProviderStateMixin {
   late Animation<double> animation1;
   late Animation<double> animation2;
   late Animation<double> animation3;
@@ -57,42 +56,40 @@ class LoadingState extends State<Loading>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Stack(
-          children: <Widget>[
-            RotationTransition(
-              turns: animation1,
-              child: CustomPaint(
-                painter: Arc1Painter(widget.color1),
-                child: const SizedBox(
-                  width: 50.0,
-                  height: 50.0,
-                ),
+    return Center(
+      child: Stack(
+        children: <Widget>[
+          RotationTransition(
+            turns: animation1,
+            child: CustomPaint(
+              painter: Arc1Painter(widget.color1),
+              child: const SizedBox(
+                width: 50.0,
+                height: 50.0,
               ),
             ),
-            RotationTransition(
-              turns: animation2,
-              child: CustomPaint(
-                painter: Arc2Painter(widget.color2),
-                child: const SizedBox(
-                  width: 50.0,
-                  height: 50.0,
-                ),
+          ),
+          RotationTransition(
+            turns: animation2,
+            child: CustomPaint(
+              painter: Arc2Painter(widget.color2),
+              child: const SizedBox(
+                width: 50.0,
+                height: 50.0,
               ),
             ),
-            RotationTransition(
-              turns: animation3,
-              child: CustomPaint(
-                painter: Arc3Painter(widget.color3),
-                child: const SizedBox(
-                  width: 50.0,
-                  height: 50.0,
-                ),
+          ),
+          RotationTransition(
+            turns: animation3,
+            child: CustomPaint(
+              painter: Arc3Painter(widget.color3),
+              child: const SizedBox(
+                width: 50.0,
+                height: 50.0,
               ),
-            )
-          ],
-        ),
+            ),
+          )
+        ],
       ),
     );
   }
