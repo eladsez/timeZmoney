@@ -1,8 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:time_z_money/screens/jobs_dashboard/components/job_details.dart';
 import 'package:time_z_money/screens/splash_screen.dart';
-import 'business_Logic/models/Job.dart';
 import 'utils/firebase_options.dart';
 import 'package:flutter/material.dart';
 

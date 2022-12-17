@@ -7,7 +7,7 @@ class Job {
   String employerUid;
   GeoPoint location;
   int salary;
-  List<String> signedWorkers;
+  List<dynamic> signedWorkers;
   String title;
   String major;
   String imageUrl;
@@ -50,7 +50,7 @@ class Job {
       employerUid: job["employerUid"],
       location: job["location"],
       salary: job["salary"],
-      signedWorkers: job["signedWorkers"].map((element) => element).toList(),
+      signedWorkers: job["signedWorkers"],
       title: job["title"],
       major: job["major"],
       imageUrl: job["imageUrl"],

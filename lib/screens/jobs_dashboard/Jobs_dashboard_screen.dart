@@ -91,6 +91,9 @@ class _JobsDashboardScreenState extends State<JobsDashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var cardSpace = const SizedBox(
+      height: 6,
+    );
     return Expanded(
       child: Column(
         children: [
@@ -111,89 +114,86 @@ class _JobsDashboardScreenState extends State<JobsDashboardScreen> {
                 children: jobsMajorsSnap.data != null
                     ? jobsMajorsSnap.data!
                         .map(
-                          (currMajorTab) => GridView.count(
-                            childAspectRatio: 0.7,
-                            controller:
-                                ScrollController(keepScrollOffset: false),
-                            physics: const BouncingScrollPhysics(),
-                            crossAxisCount: 2,
-                            children: jobsActions
-                                .getJobsOfTab(currMajorTab)
-                                .map(
-                                  (job) => Animate(
-                                    effects: const [
-                                      FadeEffect(),
-                                      SlideEffect(
-                                          duration: Duration(milliseconds: 200))
-                                    ],
-                                    child: Container(
-                                      margin: const EdgeInsets.symmetric(
-                                          horizontal: 20, vertical: 10),
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 10, horizontal: 10),
-                                      width: MediaQuery.of(context).size.width *
-                                          0.4,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(30),
-                                          color: Theme.of(context)
-                                              .scaffoldBackgroundColor,
-                                          boxShadow: [
-                                            BoxShadow(
-                                                color: Colors.black
-                                                    .withOpacity(0.1),
-                                                blurRadius: 10,
-                                                spreadRadius: 0,
-                                                offset: const Offset(0, 1))
-                                          ]),
-                                      child: OpenContainer(
-                                          closedElevation: 0,
-                                          middleColor: Colors.white,
-                                          closedColor: Colors.transparent,
-                                          closedBuilder: (context, action) =>
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  ClipRRect(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            15),
-                                                    child: Image(
-                                                        height: 80,
-                                                        width: 140,
-                                                        fit: BoxFit.cover,
-                                                        image: ResizeImage(
-                                                            NetworkImage(
-                                                                job.imageUrl),
-                                                            height: 110,
-                                                            width: 140)),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  Text(
-                                                    job.title,
-                                                    overflow:
-                                                        TextOverflow.visible,
-                                                    maxLines: 2,
-                                                    style: const TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            right: 5,
-                                                            bottom: 10),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
+                          (e) => FutureBuilder(
+                            future: jobsActions.getJobsOfTab(jobsMajorsSnap.data![selectedMajorIndex]),
+                            builder: (context, jobsListSnap) => GridView.count(
+                              childAspectRatio: 0.7,
+                              controller:
+                                  ScrollController(keepScrollOffset: false),
+                              physics: const BouncingScrollPhysics(),
+                              crossAxisCount: 2,
+                              children: jobsListSnap.data != null
+                                  ? jobsListSnap.data!
+                                      .map(
+                                        (job) => Animate(
+                                          effects: const [
+                                            FadeEffect(),
+                                            SlideEffect(
+                                                duration:
+                                                    Duration(milliseconds: 200))
+                                          ],
+                                          child: Container(
+                                            margin: const EdgeInsets.symmetric(
+                                                horizontal: 20, vertical: 10),
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 10, horizontal: 10),
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.4,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(30),
+                                                color: Theme.of(context)
+                                                    .scaffoldBackgroundColor,
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                      color: Colors.black
+                                                          .withOpacity(0.1),
+                                                      blurRadius: 10,
+                                                      spreadRadius: 0,
+                                                      offset:
+                                                          const Offset(0, 1))
+                                                ]),
+                                            child: OpenContainer(
+                                                closedElevation: 0,
+                                                middleColor: Colors.white,
+                                                closedColor: Colors.transparent,
+                                                closedBuilder: (context,
+                                                        action) =>
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
                                                               .start,
                                                       children: [
+                                                        ClipRRect(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(15),
+                                                          child: Image(
+                                                              height: 80,
+                                                              width: 140,
+                                                              fit: BoxFit.cover,
+                                                              image: ResizeImage(
+                                                                  NetworkImage(job
+                                                                      .imageUrl),
+                                                                  height: 110,
+                                                                  width: 140)),
+                                                        ),
+                                                        const SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        Text(
+                                                          job.title,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          maxLines: 1,
+                                                          style: const TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                        cardSpace,
                                                         Row(
                                                           children: [
                                                             const Icon(
@@ -202,7 +202,7 @@ class _JobsDashboardScreenState extends State<JobsDashboardScreen> {
                                                                 color: Colors
                                                                     .black45),
                                                             const SizedBox(
-                                                              width: 5,
+                                                              width: 10,
                                                             ),
                                                             Text(
                                                               job.district,
@@ -212,51 +212,81 @@ class _JobsDashboardScreenState extends State<JobsDashboardScreen> {
                                                             ),
                                                           ],
                                                         ),
+                                                        cardSpace,
+                                                        Row(
+                                                          children: [
+                                                            const Icon(
+                                                              Icons
+                                                                  .attach_money,
+                                                              color: Colors
+                                                                  .black45,
+                                                            ),
+                                                            const SizedBox(
+                                                              width: 10,
+                                                            ),
+                                                            Text(
+                                                              job.salary
+                                                                  .toString(),
+                                                              style: const TextStyle(
+                                                                  color: Colors
+                                                                      .black45),
+                                                            )
+                                                          ],
+                                                        ),
+                                                        cardSpace,
+                                                        Row(
+                                                          children: [
+                                                            const Icon(
+                                                              Icons.date_range,
+                                                              color: Colors
+                                                                  .black45,
+                                                            ),
+                                                            const SizedBox(
+                                                              width: 10,
+                                                            ),
+                                                            Text(
+                                                              job.date
+                                                                  .toDate()
+                                                                  .toString()
+                                                                  .split(
+                                                                      " ")[0],
+                                                              style: const TextStyle(
+                                                                  color: Colors
+                                                                      .black45),
+                                                            )
+                                                          ],
+                                                        ),
+                                                        // Center(
+                                                        //   child: ElevatedButton(
+                                                        //     style: ElevatedButton
+                                                        //         .styleFrom(
+                                                        //       backgroundColor:
+                                                        //           const Color(
+                                                        //               0xff01b2b8),
+                                                        //       shape:
+                                                        //           const CircleBorder(),
+                                                        //     ),
+                                                        //     onPressed: () {},
+                                                        //     // TODO: add map logic
+                                                        //     child: const Icon(
+                                                        //         Icons.directions),
+                                                        //   ),
+                                                        // ),
                                                       ],
                                                     ),
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      const Icon(
-                                                        Icons.attach_money,
-                                                        color: Colors.black45,
-                                                      ),
-                                                      Text(
-                                                        job.salary.toString(),
-                                                        style: const TextStyle(
-                                                            color:
-                                                                Colors.black45),
-                                                      )
-                                                    ],
-                                                  ),
-                                                  Center(
-                                                    child: ElevatedButton(
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                        backgroundColor:
-                                                            const Color(
-                                                                0xff01b2b8),
-                                                        shape:
-                                                            const CircleBorder(),
-                                                      ),
-                                                      onPressed: () {},
-                                                      // TODO: add map logic
-                                                      child: const Icon(
-                                                          Icons.directions),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                          openBuilder: (context, action) =>
-                                              JobDetails(job: job)),
-                                    ),
-                                  ),
-                                )
-                                .toList(),
+                                                openBuilder:
+                                                    (context, action) =>
+                                                        JobDetails(job: job)),
+                                          ),
+                                        ),
+                                      )
+                                      .toList()
+                                  : [const Center(child: Loading())],
+                            ),
                           ),
                         )
                         .toList()
-                    : [const Loading()],
+                    : [const Center(child: Loading())],
               ),
             ),
           )

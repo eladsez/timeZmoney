@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:time_z_money/business_Logic/models/Job.dart';
 
 import '../business_Logic/models/CustomUser.dart';
 
@@ -42,17 +42,48 @@ class DataAccessService {
     return null;
   }
 
-
   /*
    * This function return list of string
    * the list contain the job majors available in the database
    * used to display the majors tabs
    */
-  Future<List <String>> getJobsMajors() async {
+  Future<List<String>> getMajors() async {
     QuerySnapshot<Map<String, dynamic>> majorsSnapshot =
         await _db.collection("jobsMajors").get();
     return majorsSnapshot.docs
         .map((doc) => doc.data()["major"].toString())
         .toList();
   }
+
+  /*
+   * This function get as an argument major of a job and return all the jobs under this major
+   */
+  Future<List<Job>> getJobsOfMajor(String major) async {
+    QuerySnapshot<Map<String, dynamic>> jobsSnap =
+        await _db.collection("jobs").where("major", isEqualTo: major).get();
+    List<Job> jobs = [];
+    for (var jobDoc in jobsSnap.docs) {
+      jobs.add(Job.fromMap(jobDoc.data()));
+    }
+    return jobs;
+  }
+
+  Future<void> createJob(Job job) async {
+    if (!(await getMajors()).contains(job.major)){ // the major doesn't exist yet
+      await _db.collection("jobsMajors").add({"major": job.major});
+    }
+    await _db.collection("jobs").add(job.toMap());
+  }
+
+  Future<List<Job>> getAllJobs() async {
+    QuerySnapshot<Map<String, dynamic>> jobsSnap =
+    await _db.collection("jobs").get();
+    List<Job> jobs = [];
+    for (var jobDoc in jobsSnap.docs) {
+      jobs.add(Job.fromMap(jobDoc.data()));
+    }
+    return jobs;
+  }
+
+
 }
