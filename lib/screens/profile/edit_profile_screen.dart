@@ -43,8 +43,8 @@ class EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var ages = [1,2,3,4,5,6,7,8,9,10];
-    var genders = ['Male', 'Female'];
+    var ages = List<int>.generate(120, (i) => i + 16);
+    var genders = ['Male', 'Female', "Undefined"];
     return Scaffold(
         appBar: AppBar(
           leading: const BackButton(color: Color(0xff01b2b8)),
@@ -67,64 +67,36 @@ class EditProfileScreenState extends State<EditProfileScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 SizedBox(
-                  width: 100,
-                  child: Column(
-                    children: [
-                      Text('Age'),
-                      Padding(padding: const EdgeInsets.all(3)),
-                      // add smalls arrows to the sides of the dropdown
-                      Row(
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.only(right: 0.05),
-                            child: Icon(CupertinoIcons.chevron_up_chevron_down, size: 17),
-                          ),
-                          Expanded(
-                            child: CupertinoPicker(
-                              backgroundColor: Colors.white,
-                              itemExtent: 32.0,
-                              onSelectedItemChanged: (int index) {
-                                setState(() {
-                                  ageController.text = ages[index].toString();
-                                });
-                              },
-                              children: List<Widget>.generate(ages.length, (int index) {
-                                return Center(
-                                  child: Text(ages[index].toString()),
-                                );
-                              }),
-                            ),
-                          ),
-                        ],
-                      )
-                    ],
-                  )
-                ),
-                const SizedBox(width: 24),
-                SizedBox(
-                  width: 100,
+                    width: 100,
                     child: Column(
                       children: [
-                        Text('Gender'),
-                        Padding(padding: const EdgeInsets.all(3)),
+                        const Text('Age'),
+                        const Padding(padding: EdgeInsets.all(3)),
+                        // add smalls arrows to the sides of the dropdown
                         Row(
                           children: [
                             const Padding(
                               padding: EdgeInsets.only(right: 0.05),
-                              child: Icon(CupertinoIcons.chevron_up_chevron_down, size: 17),
+                              child: Icon(
+                                  CupertinoIcons.chevron_up_chevron_down,
+                                  size: 17),
                             ),
                             Expanded(
                               child: CupertinoPicker(
+                                scrollController: FixedExtentScrollController(
+                                    initialItem:
+                                        ages.indexOf(AuthActions.currUser.age)),
                                 backgroundColor: Colors.white,
                                 itemExtent: 32.0,
                                 onSelectedItemChanged: (int index) {
                                   setState(() {
-                                    genderController.text = genders[index];
+                                    ageController.text = ages[index].toString();
                                   });
                                 },
-                                children: List<Widget>.generate(genders.length, (int index) {
+                                children: List<Widget>.generate(ages.length,
+                                    (int index) {
                                   return Center(
-                                    child: Text(genders[index]),
+                                    child: Text(ages[index].toString()),
                                   );
                                 }),
                               ),
@@ -132,8 +104,49 @@ class EditProfileScreenState extends State<EditProfileScreen> {
                           ],
                         )
                       ],
-                    )
-                ),
+                    )),
+                const SizedBox(width: 24),
+                SizedBox(
+                    width: 150,
+                    child: Column(
+                      children: [
+                        const Text('Gender'),
+                        const Padding(padding: EdgeInsets.all(3)),
+                        Row(
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.only(right: 0.05),
+                              child: Icon(
+                                  CupertinoIcons.chevron_up_chevron_down,
+                                  size: 17),
+                            ),
+                            SizedBox(
+                              width: 120,
+                              // child: Expanded(
+                              child: CupertinoPicker(
+                                scrollController: FixedExtentScrollController(
+                                    initialItem: genders
+                                        .indexOf(AuthActions.currUser.gender)),
+                                backgroundColor: Colors.white,
+                                itemExtent: 30.0,
+                                onSelectedItemChanged: (int index) {
+                                  setState(() {
+                                    genderController.text = genders[index];
+                                  });
+                                },
+                                children: List<Widget>.generate(genders.length,
+                                    (int index) {
+                                  return Center(
+                                    child: Text(genders[index]),
+                                  );
+                                }),
+                              ),
+                              // ),
+                            ),
+                          ],
+                        )
+                      ],
+                    )),
               ],
             ),
             const SizedBox(height: 24),

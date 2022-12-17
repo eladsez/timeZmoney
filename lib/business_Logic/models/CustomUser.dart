@@ -15,7 +15,7 @@ class CustomUser {
       required this.email,
       required this.hashPass,
       this.uid = "ERROR",
-      this.gender = "Choose your preferred referral method",
+      this.gender = "Undefined",
       this.age = 18,
       this.phoneNum = "Empty",
       this.userType,
