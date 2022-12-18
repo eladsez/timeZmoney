@@ -1,14 +1,15 @@
-
 import 'package:permission_handler/permission_handler.dart';
 
 class PermissionHandler{
 
   static requestGalleryAccess() async{
-    await Permission.photos.request();
+    await Permission.manageExternalStorage.request();
+    await Permission.storage.request();
+    await Permission.mediaLibrary.request();
   }
 
   static galleryAccess() async{
-    return await Permission.photos.status.isGranted;
+    return await Permission.manageExternalStorage.status.isGranted;
   }
 
 }

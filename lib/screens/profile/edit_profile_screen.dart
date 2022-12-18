@@ -43,7 +43,7 @@ class EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var ages = List<int>.generate(120, (i) => i + 16);
+    var ages = List<int>.generate(120 - 16, (i) => i + 16);
     var genders = ['Male', 'Female', "Undefined"];
     return Scaffold(
         appBar: AppBar(
