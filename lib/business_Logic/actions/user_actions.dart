@@ -1,7 +1,5 @@
 import 'package:time_z_money/business_Logic/actions/storage_actions.dart';
-
 import '../../data_access/firestore_dal.dart';
-import 'auth_actions.dart';
 import 'auth_actions.dart';
 
 class UserActions {
@@ -36,5 +34,4 @@ class UserActions {
     await das.updateUser(AuthActions.currUser.uid, "profileImageURL", imageUrl); // update fireStore
     AuthActions.currUser.profileImageURL = imageUrl;
   }
-
 }
