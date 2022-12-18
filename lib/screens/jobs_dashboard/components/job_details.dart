@@ -1,5 +1,6 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../../../business_Logic/models/Job.dart';
 
 class JobDetails extends StatefulWidget {
@@ -82,6 +83,26 @@ class _JobDetailsState extends State<JobDetails> {
                   ),
                   Row(
                     children: [
+                      RatingBar.builder(
+                        itemSize: 25,
+                        initialRating: 3,
+                        minRating: 1,
+                        direction: Axis.horizontal,
+                        allowHalfRating: true,
+                        itemCount: 5,
+                        itemPadding:
+                            const EdgeInsets.symmetric(horizontal: 4.0),
+                        itemBuilder: (context, _) => const Icon(
+                          Icons.star,
+                          color: Colors.amber,
+                        ),
+                        onRatingUpdate: (rating) {
+                          print(rating);
+                        },
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
                       const Icon(
                         Icons.location_on,
                         color: Colors.black38,
