@@ -84,11 +84,14 @@ class _ProfileChooserScreenState extends State<ProfileChooserScreen> {
   Widget build(BuildContext context) {
     widthScreenSize = MediaQuery.of(context).size.width;
     return Scaffold(
-      floatingActionButton: FloatingActionButton(onPressed: () async {
-        if (selectedUserProfile == null) return; // in case he didn't choose anything (should be popup or something)
-        await authActions.chooseProfile(selectedUserProfile!);
-        Navigator.pop(context); // pop the profileChooserScreen
-      }),
+      floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.arrow_circle_right_sharp),
+          onPressed: () async {
+            if (selectedUserProfile == null)
+              return; // in case he didn't choose anything (should be popup or something)
+            await authActions.chooseProfile(selectedUserProfile!);
+            Navigator.pop(context); // pop the profileChooserScreen
+          }),
       body: CustomPaint(
         painter: GreenPainter(),
         child: Container(

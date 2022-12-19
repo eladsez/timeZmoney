@@ -65,7 +65,7 @@ class _MainScreenState extends State<MainScreen> {
           height: 50,
           items: const <Widget>[
             Icon(Icons.home, size: 26, color: Color(0xff01b2b8)),
-            Icon(Icons.cases_outlined, size: 26, color: Color(0xff01b2b8)),
+            Icon(Icons.calendar_month_outlined, size: 26, color: Color(0xff01b2b8)),
             Icon(Icons.add_outlined, size: 28, color: Color(0xff01b2b8)),
             Icon(Icons.chat_bubble_outline_sharp,
                 size: 26, color: Color(0xff01b2b8)),
@@ -83,7 +83,7 @@ class _MainScreenState extends State<MainScreen> {
                   case 0:
                     selectedNavBar = BottomNavigationBarState.home;
                     break;
-                  case 2:
+                  case 1:
                     selectedNavBar = BottomNavigationBarState.scheduler;
                     break;
                   case 4:
