@@ -6,18 +6,17 @@ import 'package:flutter/foundation.dart';
 class MessagingAccess {
 
   final FirebaseMessaging _messaging = FirebaseMessaging.instance;
-  
   late final StreamSubscription<RemoteMessage> listener;
 
 
   Future<bool> requestPermission() async {
     NotificationSettings settings = await _messaging.requestPermission(
       alert: true,
-      announcement: false,
+      announcement: true,
       badge: true,
       carPlay: false,
-      criticalAlert: false,
-      provisional: false,
+      criticalAlert: true,
+      provisional: true,
       sound: true,
     );
 

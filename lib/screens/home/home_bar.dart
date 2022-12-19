@@ -16,7 +16,14 @@ class _State extends State<HomeAppbar> {
 
   void updateNotifications(RemoteMessage message) {
     setState(() {
-      MessageActions.notifications.add(message);
+      // if the list doesn't contain this message, add it
+      // we need it because we have another listener if we don't on the home_bar screen
+      if (!MessageActions.notifications
+          .map((msg) => msg.messageId)
+          .toList()
+          .contains(message.messageId)) {
+        MessageActions.notifications.add(message);
+      }
     });
   }
 

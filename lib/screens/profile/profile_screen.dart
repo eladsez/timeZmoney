@@ -11,7 +11,7 @@ class ProfileScreen extends StatefulWidget {
   @override
   ProfileScreenState createState() => ProfileScreenState();
 }
-
+// TODO: render the image after it change
 class ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
@@ -23,12 +23,20 @@ class ProfileScreenState extends State<ProfileScreen> {
           const SizedBox(
             height: 10,
           ),
-          ProfileWidget(
+          ProfileCircle(
             imagePath: AuthActions.currUser.profileImageURL,
             onClicked: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                    builder: (context) => const EditProfileScreen()),
+                  builder: (context) => EditProfileScreen(
+                    updateProfile: (void dummy) {
+                      setState(() {
+                        AuthActions.currUser.profileImageURL =
+                            AuthActions.currUser.profileImageURL;
+                      });
+                    },
+                  ),
+                ),
               );
             },
           ),

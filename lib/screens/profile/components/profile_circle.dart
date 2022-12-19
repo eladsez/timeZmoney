@@ -1,19 +1,21 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 
-class ProfileWidget extends StatelessWidget {
+class ProfileCircle extends StatefulWidget {
   final String imagePath;
   final bool isEdit;
   final VoidCallback onClicked;
 
-  const ProfileWidget({
-    Key? key,
-    required this.imagePath,
-    this.isEdit = false,
-    required this.onClicked,
-  }) : super(key: key);
+  const ProfileCircle(
+      {super.key,
+      required this.imagePath,
+      this.isEdit = false,
+      required this.onClicked});
 
+  @override
+  State<ProfileCircle> createState() => _ProfileCircleState();
+}
+// TODO: render the image after it change should come from here
+class _ProfileCircleState extends State<ProfileCircle> {
   @override
   Widget build(BuildContext context) {
     final color = Theme.of(context).colorScheme.primary;
@@ -37,11 +39,11 @@ class ProfileWidget extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: Ink.image(
-          image: NetworkImage(imagePath),
+          image: NetworkImage(widget.imagePath),
           fit: BoxFit.cover,
           width: 128,
           height: 128,
-          child: InkWell(onTap: onClicked),
+          child: InkWell(onTap: widget.onClicked),
         ),
       ),
     );
@@ -55,9 +57,9 @@ class ProfileWidget extends StatelessWidget {
         all: 0.2,
         child: IconButton(
           iconSize: 20,
-          onPressed: onClicked,
+          onPressed: widget.onClicked,
           icon: Icon(
-            isEdit ? Icons.add_a_photo : Icons.edit,
+            widget.isEdit ? Icons.add_a_photo : Icons.edit,
             color: Colors.white,
           ),
         ),

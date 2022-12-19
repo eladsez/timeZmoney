@@ -8,6 +8,12 @@ class MessageActions{
   final MessagingAccess mesa = MessagingAccess();
   static List<RemoteMessage> notifications = []; // the notification the currUser held
 
+  static backgroundMessageHandler(){
+   // TODO: seems to not listening all the time need to fix it
+    // TODO: see reference here: https://github.com/HDEVCODER/fcmflutter3.3/blob/main/lib/main.dart
+
+  }
+
   /*
    * This function initial and start listening for notification from fireBase messaging
    * When notification is received we will add it to the notifications list

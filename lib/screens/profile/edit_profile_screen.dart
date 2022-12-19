@@ -6,9 +6,10 @@ import 'components/profile_circle.dart';
 import 'components/textfield_widget.dart';
 
 class EditProfileScreen extends StatefulWidget {
-  const EditProfileScreen({
-    super.key,
-  });
+  
+  final ValueChanged<void> updateProfile;
+
+  const EditProfileScreen({super.key, required this.updateProfile});
 
   @override
   EditProfileScreenState createState() => EditProfileScreenState();
@@ -26,7 +27,7 @@ class EditProfileScreenState extends State<EditProfileScreen> {
     genderController = TextEditingController();
     ageController = TextEditingController();
     aboutController.text = AuthActions.currUser.about == "Empty"
-        ? "Your about is currently empty, Press the edit button to write it!"
+        ? ""
         : AuthActions.currUser.about;
     genderController.text = AuthActions.currUser.gender;
     ageController.text = AuthActions.currUser.age.toString();
@@ -55,7 +56,7 @@ class EditProfileScreenState extends State<EditProfileScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 32),
           physics: const BouncingScrollPhysics(),
           children: [
-            ProfileWidget(
+            ProfileCircle(
                 imagePath: AuthActions.currUser.profileImageURL,
                 isEdit: true,
                 onClicked: () async {
@@ -171,6 +172,7 @@ class EditProfileScreenState extends State<EditProfileScreen> {
                     "age", int.parse(ageController.text));
                 userActions.updateCurrUser("about", aboutController.text);
                 userActions.updateCurrUser("gender", genderController.text);
+                widget.updateProfile("dummy");
                 Navigator.of(context).pop();
               },
               child: const Text("Save"),

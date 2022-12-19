@@ -34,6 +34,8 @@ class TextFieldWidgetState extends State<TextFieldWidget> {
             textAlign: widget.align,
             controller: widget.controller,
             decoration: InputDecoration(
+              hintText:
+                  "Your about is currently empty, Press the edit button to write it!",
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
