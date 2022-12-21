@@ -32,7 +32,7 @@ class _SignupLoginContentState extends State<SignupLoginContent>
   Widget inputField(
       String hint, IconData iconData, bool passwd, String keyName) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 2),
       child: SizedBox(
         height: 70,
         child: Material(
@@ -57,9 +57,10 @@ class _SignupLoginContentState extends State<SignupLoginContent>
                   borderRadius: BorderRadius.circular(25),
                   borderSide: BorderSide.none,
                 ),
-                // focusedBorder: const OutlineInputBorder(
-                //   borderSide: BorderSide(color: Colors.blue),
-                // ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Color(0xff01b2b8)),
+                  borderRadius: BorderRadius.circular(25),
+                ),
                 filled: true,
                 fillColor: Colors.white,
                 hintText: hint,
@@ -275,7 +276,7 @@ class _SignupLoginContentState extends State<SignupLoginContent>
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 100),
+          padding: const EdgeInsets.only(top: 80),
           child: Stack(
             children: [
               Column(
