@@ -54,6 +54,17 @@ class DataAccessService {
   }
 
   /*
+   * Get the jobs the employerUid post
+   */
+  Future<List<Job>> getJobsOfEmployer(String employerUid) async {
+    QuerySnapshot<Map<String, dynamic>> jobsSnap =
+    await _db.collection("jobs").where("employerUid", isEqualTo: employerUid).get();
+    return jobsSnap.docs
+        .map((doc) => Job.fromMap(doc.data()))
+        .toList();
+  }
+
+  /*
    * This function get as an argument major of a job and return all the jobs under this major
    */
   Future<List<Job>> getJobsOfMajor(String major) async {
