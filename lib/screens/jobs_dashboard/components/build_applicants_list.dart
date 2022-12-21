@@ -17,11 +17,17 @@ class BuildApplicantsList extends StatefulWidget {
 
 class _BuildApplicantsListState extends State<BuildApplicantsList> {
 
+  late List<bool> userChosen;
+
+  @override
+  void initState() {
+    // init a boolesn list in the same size as the uids list to false
+    userChosen = List.filled(widget.job.signedWorkers.length, false);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    List uids = widget.job.signedWorkers;
-    // init a boolesn list in the same size as the uids list to false
-    List<bool> taped = List.filled(uids.length, false);
     return Column(
       children: [
         const SizedBox(
@@ -44,7 +50,7 @@ class _BuildApplicantsListState extends State<BuildApplicantsList> {
           itemCount: widget.job.signedWorkers.length,
           itemBuilder: (context, index) {
             return FutureBuilder<List<CustomUser>>(
-              future: JobsActions().getUsersFromUid(uids),
+              future: JobsActions().getUsersFromUid(widget.job.signedWorkers),
               builder: (context, AsyncSnapshot<List<CustomUser>> snapshot) {
                 if (snapshot.hasData) {
                   var applicant = snapshot.data;
@@ -57,7 +63,7 @@ class _BuildApplicantsListState extends State<BuildApplicantsList> {
                     subtitle: Text(applicant[index].email),
                     trailing: IconButton(
                       onPressed: () => setState(() {
-                        taped[index] = !(taped[index]);
+                        userChosen[index] = !(userChosen[index]);
                       }),
                           //TODO: finish the logic of the button - add the worker to the job
                           // JobsActions().hireWorker(widget.job, applicant[index].uid);
@@ -65,7 +71,7 @@ class _BuildApplicantsListState extends State<BuildApplicantsList> {
                           Icons.check,
                           size: 30,
                           // TODO: change color to green if tapped
-                          color: taped[index] ? Colors.green : Colors.grey,)
+                          color: userChosen[index] ? Colors.green : Colors.grey,)
                         ),
                     //TODO: change the navigate to a profile card pop up
                     onTap: () => Navigator.push(context, MaterialPageRoute(
