@@ -60,7 +60,7 @@ class CustomUser {
       gender: user["gender"],
       age: user["age"],
       phoneNum: user["phone"],
-      userType: user["user Type"],
+      userType: user["user type"],
       hashPass: user["hashPass"],
       uid: user["uid"],
       about: user["about"],

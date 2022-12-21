@@ -7,14 +7,14 @@ import 'package:time_z_money/screens/jobs_dashboard/components/job_details.dart'
 import '../../business_Logic/actions/jobs_actions.dart';
 import '../Loading_Screens/loading_screen.dart';
 
-class JobsDashboardScreen extends StatefulWidget {
-  const JobsDashboardScreen({Key? key}) : super(key: key);
+class WorkerDashboardScreen extends StatefulWidget {
+  const WorkerDashboardScreen({Key? key}) : super(key: key);
 
   @override
-  State<JobsDashboardScreen> createState() => _JobsDashboardScreenState();
+  State<WorkerDashboardScreen> createState() => _WorkerDashboardScreenState();
 }
 
-class _JobsDashboardScreenState extends State<JobsDashboardScreen> {
+class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
   late final PageController pageController; // for jobs dashboard
   late final ScrollController scrollController; // for major tabs
   final jobsActions = JobsActions();

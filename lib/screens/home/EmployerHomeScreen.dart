@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:time_z_money/screens/jobs_dashboard/Jobs_dashboard_worker_screen.dart';
 import 'home_bar.dart';
 
-class WorkerHomeScreen extends StatefulWidget {
+class EmployerHomeScreen extends StatefulWidget {
 
-  const WorkerHomeScreen({Key? key}) : super(key: key);
+  const EmployerHomeScreen({Key? key}) : super(key: key);
 
   @override
-  State<WorkerHomeScreen> createState() => _WorkerHomeScreenState();
+  State<EmployerHomeScreen> createState() => _EmployerHomeScreenState();
 }
 
-class _WorkerHomeScreenState extends State<WorkerHomeScreen> {
+class _EmployerHomeScreenState extends State<EmployerHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +27,7 @@ class _WorkerHomeScreenState extends State<WorkerHomeScreen> {
           Column(
             children: const [
               HomeAppbar(),
-              WorkerDashboardScreen(),
+
             ],
           ),
         ],

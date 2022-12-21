@@ -2,10 +2,13 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:time_z_money/screens/profile/profile_screen.dart';
 import 'package:time_z_money/screens/scheduler/scheduler.dart';
+
+import '../business_Logic/actions/auth_actions.dart';
 import 'home/home_screen.dart';
 
 enum BottomNavigationBarState {
-  home,
+  homeWorker,
+  homeEmployer,
   explore,
   jobPosting,
   scheduler,
@@ -13,6 +16,7 @@ enum BottomNavigationBarState {
   profile, // need to modify
   error
 }
+
 /*
  This class is responsible about the app Navigation Bar and the Navigation between the app screens
  Here we will check which user is connected and build the screens for him (also depend if he is worker or employer)
@@ -25,13 +29,35 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-
-  BottomNavigationBarState selectedNavBar = BottomNavigationBarState.home;
-
+  BottomNavigationBarState selectedNavBar = BottomNavigationBarState.homeWorker;
 
   @override
   void initState() {
     super.initState();
+  }
+
+  // This method is responsible for the bottom navigation icons.
+  List<Widget> buildNavigationIcons() {
+    return AuthActions.currUser.userType == "worker"
+        ? const [
+            Icon(Icons.home, size: 26, color: Color(0xff01b2b8)),
+            Icon(Icons.calendar_month_outlined,
+                size: 26, color: Color(0xff01b2b8)),
+            Icon(Icons.add_outlined, size: 28, color: Color(0xff01b2b8)),
+            Icon(Icons.chat_bubble_outline_sharp,
+                size: 26, color: Color(0xff01b2b8)),
+            Icon(Icons.person_outline_rounded,
+                size: 26, color: Color(0xff01b2b8)),
+          ]
+        : const [
+            Icon(Icons.home, size: 26, color: Color(0xff01b2b8)),
+            Icon(Icons.wb_sunny_outlined, size: 26, color: Color(0xff01b2b8)),
+            Icon(Icons.add_outlined, size: 28, color: Color(0xff01b2b8)),
+            Icon(Icons.chat_bubble_outline_sharp,
+                size: 26, color: Color(0xff01b2b8)),
+            Icon(Icons.person_outline_rounded,
+                size: 26, color: Color(0xff01b2b8)),
+          ];
   }
 
   /*
@@ -39,8 +65,10 @@ class _MainScreenState extends State<MainScreen> {
    */
   Widget bodyBuilder() {
     switch (selectedNavBar) {
-      case BottomNavigationBarState.home:
-        return const HomeScreen();
+      case BottomNavigationBarState.homeWorker:
+        return const WorkerHomeScreen();
+      case BottomNavigationBarState.homeEmployer:
+        return const WorkerHomeScreen();
       case BottomNavigationBarState.profile:
         return const ProfileScreen();
       case BottomNavigationBarState.scheduler:
@@ -63,15 +91,7 @@ class _MainScreenState extends State<MainScreen> {
           backgroundColor: Colors.grey.withOpacity(0.1),
           buttonBackgroundColor: Colors.yellow,
           height: 50,
-          items: const <Widget>[
-            Icon(Icons.home, size: 26, color: Color(0xff01b2b8)),
-            Icon(Icons.calendar_month_outlined, size: 26, color: Color(0xff01b2b8)),
-            Icon(Icons.add_outlined, size: 28, color: Color(0xff01b2b8)),
-            Icon(Icons.chat_bubble_outline_sharp,
-                size: 26, color: Color(0xff01b2b8)),
-            Icon(Icons.person_outline_rounded,
-                size: 26, color: Color(0xff01b2b8)),
-          ],
+          items: buildNavigationIcons(),
           animationDuration: const Duration(microseconds: 200),
           index: 0,
           // initial index
@@ -81,7 +101,9 @@ class _MainScreenState extends State<MainScreen> {
               () {
                 switch (index) {
                   case 0:
-                    selectedNavBar = BottomNavigationBarState.home;
+                    selectedNavBar = AuthActions.currUser.userType == "worker"
+                        ? BottomNavigationBarState.homeWorker
+                        : BottomNavigationBarState.homeEmployer;
                     break;
                   case 1:
                     selectedNavBar = BottomNavigationBarState.scheduler;
