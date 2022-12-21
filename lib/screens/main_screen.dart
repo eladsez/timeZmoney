@@ -7,8 +7,7 @@ import '../business_Logic/actions/auth_actions.dart';
 import 'home/home_screen.dart';
 
 enum BottomNavigationBarState {
-  homeWorker,
-  homeEmployer,
+  home,
   explore,
   jobPosting,
   scheduler,
@@ -29,7 +28,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  BottomNavigationBarState selectedNavBar = BottomNavigationBarState.homeWorker;
+  BottomNavigationBarState selectedNavBar = BottomNavigationBarState.home;
 
   @override
   void initState() {
@@ -43,7 +42,7 @@ class _MainScreenState extends State<MainScreen> {
             Icon(Icons.home, size: 26, color: Color(0xff01b2b8)),
             Icon(Icons.calendar_month_outlined,
                 size: 26, color: Color(0xff01b2b8)),
-            Icon(Icons.add_outlined, size: 28, color: Color(0xff01b2b8)),
+            Icon(Icons.search, size: 28, color: Color(0xff01b2b8)),
             Icon(Icons.chat_bubble_outline_sharp,
                 size: 26, color: Color(0xff01b2b8)),
             Icon(Icons.person_outline_rounded,
@@ -51,7 +50,7 @@ class _MainScreenState extends State<MainScreen> {
           ]
         : const [
             Icon(Icons.home, size: 26, color: Color(0xff01b2b8)),
-            Icon(Icons.wb_sunny_outlined, size: 26, color: Color(0xff01b2b8)),
+            Icon(Icons.calendar_month_outlined, size: 26, color: Color(0xff01b2b8)),
             Icon(Icons.add_outlined, size: 28, color: Color(0xff01b2b8)),
             Icon(Icons.chat_bubble_outline_sharp,
                 size: 26, color: Color(0xff01b2b8)),
@@ -65,10 +64,8 @@ class _MainScreenState extends State<MainScreen> {
    */
   Widget bodyBuilder() {
     switch (selectedNavBar) {
-      case BottomNavigationBarState.homeWorker:
-        return const WorkerHomeScreen();
-      case BottomNavigationBarState.homeEmployer:
-        return const WorkerHomeScreen();
+      case BottomNavigationBarState.home:
+        return const HomeScreen();
       case BottomNavigationBarState.profile:
         return const ProfileScreen();
       case BottomNavigationBarState.scheduler:
@@ -101,9 +98,7 @@ class _MainScreenState extends State<MainScreen> {
               () {
                 switch (index) {
                   case 0:
-                    selectedNavBar = AuthActions.currUser.userType == "worker"
-                        ? BottomNavigationBarState.homeWorker
-                        : BottomNavigationBarState.homeEmployer;
+                    selectedNavBar =BottomNavigationBarState.home;
                     break;
                   case 1:
                     selectedNavBar = BottomNavigationBarState.scheduler;

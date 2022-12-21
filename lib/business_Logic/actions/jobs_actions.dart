@@ -31,5 +31,8 @@ class JobsActions {
     return majors;
   }
 
+  // function to retrieve all the jobs of the current employer
+
+
   void uploadJobImage() {}
 }
