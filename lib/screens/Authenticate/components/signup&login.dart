@@ -25,36 +25,47 @@ class _SignupLoginContentState extends State<SignupLoginContent>
     with TickerProviderStateMixin {
   late List<Widget> createAccountContent;
   late List<Widget> loginContent;
-  late TextEditingController emailController;
-  late TextEditingController usernameController;
-  late TextEditingController passwordController;
-  late TextEditingController phoneController;
+  Map<String, TextEditingController> controllers = {};
+  Map<String, GlobalKey<FormState>> formKeys = {};
   AuthActions authActions = AuthActions();
 
-  Widget inputField(String hint, IconData iconData, bool passwd,
-      TextEditingController controller) {
+  Widget inputField(
+      String hint, IconData iconData, bool passwd, String keyName) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 2),
       child: SizedBox(
-        height: 50,
+        height: 70,
         child: Material(
-          elevation: 8,
+          elevation: 25,
           shadowColor: Colors.black87,
           color: Colors.transparent,
-          borderRadius: BorderRadius.circular(30),
-          child: TextField(
-            controller: controller,
-            obscureText: passwd,
-            textAlignVertical: TextAlignVertical.bottom,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30),
-                borderSide: BorderSide.none,
+          borderRadius: BorderRadius.circular(25),
+          child: Form(
+            key: formKeys[keyName],
+            child: TextFormField(
+              validator: HelperFunctions.validatorFunctions(hint),
+              controller: controllers[hint],
+              obscureText: passwd,
+              textAlignVertical: TextAlignVertical.bottom,
+              decoration: InputDecoration(
+                counterText: ' ',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(25),
+                  borderSide: BorderSide.none,
+                ),
+                errorBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(25),
+                  borderSide: BorderSide.none,
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Color(0xff01b2b8)),
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                filled: true,
+                fillColor: Colors.white,
+                hintText: hint,
+                prefixIcon: Icon(iconData),
               ),
-              filled: true,
-              fillColor: Colors.white,
-              hintText: hint,
-              prefixIcon: Icon(iconData),
             ),
           ),
         ),
@@ -158,23 +169,39 @@ class _SignupLoginContentState extends State<SignupLoginContent>
 
   @override
   void initState() {
-    emailController = TextEditingController();
-    passwordController = TextEditingController();
-    usernameController = TextEditingController();
-    phoneController = TextEditingController();
+    controllers["Username"] = TextEditingController();
+    controllers["Email"] = TextEditingController();
+    controllers["Password"] = TextEditingController();
+    controllers["Username"] = TextEditingController();
+    formKeys["Username"] = GlobalKey<FormState>();
+    formKeys["Email_login"] = GlobalKey<FormState>();
+    formKeys["Email_signup"] = GlobalKey<FormState>();
+    formKeys["Password_login"] = GlobalKey<FormState>();
+    formKeys["Password_signup"] = GlobalKey<FormState>();
 
     createAccountContent = [
+      inputField('Username', Ionicons.person_outline, false, "Username"),
+      inputField('Email', Ionicons.mail_outline, false, "Email_signup"),
       inputField(
-          'Username', Ionicons.person_outline, false, usernameController),
-      inputField('Email', Ionicons.mail_outline, false, emailController),
-      inputField( 'Password', Ionicons.lock_closed_outline, true, passwordController),
+          'Password', Ionicons.lock_closed_outline, true, "Password_signup"),
       authButton('Sign Up', () {
+
+        List<bool> invalid = [ // must be init like that
+          !formKeys["Username"]!.currentState!.validate(),
+          !formKeys["Email_signup"]!.currentState!.validate(),
+          !formKeys["Password_signup"]!.currentState!.validate()
+        ];
+
+        if (invalid[0] || invalid[1] || invalid[2]) {
+          return;
+        }
         // when signup is pressed it set the currUser and push the ProfileChooserScreen
-        AuthActions.setCurrUser(CustomUser(
-          username: usernameController.text.trim(),
-          email: emailController.text.trim(),
-          hashPass: passwordController.text.trim(),
-        ));
+        AuthActions.setCurrUser(
+          CustomUser(
+              username: controllers["Username"]!.text.trim(),
+              email: controllers["Email"]!.text.trim(),
+              hashPass: controllers["Password"]!.text.trim()),
+        );
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -185,15 +212,19 @@ class _SignupLoginContentState extends State<SignupLoginContent>
     ];
 
     loginContent = [
-      inputField('Email', Ionicons.mail_outline, false, emailController),
+      inputField('Email', Ionicons.mail_outline, false, "Email_login"),
       inputField(
-          'Password', Ionicons.lock_closed_outline, true, passwordController),
+          'Password', Ionicons.lock_closed_outline, true, "Password_login"),
       authButton('Log In', () {
+        List<bool> invalid = [!formKeys["Email_login"]!.currentState!.validate(), !formKeys["Password_login"]!.currentState!.validate()];
+        if ( invalid[0]|| invalid[1]) {
+          return;
+        }
         authActions.login(
           CustomUser(
-              username: usernameController.text.trim(),
-              email: emailController.text.trim(),
-              hashPass: passwordController.text.trim()),
+              username: controllers["Username"]!.text.trim(),
+              email: controllers["Email"]!.text.trim(),
+              hashPass: controllers["Password"]!.text.trim()),
         );
         FocusScope.of(context).requestFocus(FocusNode());
       }),
@@ -225,10 +256,9 @@ class _SignupLoginContentState extends State<SignupLoginContent>
   void dispose() {
     ChangeScreenAnimation.dispose();
     ChangeScreenAnimation.currentScreen = SignupLoginState.signIn;
-    emailController.dispose();
-    usernameController.dispose();
-    phoneController.dispose();
-    passwordController.dispose();
+    controllers["Username"]?.dispose();
+    controllers["Email"]?.dispose();
+    controllers["Password"]?.dispose();
     loginContent = [];
     createAccountContent = [];
     super.dispose();
@@ -246,7 +276,7 @@ class _SignupLoginContentState extends State<SignupLoginContent>
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 100),
+          padding: const EdgeInsets.only(top: 80),
           child: Stack(
             children: [
               Column(
