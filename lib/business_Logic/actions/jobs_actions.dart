@@ -1,3 +1,5 @@
+import 'package:flutter/src/widgets/framework.dart';
+
 import '../../data_access/firestore_dal.dart';
 import '../models/CustomUser.dart';
 import '../models/Job.dart';
@@ -54,5 +56,14 @@ class JobsActions {
     return users;
 
     void uploadJobImage() {}
+  }
+
+/*
+  * hire a worker for a job
+ */
+  void hireWorker(Job job, String? user_uid) {
+    // TODO: implement hireWorker
+    // job.signedWorkers.add(user_uid);
+    // das.updateJob(job);
   }
 }

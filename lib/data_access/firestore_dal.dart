@@ -104,6 +104,8 @@ class DataAccessService {
     await _db.collection("jobs").add(job.toMap());
   }
 
+
+
   /*
    * get all the jobs in the job collection
    * TODO: should change to - all the jobs that their date not already passed

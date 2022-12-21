@@ -1,5 +1,6 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:time_z_money/screens/profile/profile_screen.dart';
 
 import '../../../business_Logic/actions/jobs_actions.dart';
 import '../../../business_Logic/models/CustomUser.dart';
@@ -19,6 +20,8 @@ class _BuildApplicantsListState extends State<BuildApplicantsList> {
   @override
   Widget build(BuildContext context) {
     List uids = widget.job.signedWorkers;
+    // init a boolesn list in the same size as the uids list to false
+    List<bool> taped = List.filled(uids.length, false);
     return Column(
       children: [
         const SizedBox(
@@ -50,8 +53,24 @@ class _BuildApplicantsListState extends State<BuildApplicantsList> {
                       backgroundImage:
                           NetworkImage(applicant![index].profileImageURL),
                     ),
-                    title: Text(applicant![index].username),
-                    subtitle: Text(applicant![index].email),
+                    title: Text(applicant[index].username),
+                    subtitle: Text(applicant[index].email),
+                    trailing: IconButton(
+                      onPressed: () => setState(() {
+                        taped[index] = !(taped[index]);
+                      }),
+                          //TODO: finish the logic of the button - add the worker to the job
+                          // JobsActions().hireWorker(widget.job, applicant[index].uid);
+                      icon: Icon(
+                          Icons.check,
+                          size: 30,
+                          // TODO: change color to green if tapped
+                          color: taped[index] ? Colors.green : Colors.grey,)
+                        ),
+                    //TODO: change the navigate to a profile card pop up
+                    onTap: () => Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => const ProfileScreen()
+                    ))
                   );
                 }
                 return const Center(
