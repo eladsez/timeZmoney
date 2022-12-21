@@ -15,13 +15,6 @@ class BuildApplicantsList extends StatefulWidget {
 }
 
 class _BuildApplicantsListState extends State<BuildApplicantsList> {
-  Future<bool> _checkConnection() async {
-    var connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.mobile) {
-      return true;
-    }
-    return false;
-  }
 
   @override
   Widget build(BuildContext context) {

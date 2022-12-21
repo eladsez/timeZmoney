@@ -15,13 +15,7 @@ class JobDetails extends StatefulWidget {
 }
 
 class _JobDetailsState extends State<JobDetails> {
-  Future<bool> _checkConnection() async {
-    var connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.mobile) {
-      return true;
-    }
-    return false;
-  }
+
 
   @override
   Widget build(BuildContext context) {

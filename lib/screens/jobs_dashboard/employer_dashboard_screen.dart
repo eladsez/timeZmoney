@@ -88,7 +88,7 @@ class _EmployerDashboardScreenState extends State<EmployerDashboardScreen> {
                                     width: 140,
                                     fit: BoxFit.cover,
                                     image: ResizeImage(
-                                        NetworkImage(job![index].imageUrl),
+                                        NetworkImage(job[index].imageUrl),
                                         height: 110,
                                         width: 140)),
                               ),
@@ -96,7 +96,7 @@ class _EmployerDashboardScreenState extends State<EmployerDashboardScreen> {
                                 height: 10,
                               ),
                               Text(
-                                job![index].title,
+                                job[index].title,
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 1,
                                 style: const TextStyle(
@@ -111,7 +111,7 @@ class _EmployerDashboardScreenState extends State<EmployerDashboardScreen> {
                                     width: 10,
                                   ),
                                   Text(
-                                    job![index].district,
+                                    job[index].district,
                                     style: const TextStyle(
                                         color: Colors.black45),
                                   ),
@@ -128,7 +128,7 @@ class _EmployerDashboardScreenState extends State<EmployerDashboardScreen> {
                                     width: 10,
                                   ),
                                   Text(
-                                    job![index].salary.toString(),
+                                    job[index].salary.toString(),
                                     style: const TextStyle(
                                         color: Colors.black45),
                                   )
@@ -145,7 +145,7 @@ class _EmployerDashboardScreenState extends State<EmployerDashboardScreen> {
                                     width: 10,
                                   ),
                                   Text(
-                                    job![index].date
+                                    job[index].date
                                         .toDate()
                                         .toString()
                                         .split(" ")[0],
@@ -158,7 +158,7 @@ class _EmployerDashboardScreenState extends State<EmployerDashboardScreen> {
                             ],
                           ),
                           openBuilder: (context, action) =>
-                              JobDetails(job: job![index]),
+                              JobDetails(job: job[index]),
                         ),
                       );
                     }
