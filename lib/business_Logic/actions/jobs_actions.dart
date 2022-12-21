@@ -1,5 +1,6 @@
 import '../../data_access/firestore_dal.dart';
 import '../models/Job.dart';
+import 'auth_actions.dart';
 
 class JobsActions {
   final DataAccessService das = DataAccessService();
@@ -32,6 +33,9 @@ class JobsActions {
   }
 
   // function to retrieve all the jobs of the current employer
+Future<List<Job>> getEmployerJobs() async {
+    return await das.getJobsOfEmployer(AuthActions.currUser.uid);
+  }
 
 
   void uploadJobImage() {}
