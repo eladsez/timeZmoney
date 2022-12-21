@@ -42,6 +42,22 @@ class DataAccessService {
   }
 
   /*
+   * Get a CustomUser by his uid
+   */
+  Future<CustomUser?> getCustomUserByUid(String uid) async {
+    QuerySnapshot<Map<String, dynamic>> snapshot = await _db
+        .collection("users")
+        .where('uid', isEqualTo: uid)
+        .get();
+    if (snapshot.docs.isEmpty) {
+      print("User doesn't exist yet\n");
+    } else if (snapshot.docs.isNotEmpty) {
+      return CustomUser.fromMap(snapshot.docs.first.data());
+    }
+    return null;
+  }
+
+  /*
    * This function return list of string
    * the list contain the job majors available in the database
    * used to display the majors tabs
@@ -63,6 +79,7 @@ class DataAccessService {
         .map((doc) => Job.fromMap(doc.data()))
         .toList();
   }
+
 
   /*
    * This function get as an argument major of a job and return all the jobs under this major

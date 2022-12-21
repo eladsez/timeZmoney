@@ -1,7 +1,9 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import '../../../business_Logic/actions/auth_actions.dart';
 import '../../../business_Logic/models/Job.dart';
+import 'build_applicants_list.dart';
 
 class JobDetails extends StatefulWidget {
   const JobDetails({super.key, required this.job});
@@ -50,7 +52,7 @@ class _JobDetailsState extends State<JobDetails> {
                     title: Text(
                       widget.job.title.toUpperCase(),
                       style: const TextStyle(
-                          color: Colors.white,
+                          color: Colors.black,
                           fontWeight: FontWeight.bold,
                           fontSize: 14,
                           letterSpacing: 1.8),
@@ -123,11 +125,17 @@ class _JobDetailsState extends State<JobDetails> {
                   Text(
                     widget.job.description,
                     style: const TextStyle(fontSize: 18, color: Colors.black54),
-                  )
+                  ),
+
+                  // if the current user is an employer, show a list of workers who applied for this job
+                  AuthActions.currUser.userType == "worker"
+                      ? Container() : BuildApplicantsList(job: widget.job),
+
                 ],
               ),
             ),
-          )),
+          )
+      ),
       persistentFooterAlignment: AlignmentDirectional.center,
       persistentFooterButtons: [
         FloatingActionButton.extended(
