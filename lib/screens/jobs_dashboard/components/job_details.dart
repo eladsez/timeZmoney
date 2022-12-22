@@ -2,6 +2,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:time_z_money/screens/jobs_dashboard/components/apply_to_job.dart';
+import '../../../Business_Logic/models/CustomUser.dart';
 import '../../../business_Logic/actions/auth_actions.dart';
 import '../../../business_Logic/models/Job.dart';
 import 'build_applicants_list.dart';
@@ -76,42 +77,72 @@ class _JobDetailsState extends State<JobDetails> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(
-                    height: 40,
+                    height: 10,
                   ),
                   Row(
                     children: [
-                      RatingBar.builder(
-                        itemSize: 25,
-                        initialRating: 3,
-                        minRating: 1,
-                        direction: Axis.horizontal,
-                        allowHalfRating: true,
-                        itemCount: 5,
-                        itemPadding:
-                            const EdgeInsets.symmetric(horizontal: 4.0),
-                        itemBuilder: (context, _) => const Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                        ),
-                        onRatingUpdate: (rating) {
-                          print(rating);
-                        },
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
                       const Icon(
                         Icons.location_on,
                         color: Colors.black38,
                       ),
-                      const SizedBox(
-                        width: 10,
-                      ),
+
                       Text(
                         widget.job.district,
                         style: const TextStyle(
                             color: Colors.black38, fontSize: 16),
                       ),
+
+                      // RatingBar.builder(
+                      //   itemSize: 25,
+                      //   initialRating: 3,
+                      //   minRating: 1,
+                      //   direction: Axis.horizontal,
+                      //   allowHalfRating: true,
+                      //   itemCount: 5,
+                      //   itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                      //   itemBuilder: (context, _) => const Icon(
+                      //     Icons.star,
+                      //     color: Colors.amber,
+                      //   ),
+                      //   onRatingUpdate: (rating) {
+                      //     print(rating);
+                      //   },
+                      // ),
+                      // direction button that will be used to navigate to the map screen
+                      // to show the location of the job
+                      const Spacer(),
+                      GestureDetector(
+                        onTap: () {
+                          //TODO: navigate to the map screen
+                          // Navigator.of(context).push(MaterialPageRoute(
+                          //     builder: (context) => MapScreen()));
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: const Color(0xff01b2b8),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: const [
+                              Icon(
+                                Icons.directions,
+                                color: Colors.white,
+                              ),
+                              SizedBox(width: 8),
+                              Text(
+                                'Direction',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+
                     ],
                   ),
                   const SizedBox(
@@ -124,21 +155,12 @@ class _JobDetailsState extends State<JobDetails> {
                   // if the current user is an employer, show a list of workers who applied for this job
                   // TODO: replace the Container with the option to apply for the job
                   AuthActions.currUser.userType == "worker"
-                      ? ApplyToJob(job: widget.job) : BuildApplicantsList(job: widget.job),
+                      ? ApplyToJob(job: widget.job, userUid: AuthActions.currUser.uid,) : BuildApplicantsList(job: widget.job),
                 ],
               ),
             ),
           )
       ),
-      persistentFooterAlignment: AlignmentDirectional.center,
-      persistentFooterButtons: [
-        FloatingActionButton.extended(
-          onPressed: () {}, // TODO: add map logic and screen
-          icon: const Icon(Icons.directions),
-          label: const Text("Directions"),
-          backgroundColor: const Color(0xff01b2b8),
-        )
-      ],
     );
   }
 }
