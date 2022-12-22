@@ -52,8 +52,6 @@ class JobsActions {
       }
     }
     return users;
-
-    void uploadJobImage() {}
   }
 
   Future<void> addUserToWaitList(Job job) async {
@@ -66,5 +64,9 @@ class JobsActions {
     // TODO: implement hireWorker
     // job.signedWorkers.add(user_uid);
     // das.updateJob(job);
+  }
+
+  Future<void> postJob(Job nowJob) async{
+    await das.createJob(nowJob);
   }
 }

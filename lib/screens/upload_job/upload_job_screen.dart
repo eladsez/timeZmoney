@@ -1,9 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:get/get.dart';
+import 'package:time_z_money/business_Logic/models/Job.dart';
+import '../../business_Logic/actions/auth_actions.dart';
 import '../../business_Logic/actions/jobs_actions.dart';
 import 'Component/button.dart';
 import 'Component/inputfiled.dart';
+import 'Component/places_search.dart';
 
 class UploadJobScreen extends StatefulWidget {
   const UploadJobScreen({Key? key}) : super(key: key);
@@ -15,6 +19,8 @@ class UploadJobScreen extends StatefulWidget {
 class _UploadJobScreenState extends State<UploadJobScreen> {
   late final TextEditingController titleController;
   late final TextEditingController descriptionController;
+  late final TextEditingController districtController;
+  late final TextEditingController geoPointController;
   late final JobsActions jobsActions = JobsActions();
   late DateTime selectedDate = DateTime.now();
   late String startTime;
@@ -24,9 +30,6 @@ class _UploadJobScreenState extends State<UploadJobScreen> {
   List<int> oneToTen =
       List<int>.generate(10, (i) => i + 1); // list for how much workers needed
 
-  int selectedColor = 0;
-  List<Color> colorList = [Colors.brown, Colors.greenAccent, Colors.green];
-
   @override
   void initState() {
     startTime = DateFormat('hh:mm a').format(DateTime.now()).toString();
@@ -35,11 +38,15 @@ class _UploadJobScreenState extends State<UploadJobScreen> {
         .toString();
     titleController = TextEditingController();
     descriptionController = TextEditingController();
+    districtController = TextEditingController();
+    geoPointController = TextEditingController();
     super.initState();
   }
 
   @override
   void dispose() {
+    districtController.dispose();
+    geoPointController.dispose();
     titleController.dispose();
     descriptionController.dispose();
     super.dispose();
@@ -167,93 +174,113 @@ class _UploadJobScreenState extends State<UploadJobScreen> {
                   borderRadius: BorderRadius.circular(15),
                 ),
               ),
-              //Color
-              Container(
-                margin: const EdgeInsets.symmetric(
-                    vertical: 10.0, horizontal: 10.0),
-                alignment: Alignment.centerLeft,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Color',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.left,
-                    ),
-                    Row(
-                      children: List.generate(
-                        colorList.length,
-                        (index) => Padding(
-                          padding: const EdgeInsets.only(right: 5.0, top: 8),
-                          child: InkWell(
-                            onTap: () {
-                              setState(() {
-                                selectedColor = index;
-                              });
-                            },
-                            borderRadius: BorderRadius.circular(50),
-                            child: CircleAvatar(
-                              backgroundColor: colorList[index],
-                              child: index == selectedColor
-                                  ? const Icon(
-                                      Icons.check,
-                                      color: Colors.white,
-                                    )
-                                  : null,
-                            ),
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
+              SearchPlace(
+                  districtController: districtController,
+                  geoPointController: geoPointController),
+              const SizedBox(
+                height: 70,
               ),
             ],
           ),
         ),
       ),
-      floatingActionButton: MyButton(
+      floatingActionButton: PostButton(
           label: 'Post Job',
-          onTap: () {
-            validateDate();
+          onTap: () async {
+            if (!validateFileds()) {
+              // we print a dialog here in the function if not valid
+              return;
+            }
+            try {
+              await jobsActions.postJob(Job( // TODO: add salary filed and image upload filed (image wil be optional)
+                  availableSpots: selectedWorkersNeeded,
+                  date: Timestamp.fromDate(selectedDate),
+                  description: descriptionController.text,
+                  employerUid: AuthActions.currUser.uid,
+                  location: GeoPoint(
+                      double.parse(geoPointController.text.split(",")[0]),
+                      double.parse(geoPointController.text.split(",")[1])),
+                  salary: 5,
+                  signedWorkers: [],
+                  title: titleController.text,
+                  major: selectedMajor,
+                  imageUrl:
+                      "https://img.freepik.com/free-vector/excited-mom-son-having-fun-woman-boy-jumping-dancing-flat-illustration_74855-10616.jpg",
+                  district: districtController.text,
+                  approvedWorkers: [],
+                  amountNeeded: selectedWorkersNeeded));
+              showModalBottomSheet(
+                  // TODO: replace with this snack shit
+                  barrierColor: Colors.black.withOpacity(0.3),
+                  context: context,
+                  builder: ((context) => StatefulBuilder(
+                      builder: ((context, setState) => Container(
+                          padding: const EdgeInsets.all(20),
+                          child: Row(children: const [
+                            Icon(Icons.verified),
+                            SizedBox(width: 20),
+                            Text("Job Posted successfully!"),
+                          ]))))));
+            } catch (e) {
+              showModalBottomSheet(
+                  // TODO: replace with this snack shit
+                  barrierColor: Colors.black.withOpacity(0.3),
+                  context: context,
+                  builder: ((context) => StatefulBuilder(
+                      builder: ((context, setState) => Container(
+                          padding: const EdgeInsets.all(20),
+                          child: Row(children: const [
+                            Icon(
+                              Icons.warning,
+                              color: Colors.red,
+                            ),
+                            SizedBox(width: 20),
+                            Text(
+                              "Unknown error in posting jobs",
+                              style: TextStyle(color: Colors.red),
+                            ),
+                          ]))))));
+            }
           }),
     );
   }
 
   AppBar appBar() {
     return AppBar(
+      toolbarHeight: 35,
       title: const Center(
           child: Text(
         'Gig Posting',
         style: TextStyle(
             fontSize: 26, fontWeight: FontWeight.bold, color: Colors.black),
       )),
-      elevation: 2,
+      elevation: 0,
       backgroundColor: Colors.white,
     );
   }
 
-  validateDate() {
-    if (titleController.text.isNotEmpty &&
-        descriptionController.text.isNotEmpty) {
-      // addTaskToDb(); TODO:
-    } else if (titleController.text.isEmpty ||
-        descriptionController.text.isEmpty) {
-      Get.snackbar(
-        'Required',
-        'All fileds are required',
-        backgroundColor: Colors.white,
-        snackPosition: SnackPosition.BOTTOM,
-        colorText: Colors.red,
-        icon: const Icon(
-          Icons.warning_amber_rounded,
-          color: Colors.red,
-        ),
-      );
-    } else {
-      print('######## Error Here ! ########'); // TODO:
+  bool validateFileds() {
+    if (geoPointController.text.isEmpty ||
+        districtController.text.isEmpty ||
+        titleController.text.isEmpty ||
+        descriptionController.text.isEmpty ||
+        selectedMajor == "None" ||
+        selectedWorkersNeeded == 0) {
+      showModalBottomSheet(
+          // TODO: replace with this snack shit
+          barrierColor: Colors.black.withOpacity(0.3),
+          context: context,
+          builder: ((context) => StatefulBuilder(
+              builder: ((context, setState) => Container(
+                  padding: const EdgeInsets.all(20),
+                  child: Row(children: const [
+                    Icon(Icons.warning,),
+                    SizedBox(width: 20),
+                    Text("All fileds are require"),
+                  ]))))));
+      return false;
     }
+    return true;
   }
 
   getDateFromUser() async {

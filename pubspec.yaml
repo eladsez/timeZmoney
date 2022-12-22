@@ -53,8 +53,9 @@ dependencies:
   image_picker: ^0.8.6
   flutter_rating_bar: ^4.0.1
   get: ^4.6.5
-
-
+  flutter_google_places_hoc081098: ^1.0.0-nullsafety.5
+  google_api_headers: ^1.1.1
+  google_maps_webservice: ^0.0.20-nullsafety.5
 
 
 dev_dependencies:

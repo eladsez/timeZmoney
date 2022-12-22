@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class MyButton extends StatelessWidget {
-  const MyButton({required this.label, required this.onTap, Key? key})
+class PostButton extends StatelessWidget {
+  const PostButton({required this.label, required this.onTap, Key? key})
       : super(key: key);
 
   final String label;
