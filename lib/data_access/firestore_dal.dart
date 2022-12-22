@@ -34,7 +34,8 @@ class DataAccessService {
         .where('uid', isEqualTo: currUser?.uid)
         .get();
     if (snapshot.docs.isEmpty) {
-      print("User doesn't exist yet\n");
+      //TODO: commentted out the print statement because it was printing too much
+      // print("User doesn't exist yet\n");
     } else if (snapshot.docs.isNotEmpty) {
       return CustomUser.fromMap(snapshot.docs.first.data());
     }
@@ -50,7 +51,8 @@ class DataAccessService {
         .where('uid', isEqualTo: uid)
         .get();
     if (snapshot.docs.isEmpty) {
-      print("User doesn't exist yet\n");
+      //TODO: commentted out the print statement because it was printing too much
+      // print("User doesn't exist yet\n");
     } else if (snapshot.docs.isNotEmpty) {
       return CustomUser.fromMap(snapshot.docs.first.data());
     }
