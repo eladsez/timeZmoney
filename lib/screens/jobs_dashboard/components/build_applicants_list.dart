@@ -70,12 +70,11 @@ class _BuildApplicantsListState extends State<BuildApplicantsList> {
                       icon: Icon(
                           Icons.check,
                           size: 30,
-                          // TODO: change color to green if tapped
                           color: userChosen[index] ? Colors.green : Colors.grey,)
                         ),
                     //TODO: change the navigate to a profile card pop up
                     onTap: () => Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => const ProfileScreen()
+                        builder: (context) => ProfileScreen(user: applicant[index],)
                     ))
                   );
                 }

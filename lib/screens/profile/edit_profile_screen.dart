@@ -62,7 +62,7 @@ class EditProfileScreenState extends State<EditProfileScreen> {
                 onClicked: () async {
                   await userActions.updateProfileImage();
                   setState(() {});
-                }),
+                }, user: AuthActions.currUser,),
             const SizedBox(height: 24),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

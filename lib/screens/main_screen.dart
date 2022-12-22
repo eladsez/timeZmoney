@@ -67,7 +67,7 @@ class _MainScreenState extends State<MainScreen> {
       case BottomNavigationBarState.home:
         return const HomeScreen();
       case BottomNavigationBarState.profile:
-        return const ProfileScreen();
+        return ProfileScreen(user: AuthActions.currUser,);
       case BottomNavigationBarState.scheduler:
         return const CalendarScreen();
       // case BottomNavigationBarState.setting:
