@@ -1,6 +1,7 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:time_z_money/screens/jobs_dashboard/components/apply_to_job.dart';
 import '../../../business_Logic/actions/auth_actions.dart';
 import '../../../business_Logic/models/Job.dart';
 import 'build_applicants_list.dart';
@@ -123,7 +124,7 @@ class _JobDetailsState extends State<JobDetails> {
                   // if the current user is an employer, show a list of workers who applied for this job
                   // TODO: replace the Container with the option to apply for the job
                   AuthActions.currUser.userType == "worker"
-                      ? Container() : BuildApplicantsList(job: widget.job),
+                      ? ApplyToJob(job: widget.job) : BuildApplicantsList(job: widget.job),
                 ],
               ),
             ),

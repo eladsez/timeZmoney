@@ -103,8 +103,12 @@ class DataAccessService {
     }
     await _db.collection("jobs").add(job.toMap());
   }
-
-
+  //
+  // Future<void> addWorkerToWaitList(Job job) async {
+  //   await _db.collection("jobs").doc(job.id).update({
+  //     "signedWorkers": FieldValue.arrayUnion([AuthActions.currUser.uid])
+  //   });
+  // }
 
   /*
    * get all the jobs in the job collection

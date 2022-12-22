@@ -1,5 +1,3 @@
-import 'package:flutter/src/widgets/framework.dart';
-
 import '../../data_access/firestore_dal.dart';
 import '../models/CustomUser.dart';
 import '../models/Job.dart';
@@ -58,6 +56,9 @@ class JobsActions {
     void uploadJobImage() {}
   }
 
+  // Future<void> addUserToWaitList(Job job) async {
+  //   await das.addWorkerToWaitList(job);
+  // }
 /*
   * hire a worker for a job
  */
