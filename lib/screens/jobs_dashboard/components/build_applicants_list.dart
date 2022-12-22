@@ -68,7 +68,7 @@ class _BuildApplicantsListState extends State<BuildApplicantsList> {
           mainAxisSize: MainAxisSize.min,
           children: [
             ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 160),
+              constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.48),
               child: ListView.builder(
                 shrinkWrap: true,
                 itemCount: appliedUserChosen.length,
@@ -137,7 +137,7 @@ class _BuildApplicantsListState extends State<BuildApplicantsList> {
               endIndent: 10,
             ),
             ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 160),
+              constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.30),
               child: ListView.builder(
                 shrinkWrap: true,
                 itemCount: approvedUserChosen.length,
