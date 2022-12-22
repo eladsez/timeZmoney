@@ -204,12 +204,17 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
                                                             const SizedBox(
                                                               width: 10,
                                                             ),
-                                                            Text(
+                                                            Flexible(
+                                                                child: Text(
                                                               job.district,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              maxLines: 1,
                                                               style: const TextStyle(
                                                                   color: Colors
                                                                       .black45),
-                                                            ),
+                                                            )),
                                                           ],
                                                         ),
                                                         cardSpace,
@@ -276,7 +281,9 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
                                                     ),
                                                 openBuilder:
                                                     (context, action) =>
-                                                        JobDetails(job: job,)),
+                                                        JobDetails(
+                                                          job: job,
+                                                        )),
                                           ),
                                         ),
                                       )
