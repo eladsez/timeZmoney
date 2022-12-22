@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:time_z_money/business_Logic/models/CustomUser.dart';
 
 class Stats extends StatelessWidget {
-  const Stats({super.key});
+  const Stats(CustomUser user, {super.key});
 
   @override
   Widget build(BuildContext context) => Row(
