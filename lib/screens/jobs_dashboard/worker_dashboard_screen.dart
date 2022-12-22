@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/animate.dart';
 import 'package:flutter_animate/effects/fade_effect.dart';
 import 'package:flutter_animate/effects/slide_effect.dart';
-import 'package:time_z_money/Business_Logic/models/CustomUser.dart';
 import 'package:time_z_money/screens/jobs_dashboard/components/job_details.dart';
-
 import '../../business_Logic/actions/jobs_actions.dart';
 import '../Loading_Screens/loading_screen.dart';
 
