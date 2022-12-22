@@ -2,6 +2,7 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:time_z_money/screens/profile/profile_screen.dart';
 import 'package:time_z_money/screens/scheduler/scheduler.dart';
+import 'package:time_z_money/screens/upload_job/upload_job_screen.dart';
 
 import '../business_Logic/actions/auth_actions.dart';
 import 'home/home_screen.dart';
@@ -68,10 +69,10 @@ class _MainScreenState extends State<MainScreen> {
         return const HomeScreen();
       case BottomNavigationBarState.profile:
         return ProfileScreen(user: AuthActions.currUser,);
+      case BottomNavigationBarState.jobPosting:
+        return const UploadJobScreen();
       case BottomNavigationBarState.scheduler:
         return const CalendarScreen();
-      // case BottomNavigationBarState.setting:
-      //   return const Settings();
       default:
         return Container();
     }
@@ -102,6 +103,9 @@ class _MainScreenState extends State<MainScreen> {
                     break;
                   case 1:
                     selectedNavBar = BottomNavigationBarState.scheduler;
+                    break;
+                  case 2:
+                    selectedNavBar = BottomNavigationBarState.jobPosting;
                     break;
                   case 4:
                     selectedNavBar = BottomNavigationBarState.profile;
