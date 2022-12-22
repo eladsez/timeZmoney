@@ -1,6 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:time_z_money/screens/splash_screen.dart';
-import 'package:time_z_money/screens/upload_job/upload_job_screen.dart';
 import 'utils/firebase_options.dart';
 import 'package:flutter/material.dart';
 
