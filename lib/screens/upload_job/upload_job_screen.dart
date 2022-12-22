@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:get/get.dart';
+import '../../business_Logic/actions/jobs_actions.dart';
 import 'Component/button.dart';
 import 'Component/inputfiled.dart';
 
@@ -13,60 +14,93 @@ class UploadJobScreen extends StatefulWidget {
 
 class _UploadJobScreenState extends State<UploadJobScreen> {
   late final TextEditingController titleController;
-  late final TextEditingController noteController;
+  late final TextEditingController descriptionController;
+  late final JobsActions jobsActions = JobsActions();
+  late DateTime selectedDate = DateTime.now();
+  late String startTime;
+  late String endTime;
+  String selectedMajor = "None";
+  int selectedWorkersNeeded = 0;
+  List<int> oneToTen =
+      List<int>.generate(10, (i) => i + 1); // list for how much workers needed
 
-  late DateTime selecteDate = DateTime.now();
-  late String startTime =
-      DateFormat('hh:mm a').format(DateTime.now()).toString();
-  String endTime = DateFormat('hh:mm a')
-      .format(DateTime.now().add(const Duration(minutes: 15)))
-      .toString();
-  int selectedRemind = 5;
-  List<int> remindList = [5, 10, 15, 20];
-  String selectedRepeat = 'None';
-  List<String> repeatList = ['None', 'Daily', 'Weekly', 'Monthly'];
   int selectedColor = 0;
   List<Color> colorList = [Colors.brown, Colors.greenAccent, Colors.green];
 
   @override
   void initState() {
+    startTime = DateFormat('hh:mm a').format(DateTime.now()).toString();
+    endTime = DateFormat('hh:mm a')
+        .format(DateTime.now().add(const Duration(minutes: 15)))
+        .toString();
     titleController = TextEditingController();
-    noteController = TextEditingController();
+    descriptionController = TextEditingController();
     super.initState();
   }
 
   @override
   void dispose() {
     titleController.dispose();
-    noteController.dispose();
+    descriptionController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _appBar(),
-      body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: SingleChildScrollView(
+      appBar: appBar(),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             children: [
-              //Title
               InputField(
                 title: 'Title',
-                hint: 'Enter your title here...',
+                hint: 'Enter gig title here...',
                 fieldController: titleController,
               ),
-              //Note
+
               InputField(
-                title: 'Note',
-                hint: 'Enter your note here...',
-                fieldController: noteController,
+                title: 'Description',
+                hint: 'Enter gig Description here...',
+                fieldController: descriptionController,
+                highet: 100,
               ),
-              //Date
+              FutureBuilder(
+                future: jobsActions.getJobsMajors(),
+                builder: (context, majorsSnap) => InputField(
+                  title: 'Gig major',
+                  hint: selectedMajor,
+                  child: DropdownButton(
+                    onChanged: (String? newMajor) {
+                      setState(() {
+                        selectedMajor = newMajor!;
+                      });
+                    },
+                    items: majorsSnap.data != null
+                        ? majorsSnap.data!
+                            .map<DropdownMenuItem<String>>(
+                              (major) => DropdownMenuItem<String>(
+                                value: major,
+                                child: Text(major),
+                              ),
+                            )
+                            .toList()
+                        : [const DropdownMenuItem<String>(child: Text(" "))],
+                    icon: const Icon(
+                      Icons.keyboard_arrow_down,
+                      size: 32,
+                      color: Colors.grey,
+                    ),
+                    elevation: 3,
+                    underline: Container(height: 0),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                ),
+              ),
               InputField(
                 title: 'Date',
-                hint: DateFormat.yMd().format(selecteDate),
+                hint: DateFormat.yMd().format(selectedDate),
                 child: IconButton(
                   onPressed: () => getDateFromUser(),
                   icon: const Icon(
@@ -106,49 +140,20 @@ class _UploadJobScreenState extends State<UploadJobScreen> {
                   ),
                 ],
               ),
-              //Remind
               InputField(
-                title: 'Date',
-                hint: '$selectedRemind minutes early',
-                child: DropdownButton(
-                  onChanged: (String? newVal) {
+                title: 'Workers needed',
+                hint: '${selectedWorkersNeeded.toString()} needed',
+                child: DropdownButton<int>(
+                  onChanged: (int? value) {
                     setState(() {
-                      selectedRemind = int.parse(newVal!);
+                      selectedWorkersNeeded = value!;
                     });
                   },
-                  items: remindList
-                      .map<DropdownMenuItem<String>>(
-                        (e) => DropdownMenuItem<String>(
-                          value: e.toString(),
-                          child: Text('$e minutes'),
-                        ),
-                      )
-                      .toList(),
-                  icon: const Icon(
-                    Icons.keyboard_arrow_down,
-                    size: 32,
-                    color: Colors.grey,
-                  ),
-                  elevation: 3,
-                  underline: Container(height: 0),
-                  borderRadius: BorderRadius.circular(15),
-                ),
-              ),
-              //Repeat
-              InputField(
-                title: 'Date',
-                hint: selectedRepeat,
-                child: DropdownButton<String>(
-                  onChanged: (String? value) {
-                    setState(() {
-                      selectedRepeat = value!;
-                    });
-                  },
-                  items: repeatList
-                      .map<DropdownMenuItem<String>>(
-                        (e) => DropdownMenuItem<String>(
-                          value: e,
-                          child: Text(e),
+                  items: oneToTen
+                      .map<DropdownMenuItem<int>>(
+                        (number) => DropdownMenuItem<int>(
+                          value: number,
+                          child: Text('${number.toString()} needed'),
                         ),
                       )
                       .toList(),
@@ -216,32 +221,25 @@ class _UploadJobScreenState extends State<UploadJobScreen> {
     );
   }
 
-  AppBar _appBar() {
+  AppBar appBar() {
     return AppBar(
-      title: const Text(
-        'Add Task',
-        style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
-      ),
-      elevation: 0,
+      title: const Center(
+          child: Text(
+        'Gig Posting',
+        style: TextStyle(
+            fontSize: 26, fontWeight: FontWeight.bold, color: Colors.black),
+      )),
+      elevation: 2,
       backgroundColor: Colors.white,
-      leading: IconButton(
-        onPressed: () {
-          Navigator.of(context).pop();
-        },
-        icon: const Icon(
-          Icons.arrow_back_ios,
-          size: 24,
-          color: Colors.grey,
-        ),
-      ),
     );
   }
 
   validateDate() {
-    if (titleController.text.isNotEmpty && noteController.text.isNotEmpty) {
+    if (titleController.text.isNotEmpty &&
+        descriptionController.text.isNotEmpty) {
       // addTaskToDb(); TODO:
-      Get.back();
-    } else if (titleController.text.isEmpty || noteController.text.isEmpty) {
+    } else if (titleController.text.isEmpty ||
+        descriptionController.text.isEmpty) {
       Get.snackbar(
         'Required',
         'All fileds are required',
@@ -259,15 +257,15 @@ class _UploadJobScreenState extends State<UploadJobScreen> {
   }
 
   getDateFromUser() async {
-    DateTime? _pickedDate = await showDatePicker(
+    DateTime? pickedDate = await showDatePicker(
       context: context,
-      initialDate: selecteDate,
+      initialDate: selectedDate,
       firstDate: DateTime(2015),
       lastDate: DateTime(2030),
     );
-    if (_pickedDate != null) {
+    if (pickedDate != null) {
       setState(() {
-        selecteDate = _pickedDate;
+        selectedDate = pickedDate;
       });
     } else
       print('picked date empty !');

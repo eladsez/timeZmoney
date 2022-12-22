@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 
 class InputField extends StatelessWidget {
-  const InputField(
-      {Key? key,
-      required this.title,
-      required this.hint,
-      this.fieldController,
-      this.child})
-      : super(key: key);
 
   final String title;
   final String hint;
   final TextEditingController? fieldController;
   final Widget? child;
+  final double highet;
+
+  const InputField(
+      {Key? key,
+        required this.title,
+        required this.hint,
+        this.fieldController,
+        this.child, this.highet = 52})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,7 @@ class InputField extends StatelessWidget {
           Container(
             alignment: Alignment.center,
             width: MediaQuery.of(context).size.width * 0.95,
-            height: 52,
+            height: highet,
             padding: const EdgeInsets.only(left: 8.0),
             margin: const EdgeInsets.only(
               top: 5,
@@ -42,7 +44,7 @@ class InputField extends StatelessWidget {
                 Expanded(
                   child: TextFormField(
                     style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold),
+                        fontSize: 16, fontWeight: FontWeight.w400),
                     obscureText: false,
                     autocorrect: false,
                     decoration: InputDecoration(
@@ -53,6 +55,7 @@ class InputField extends StatelessWidget {
                     ),
                     controller: fieldController,
                     readOnly: child != null ? true : false,
+                    maxLines: highet != 52 ? 5 : 1,
                   ),
                 ),
                 Container(
