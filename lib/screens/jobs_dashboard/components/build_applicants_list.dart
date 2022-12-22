@@ -68,7 +68,7 @@ class _BuildApplicantsListState extends State<BuildApplicantsList> {
           mainAxisSize: MainAxisSize.min,
           children: [
             ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.48),
+              constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.41),
               child: ListView.builder(
                 shrinkWrap: true,
                 itemCount: appliedUserChosen.length,
@@ -87,7 +87,7 @@ class _BuildApplicantsListState extends State<BuildApplicantsList> {
                                 NetworkImage(applicantApplied![index].profileImageURL),
                                 radius: 13,
                               ),
-                              title: Text(applicantApplied[index].username),
+                              title: Text(applicantApplied[index].username, style: const TextStyle(fontSize: 12), overflow: TextOverflow.ellipsis,),
                               // subtitle: Text(applicantApplied[index].email),
                               trailing: IconButton(
                                   onPressed: () => setState(() {
@@ -109,7 +109,7 @@ class _BuildApplicantsListState extends State<BuildApplicantsList> {
                                   }),
                                   icon: Icon(
                                     Icons.check,
-                                    size: 30,
+                                    size: 25,
                                     color: appliedUserChosen[index] ? Colors.green : Colors.grey,)
                               ),
                               onTap: () => Navigator.push(context, MaterialPageRoute(
@@ -137,7 +137,7 @@ class _BuildApplicantsListState extends State<BuildApplicantsList> {
               endIndent: 10,
             ),
             ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.30),
+              constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.41),
               child: ListView.builder(
                 shrinkWrap: true,
                 itemCount: approvedUserChosen.length,
@@ -156,7 +156,7 @@ class _BuildApplicantsListState extends State<BuildApplicantsList> {
                                 NetworkImage(applicantApproved![index].profileImageURL),
                                 radius: 13,
                               ),
-                              title: Text(applicantApproved[index].username),
+                              title: Text(applicantApproved[index].username, style: const TextStyle(fontSize: 12), overflow: TextOverflow.ellipsis,),
                               // subtitle: Text(applicantApproved[index].email),
                               trailing: IconButton(
                                   onPressed: () => setState(() {
@@ -175,7 +175,7 @@ class _BuildApplicantsListState extends State<BuildApplicantsList> {
                                   // JobsActions().hireWorker(widget.job, applicant[index].uid);
                                   icon: Icon(
                                     Icons.check,
-                                    size: 30,
+                                    size: 25,
                                     color: approvedUserChosen[index] ? Colors.green : Colors.grey,)
                               ),
                               //TODO: change the navigate to a profile card pop up
