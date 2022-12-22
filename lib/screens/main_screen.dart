@@ -40,24 +40,24 @@ class _MainScreenState extends State<MainScreen> {
   List<Widget> buildNavigationIcons() {
     return AuthActions.currUser.userType == "worker"
         ? const [
-            Icon(Icons.home, size: 26, color: Color(0xff01b2b8)),
-            Icon(Icons.calendar_month_outlined,
-                size: 26, color: Color(0xff01b2b8)),
-            Icon(Icons.search, size: 28, color: Color(0xff01b2b8)),
-            Icon(Icons.chat_bubble_outline_sharp,
-                size: 26, color: Color(0xff01b2b8)),
-            Icon(Icons.person_outline_rounded,
-                size: 26, color: Color(0xff01b2b8)),
-          ]
+      Icon(Icons.home, size: 26, color: Color(0xff01b2b8)),
+      Icon(Icons.calendar_month_outlined,
+          size: 26, color: Color(0xff01b2b8)),
+      Icon(Icons.search, size: 28, color: Color(0xff01b2b8)),
+      Icon(Icons.chat_bubble_outline_sharp,
+          size: 26, color: Color(0xff01b2b8)),
+      Icon(Icons.person_outline_rounded,
+          size: 26, color: Color(0xff01b2b8)),
+    ]
         : const [
-            Icon(Icons.home, size: 26, color: Color(0xff01b2b8)),
-            Icon(Icons.calendar_month_outlined, size: 26, color: Color(0xff01b2b8)),
-            Icon(Icons.add_outlined, size: 28, color: Color(0xff01b2b8)),
-            Icon(Icons.chat_bubble_outline_sharp,
-                size: 26, color: Color(0xff01b2b8)),
-            Icon(Icons.person_outline_rounded,
-                size: 26, color: Color(0xff01b2b8)),
-          ];
+      Icon(Icons.home, size: 26, color: Color(0xff01b2b8)),
+      Icon(Icons.calendar_month_outlined, size: 26, color: Color(0xff01b2b8)),
+      Icon(Icons.add_outlined, size: 28, color: Color(0xff01b2b8)),
+      Icon(Icons.chat_bubble_outline_sharp,
+          size: 26, color: Color(0xff01b2b8)),
+      Icon(Icons.person_outline_rounded,
+          size: 26, color: Color(0xff01b2b8)),
+    ];
   }
 
   /*
@@ -96,16 +96,19 @@ class _MainScreenState extends State<MainScreen> {
           animationCurve: Curves.bounceInOut,
           onTap: (index) {
             setState(
-              () {
+                  () {
                 switch (index) {
                   case 0:
-                    selectedNavBar =BottomNavigationBarState.home;
+                    selectedNavBar = BottomNavigationBarState.home;
                     break;
                   case 1:
                     selectedNavBar = BottomNavigationBarState.scheduler;
                     break;
                   case 2:
-                    selectedNavBar = BottomNavigationBarState.jobPosting;
+                  //TODO: implement 2 of worker
+                    selectedNavBar = AuthActions.currUser.userType == "employer"
+                        ? BottomNavigationBarState.jobPosting
+                        :BottomNavigationBarState.error;
                     break;
                   case 4:
                     selectedNavBar = BottomNavigationBarState.profile;
