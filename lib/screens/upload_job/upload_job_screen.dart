@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:get/get.dart';
 import 'package:time_z_money/business_Logic/models/Job.dart';
 import '../../business_Logic/actions/auth_actions.dart';
 import '../../business_Logic/actions/jobs_actions.dart';
@@ -294,8 +293,7 @@ class _UploadJobScreenState extends State<UploadJobScreen> {
       setState(() {
         selectedDate = pickedDate;
       });
-    } else
-      print('picked date empty !');
+    }
   }
 
   getTimeFromUser({required bool isStartTime}) async {
@@ -307,10 +305,8 @@ class _UploadJobScreenState extends State<UploadJobScreen> {
       setState(() {
         if (isStartTime) {
           startTime = pickedTime.format(context);
-          print(startTime);
         } else {
           endTime = pickedTime.format(context);
-          print(endTime);
         }
       });
     }
