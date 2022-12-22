@@ -26,7 +26,7 @@ class AuthActions {
   static setCurrUser(CustomUser user) {
     currUser = user.clone();
   }
-
+// TODO: catch the error and return it to the presentation layer
   login(CustomUser user) async {
     await auth.emailSignIn(user);
     CustomUser? curr = await das.getCustomUser(auth.getCurrFireBaseUser());
@@ -36,6 +36,7 @@ class AuthActions {
   /*
   The first stage signup sign the new user in fireBase auth and trigger the appWrapper stream
   */
+  // TODO: catch the error and return it to the presentation layer
   signupFirstStage() async {
     // we give the password to firebase auth before hash
     await auth.regularRegistration(currUser);

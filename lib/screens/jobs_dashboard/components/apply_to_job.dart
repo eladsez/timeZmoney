@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import '../../../business_Logic/actions/jobs_actions.dart';
 import '../../../business_Logic/models/Job.dart';
 
 class ApplyToJob extends StatefulWidget{
@@ -11,6 +13,8 @@ class ApplyToJob extends StatefulWidget{
 }
 
 class _ApplyToJobState extends State<ApplyToJob>{
+
+  JobsActions actions = JobsActions();
 
 
   @override
@@ -26,9 +30,18 @@ class _ApplyToJobState extends State<ApplyToJob>{
         Container(
           height: 0
         ),
-        ElevatedButton(onPressed: null,
+        ElevatedButton(
+          onPressed: () async {
+            try{
+              await actions.addUserToWaitList(widget.job);
+              ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("You have applied to this job")));}
+            catch(e){
+              print(e);
+            }
+          },
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.purpleAccent,
+            backgroundColor: Colors.blue,
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(10))
             )

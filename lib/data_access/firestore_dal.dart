@@ -101,14 +101,20 @@ class DataAccessService {
     if (!(await getMajors()).contains(job.major)){ // the major doesn't exist yet
       await _db.collection("jobsMajors").add({"major": job.major});
     }
-    await _db.collection("jobs").add(job.toMap());
+    await _db.collection("jobs").add(job.toMap()).then((value) async {
+      await _db.collection("jobs").doc(value.id).update({"uid": value.id});
+    job.uid = value.id;
+    });
+
+
   }
-  //
-  // Future<void> addWorkerToWaitList(Job job) async {
-  //   await _db.collection("jobs").doc(job.id).update({
-  //     "signedWorkers": FieldValue.arrayUnion([AuthActions.currUser.uid])
-  //   });
-  // }
+
+
+  Future<void> addWorkerToWaitList(Job job, String uid) async {
+    await _db.collection("jobs").doc(job.uid).update({
+      "signedWorkers": FieldValue.arrayUnion([uid])
+    });
+  }
 
   /*
    * get all the jobs in the job collection

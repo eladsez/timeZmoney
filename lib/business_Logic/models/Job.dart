@@ -8,10 +8,13 @@ class Job {
   GeoPoint location;
   int salary;
   List<dynamic> signedWorkers;
+  List<dynamic> approvedWorkers;
   String title;
   String major;
   String imageUrl;
   String district;
+  int amountNeeded;
+  String uid;
 
   Job(
       {required this.availableSpots,
@@ -24,7 +27,10 @@ class Job {
       required this.title,
       required this.major,
       required this.imageUrl,
-      required this.district});
+      required this.district,
+      required this.approvedWorkers,
+      required this.amountNeeded,
+      this.uid = "none"});
 
   Map<String, dynamic> toMap() {
     return {
@@ -38,7 +44,10 @@ class Job {
       "title": title,
       "major": major,
       "imageUrl": imageUrl,
-      "district": district
+      "district": district,
+      "approvedWorkers": approvedWorkers,
+      "amountNeeded": amountNeeded,
+      "uid": uid
     };
   }
 
@@ -55,6 +64,9 @@ class Job {
       major: job["major"],
       imageUrl: job["imageUrl"],
       district: job["district"],
+      approvedWorkers: job["approvedWorkers"],
+      amountNeeded: job["amountNeeded"],
+      uid: job["uid"],
     );
   }
 }

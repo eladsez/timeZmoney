@@ -56,9 +56,9 @@ class JobsActions {
     void uploadJobImage() {}
   }
 
-  // Future<void> addUserToWaitList(Job job) async {
-  //   await das.addWorkerToWaitList(job);
-  // }
+  Future<void> addUserToWaitList(Job job) async {
+    await das.addWorkerToWaitList(job,AuthActions.currUser.uid);
+  }
 /*
   * hire a worker for a job
  */
