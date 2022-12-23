@@ -132,5 +132,31 @@ class DataAccessService {
     return jobs;
   }
 
+  Future<void> approveWorker(Job job, String workerUid) async {
+    _db.collection("jobs").doc(job.uid).update({
+      "signedWorkers": FieldValue.arrayRemove([workerUid]),
+      "approvedWorkers": FieldValue.arrayUnion([workerUid])
+    });
+    // update the job object
+    job.signedWorkers.remove(workerUid);
+    job.approvedWorkers.add(workerUid);
+  }
+
+  Future<void> removeWorker(Job job, String workerUid) async {
+    _db.collection("jobs").doc(job.uid).update({
+      "approvedWorkers": FieldValue.arrayRemove([workerUid]),
+      "signedWorkers": FieldValue.arrayUnion([workerUid])
+    });
+    // update the job object
+    job.approvedWorkers.remove(workerUid);
+    job.signedWorkers.add(workerUid);
+  }
+
+  Future<Job> getJobByUid(String jobUid) async {
+    QuerySnapshot<Map<String, dynamic>> jobsSnap =
+    await _db.collection("jobs").where("uid", isEqualTo: jobUid).get();
+    return Job.fromMap(jobsSnap.docs.first.data());
+  }
+
 
 }

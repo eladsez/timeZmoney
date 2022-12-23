@@ -41,6 +41,13 @@ class JobsActions {
   }
 
   /*
+   * get job by uid
+   */
+  Future<Job?> getJobByUid(String jobUid) async {
+    return await das.getJobByUid(jobUid);
+  }
+
+  /*
    * get a list of CustomUser from a list of uid
    */
   Future<List<CustomUser>> getUsersFromUid(List<dynamic> uids) async {
@@ -59,12 +66,17 @@ class JobsActions {
     job.approvedWorkers.add(AuthActions.currUser.uid);
   }
 /*
-  * hire a worker for a job
+  * approve a worker for a job
  */
-  void hireWorker(Job job, String? user_uid) {
-    // TODO: implement hireWorker
-    // job.signedWorkers.add(user_uid);
-    // das.updateJob(job);
+  Future<void> approveUserToJob(Job job, String? workerUid) async {
+    await das.approveWorker(job, workerUid!);
+  }
+
+  /*
+   * remove a worker from a job
+   */
+  Future<void> removeUserFromJob(Job job, String? workerUid) async {
+    await das.removeWorker(job, workerUid!);
   }
 
   Future<void> postJob(Job nowJob) async{
