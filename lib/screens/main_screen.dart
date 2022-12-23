@@ -83,7 +83,7 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       body: bodyBuilder(),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.only(bottom: 25.0),
+        padding: const EdgeInsets.only(bottom: 5.0),
         child: CurvedNavigationBar(
           color: Colors.white,
           backgroundColor: Colors.grey.withOpacity(0.1),
