@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:time_z_money/business_Logic/actions/auth_actions.dart';
 import '../../../business_Logic/actions/jobs_actions.dart';
 import '../../../business_Logic/models/Job.dart';
 
 class ApplyToJob extends StatefulWidget {
-  const ApplyToJob({super.key, required this.job, required this.userUid});
+  const ApplyToJob({super.key, required this.job});
 
   final Job job;
-  final String userUid;
 
   @override
   State<ApplyToJob> createState() => _ApplyToJobState();
@@ -29,7 +29,9 @@ class _ApplyToJobState extends State<ApplyToJob> {
         ElevatedButton(
             onPressed: () async {
               // check if the user already applied to the job
-              if (widget.job.signedWorkers.contains(widget.userUid)) {
+              if (widget.job.signedWorkers.contains(AuthActions.currUser.uid) ||
+                  widget.job.approvedWorkers
+                      .contains(AuthActions.currUser.uid)) {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                   content: Text("You have already applied to this job!"),
                   backgroundColor: Colors.red,
@@ -48,7 +50,8 @@ class _ApplyToJobState extends State<ApplyToJob> {
                 } catch (e) {
                   print(e);
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    content: Text("An error has occurred, please try again later."),
+                    content:
+                        Text("An error has occurred, please try again later."),
                     backgroundColor: Colors.red,
                     duration: Duration(milliseconds: 1500),
                   ));

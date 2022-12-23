@@ -63,7 +63,7 @@ class JobsActions {
 
   Future<void> addUserToWaitList(Job job) async {
     await das.addWorkerToWaitList(job,AuthActions.currUser.uid);
-    job.approvedWorkers.add(AuthActions.currUser.uid);
+    job.signedWorkers.add(AuthActions.currUser.uid);
   }
 /*
   * approve a worker for a job

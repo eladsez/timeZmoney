@@ -279,11 +279,9 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
                                                         // ),
                                                       ],
                                                     ),
-                                                openBuilder:
-                                                    (context, action) =>
-                                                        JobDetails(
-                                                          job: job,
-                                                        )),
+                                                openBuilder: (context, action) {
+                                                  return JobDetails(job: job);
+                                                }),
                                           ),
                                         ),
                                       )
