@@ -36,10 +36,9 @@ class AuthActions {
   /*
   The first stage signup sign the new user in fireBase auth and trigger the appWrapper stream
   */
-  // TODO: catch the error and return it to the presentation layer
-  signupFirstStage() async {
+  Future<String> signupFirstStage() async {
     // we give the password to firebase auth before hash
-    await auth.regularRegistration(currUser);
+    return await auth.regularRegistration(currUser);
   }
 
   Future<void> signupSecondStage() async {
@@ -52,12 +51,10 @@ class AuthActions {
 /*
   This function update the profile of the signed up currUser and call the first stage signup
  */
-  chooseProfile(UserProfile profileType) async {
+  Future<String> chooseProfile(UserProfile profileType) async {
     currUser.userType =
         (profileType == UserProfile.employer) ? "employer" : "worker";
-    // await das.updateUser(currUser?.uid!, "user type",
-    //     profileType == UserProfile.employer ? "employer" : "worker");
-    await signupFirstStage();
+    return await signupFirstStage();
   }
 
   /// This function will check if the uid of a firebase_auth user is already in fireStore

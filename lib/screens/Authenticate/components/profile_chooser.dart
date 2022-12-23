@@ -69,7 +69,7 @@ class _ProfileChooserScreenState extends State<ProfileChooserScreen> {
         onPressed: () => func(),
         style: ElevatedButton.styleFrom(
             primary: color,
-            fixedSize: Size(widthScreenSize - 70, 100),
+            fixedSize: Size(widthScreenSize - 100, 100),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10))),
         child: Text(
@@ -87,9 +87,18 @@ class _ProfileChooserScreenState extends State<ProfileChooserScreen> {
       floatingActionButton: FloatingActionButton(
           child: const Icon(Icons.arrow_circle_right_sharp),
           onPressed: () async {
-            if (selectedUserProfile == null)
-              return; // in case he didn't choose anything (should be popup or something)
-            await authActions.chooseProfile(selectedUserProfile!);
+            if (selectedUserProfile == null) {
+              return;// in case he didn't choose anything (should be popup or something)
+            }
+            String firstSignUpCode = await authActions.chooseProfile(selectedUserProfile!);
+            if (firstSignUpCode != "OK"){
+              ScaffoldMessenger.of(context).showSnackBar( SnackBar(
+                content: Text(firstSignUpCode),
+                backgroundColor: Colors.red,
+                duration: const Duration(milliseconds: 1500),
+              ));
+
+            }
             Navigator.pop(context); // pop the profileChooserScreen
           }),
       body: CustomPaint(
@@ -109,9 +118,6 @@ class _ProfileChooserScreenState extends State<ProfileChooserScreen> {
                 margin: const EdgeInsets.only(top: 10),
                 width: 300,
                 child: Center(child: description),
-              ),
-              const SizedBox(
-                height: 50,
               ),
               typeButton("Worker", workerColor, workerChoice),
               const SizedBox(

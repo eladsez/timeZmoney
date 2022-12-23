@@ -19,21 +19,18 @@ class AuthService {
     return FirebaseAuth.instance.currentUser;
   }
 
-  Future regularRegistration(CustomUser newUser) async {
+  Future<String> regularRegistration(CustomUser newUser) async {
     try {
       UserCredential userCredential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: newUser.email,
         password: newUser.hashPass,
       );
+      return "OK";
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-
-      } else if (e.code == 'email-already-in-use') {
-
-      }
+      return e.code;
     } catch (e) {
-      print(e);
+      return e.toString();
     }
   }
 
