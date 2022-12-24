@@ -81,7 +81,7 @@ class _EmployerDashboardScreenState extends State<EmployerDashboardScreen> {
                           closedBuilder: (context, action) => Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              ClipRRect(
+                              job[index].imageUrl != "None" ? ClipRRect(
                                 borderRadius: BorderRadius.circular(15),
                                 child: Image(
                                     height: 80,
@@ -91,7 +91,7 @@ class _EmployerDashboardScreenState extends State<EmployerDashboardScreen> {
                                         NetworkImage(job[index].imageUrl),
                                         height: 110,
                                         width: 140)),
-                              ),
+                              ) : Container(),
                               const SizedBox(
                                 height: 10,
                               ),

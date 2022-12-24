@@ -61,9 +61,9 @@ class _JobDetailsState extends State<JobDetails> {
                             Rect.fromLTRB(0, 0, rect.width, rect.height + 200));
                       },
                       blendMode: BlendMode.dst,
-                      child: Image(
+                      child: widget.job.imageUrl != "None" ? Image(
                           fit: BoxFit.fill,
-                          image: NetworkImage(widget.job.imageUrl)),
+                          image: NetworkImage(widget.job.imageUrl)) : Container(),
                     ),
                   ),
                 )

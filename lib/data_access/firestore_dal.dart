@@ -120,7 +120,7 @@ class DataAccessService {
    */
   Future<List<Job>> getAllRelevantJobs() async {
     QuerySnapshot<Map<String, dynamic>> jobsSnap =
-    await _db.collection("jobs").get();
+        await _db.collection("jobs").get();
 
     return filterRelevantJobs(jobsSnap);
   }
@@ -140,7 +140,6 @@ class DataAccessService {
     });
   }
 
-
   Future<void> approveWorker(Job job, String workerUid) async {
     _db.collection("jobs").doc(job.uid).update({
       "signedWorkers": FieldValue.arrayRemove([workerUid]),
@@ -159,6 +158,10 @@ class DataAccessService {
     // update the job object
     job.approvedWorkers.remove(workerUid);
     job.signedWorkers.add(workerUid);
+  }
+
+  Future<void> updateJob(String jobUid, String field, dynamic toUpdate) async {
+    await _db.collection("jobs").doc(jobUid).update({field: toUpdate});
   }
 
   Future<Job> getJobByUid(String jobUid) async {

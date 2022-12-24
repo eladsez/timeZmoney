@@ -166,20 +166,32 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
                                                           CrossAxisAlignment
                                                               .start,
                                                       children: [
-                                                        ClipRRect(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(15),
-                                                          child: Image(
-                                                              height: 80,
-                                                              width: 140,
-                                                              fit: BoxFit.cover,
-                                                              image: ResizeImage(
-                                                                  NetworkImage(job
-                                                                      .imageUrl),
-                                                                  height: 110,
-                                                                  width: 140)),
-                                                        ),
+                                                        job.imageUrl != "None"
+                                                            ? ClipRRect(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            15),
+                                                                child: Image(
+                                                                    height: 80,
+                                                                    width: 140,
+                                                                    fit: BoxFit
+                                                                        .cover,
+                                                                    image: ResizeImage(
+                                                                        NetworkImage(job
+                                                                            .imageUrl),
+                                                                        height:
+                                                                            110,
+                                                                        width:
+                                                                            140)),
+                                                              )
+                                                            : const SizedBox(
+                                                                height: 83,
+                                                                child: Center(
+                                                                  child: Text(
+                                                                      "Employer didn't provide image"),
+                                                                ),
+                                                              ),
                                                         const SizedBox(
                                                           height: 10,
                                                         ),

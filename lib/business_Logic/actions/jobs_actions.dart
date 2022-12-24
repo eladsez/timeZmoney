@@ -1,3 +1,4 @@
+import 'package:time_z_money/business_Logic/actions/storage_actions.dart';
 import '../../data_access/firestore_dal.dart';
 import '../models/CustomUser.dart';
 import '../models/Job.dart';
@@ -5,6 +6,7 @@ import 'auth_actions.dart';
 
 class JobsActions {
   final DataAccessService das = DataAccessService();
+  final StorageActions storageActions = StorageActions();
   static List<String> majors = [];
   static int selectedMajorIndex = 0;
 
@@ -78,6 +80,10 @@ class JobsActions {
    */
   Future<void> removeUserFromJob(Job job, String? workerUid) async {
     await das.removeWorker(job, workerUid!);
+  }
+  
+  Future<String> chooseUploadJobImage(String jobTitle) async{
+    return await storageActions.uploadImage("jobsImages/$jobTitle"); // TODO: change the remote image name to something more unique
   }
 
   Future<void> postJob(Job nowJob) async{

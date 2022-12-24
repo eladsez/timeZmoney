@@ -16,15 +16,16 @@ class UploadJobScreen extends StatefulWidget {
 }
 
 class _UploadJobScreenState extends State<UploadJobScreen> {
+  final JobsActions jobsActions = JobsActions();
   late final TextEditingController titleController;
   late final TextEditingController descriptionController;
   late final TextEditingController districtController;
   late final TextEditingController geoPointController;
-  late final JobsActions jobsActions = JobsActions();
   late DateTime selectedDate = DateTime.now();
   late String startTime;
   late String endTime;
   String selectedMajor = "None";
+  String jobImageUrl = "None";
   int selectedWorkersNeeded = 0;
   List<int> oneToTen =
       List<int>.generate(10, (i) => i + 1); // list for how much workers needed
@@ -49,6 +50,36 @@ class _UploadJobScreenState extends State<UploadJobScreen> {
     titleController.dispose();
     descriptionController.dispose();
     super.dispose();
+  }
+
+  Widget getJobImageFromUser() {
+    return Container(
+        height: 100,
+        child: Card(
+          semanticContainer: true,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          elevation: 2,
+          margin: const EdgeInsets.all(10),
+          child: GestureDetector(
+            onTap: () async {
+              jobImageUrl = await jobsActions.chooseUploadJobImage(
+                  titleController.text + AuthActions.currUser.uid);
+              setState(() {
+                if (jobImageUrl == "ERROR") {
+                  jobImageUrl = "None";
+                }
+              });
+            },
+            child: Image.network(
+              jobImageUrl == "None"
+                  ? "https://static.thenounproject.com/png/1156518-200.png"
+                  : jobImageUrl,
+              fit: BoxFit.cover,
+            ),
+          ),
+        ));
   }
 
   @override
@@ -176,6 +207,7 @@ class _UploadJobScreenState extends State<UploadJobScreen> {
               SearchPlace(
                   districtController: districtController,
                   geoPointController: geoPointController),
+              getJobImageFromUser(),
               const SizedBox(
                 height: 70,
               ),
@@ -191,7 +223,8 @@ class _UploadJobScreenState extends State<UploadJobScreen> {
               return;
             }
             try {
-              await jobsActions.postJob(Job( // TODO: add salary filed and image upload filed (image wil be optional)
+              await jobsActions.postJob(Job(
+                  // TODO: add salary filed and image upload filed (image wil be optional)
                   availableSpots: selectedWorkersNeeded,
                   date: Timestamp.fromDate(selectedDate),
                   description: descriptionController.text,
@@ -203,8 +236,7 @@ class _UploadJobScreenState extends State<UploadJobScreen> {
                   signedWorkers: [],
                   title: titleController.text,
                   major: selectedMajor,
-                  imageUrl:
-                      "https://img.freepik.com/free-vector/excited-mom-son-having-fun-woman-boy-jumping-dancing-flat-illustration_74855-10616.jpg",
+                  imageUrl: jobImageUrl,
                   district: districtController.text,
                   approvedWorkers: [],
                   amountNeeded: selectedWorkersNeeded));
@@ -273,7 +305,9 @@ class _UploadJobScreenState extends State<UploadJobScreen> {
               builder: ((context, setState) => Container(
                   padding: const EdgeInsets.all(20),
                   child: Row(children: const [
-                    Icon(Icons.warning,),
+                    Icon(
+                      Icons.warning,
+                    ),
                     SizedBox(width: 20),
                     Text("All fileds are require"),
                   ]))))));
