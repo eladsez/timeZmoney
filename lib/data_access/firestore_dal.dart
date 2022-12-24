@@ -98,15 +98,13 @@ class DataAccessService {
   /*
    * Filter jobsSnap and return the relevant jobs
    * currently relevant jobs are that its date has not passed
-   * and there is still place to insert more workers
    */
   List<Job> filterRelevantJobs(QuerySnapshot<Map<String, dynamic>> jobsSnap) {
     List<Job> jobs = [];
     Job checkJob;
     for (var jobDoc in jobsSnap.docs) {
       checkJob = Job.fromMap(jobDoc.data());
-      if (checkJob.approvedWorkers.length >= checkJob.amountNeeded ||
-          checkJob.date.compareTo(Timestamp.now()) < 0) {
+      if (checkJob.date.compareTo(Timestamp.now()) < 0) {
         continue;
       }
       jobs.add(checkJob);
