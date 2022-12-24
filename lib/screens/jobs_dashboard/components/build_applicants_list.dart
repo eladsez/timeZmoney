@@ -100,14 +100,14 @@ class _BuildApplicantsListState extends State<BuildApplicantsList> {
             builder: (context, AsyncSnapshot<List<CustomUser>> snapshot) {
               if (snapshot.hasData) {
                 var applicants = snapshot.data;
-                if (applicants!.length > 0) {
+                if (applicants!.isNotEmpty) {
                   currIndex = index;
                   return ListTile(
                       contentPadding: const EdgeInsets.symmetric(
                           horizontal: -1),
                       leading: CircleAvatar(
                         backgroundImage:
-                        NetworkImage(applicants![currIndex].profileImageURL),
+                        NetworkImage(applicants[currIndex].profileImageURL),
                         radius: 13,
                       ),
                       title: Text(applicants[currIndex].username, style: const TextStyle(fontSize: 12), overflow: TextOverflow.ellipsis,),

@@ -46,10 +46,8 @@ class DataAccessService {
    * Get a CustomUser by his uid
    */
   Future<CustomUser?> getCustomUserByUid(String uid) async {
-    QuerySnapshot<Map<String, dynamic>> snapshot = await _db
-        .collection("users")
-        .where('uid', isEqualTo: uid)
-        .get();
+    QuerySnapshot<Map<String, dynamic>> snapshot =
+        await _db.collection("users").where('uid', isEqualTo: uid).get();
     if (snapshot.docs.isEmpty) {
       //TODO: commentted out the print statement because it was printing too much
       // print("User doesn't exist yet\n");
@@ -60,12 +58,27 @@ class DataAccessService {
   }
 
   /*
+   * This function responsible to create a new job in the jobs collection
+   */
+  Future<void> createJob(Job job) async {
+    if (!(await getMajors()).contains(job.major)) {
+      // the major doesn't exist yet
+      await _db.collection("jobsMajors").add({"major": job.major});
+    }
+    await _db.collection("jobs").add(job.toMap()).then((value) async {
+      await _db.collection("jobs").doc(value.id).update({"uid": value.id});
+      job.uid = value.id;
+    });
+  }
+
+  /*
    * This function return list of string
    * the list contain the job majors available in the database
    * used to display the majors tabs
    */
   Future<List<String>> getMajors() async {
-    QuerySnapshot<Map<String, dynamic>> majorsSnapshot = await _db.collection("jobsMajors").get();
+    QuerySnapshot<Map<String, dynamic>> majorsSnapshot =
+        await _db.collection("jobsMajors").get();
     return majorsSnapshot.docs
         .map((doc) => doc.data()["major"].toString())
         .toList();
@@ -75,13 +88,42 @@ class DataAccessService {
    * Get the jobs the employerUid post
    */
   Future<List<Job>> getJobsOfEmployer(String employerUid) async {
-    QuerySnapshot<Map<String, dynamic>> jobsSnap =
-    await _db.collection("jobs").where("employerUid", isEqualTo: employerUid).get();
-    return jobsSnap.docs
-        .map((doc) => Job.fromMap(doc.data()))
-        .toList();
+    QuerySnapshot<Map<String, dynamic>> jobsSnap = await _db
+        .collection("jobs")
+        .where("employerUid", isEqualTo: employerUid)
+        .get();
+    return jobsSnap.docs.map((doc) => Job.fromMap(doc.data())).toList();
   }
 
+  /*
+   * Filter jobsSnap and return the relevant jobs
+   * currently relevant jobs are that its date has not passed
+   * and there is still place to insert more workers
+   */
+  List<Job> filterRelevantJobs(QuerySnapshot<Map<String, dynamic>> jobsSnap) {
+    List<Job> jobs = [];
+    Job checkJob;
+    for (var jobDoc in jobsSnap.docs) {
+      checkJob = Job.fromMap(jobDoc.data());
+      if (checkJob.approvedWorkers.length >= checkJob.amountNeeded ||
+          checkJob.date.compareTo(Timestamp.now()) < 0) {
+        continue;
+      }
+      jobs.add(checkJob);
+    }
+    return jobs;
+  }
+
+  /*
+   * get all relevant jobs in the job collection (for you major)
+   * currently relevant jobs are that its date has not passed and there is still place to insert more workers
+   */
+  Future<List<Job>> getAllRelevantJobs() async {
+    QuerySnapshot<Map<String, dynamic>> jobsSnap =
+    await _db.collection("jobs").get();
+
+    return filterRelevantJobs(jobsSnap);
+  }
 
   /*
    * This function get as an argument major of a job and return all the jobs under this major
@@ -89,28 +131,8 @@ class DataAccessService {
   Future<List<Job>> getJobsOfMajor(String major) async {
     QuerySnapshot<Map<String, dynamic>> jobsSnap =
         await _db.collection("jobs").where("major", isEqualTo: major).get();
-    List<Job> jobs = [];
-    for (var jobDoc in jobsSnap.docs) {
-      jobs.add(Job.fromMap(jobDoc.data()));
-    }
-    return jobs;
+    return filterRelevantJobs(jobsSnap);
   }
-
-  /*
-   * This function responsible to create a new job in the jobs collection
-   */
-  Future<void> createJob(Job job) async {
-    if (!(await getMajors()).contains(job.major)){ // the major doesn't exist yet
-      await _db.collection("jobsMajors").add({"major": job.major});
-    }
-    await _db.collection("jobs").add(job.toMap()).then((value) async {
-      await _db.collection("jobs").doc(value.id).update({"uid": value.id});
-    job.uid = value.id;
-    });
-
-
-  }
-
 
   Future<void> addWorkerToWaitList(Job job, String uid) async {
     await _db.collection("jobs").doc(job.uid).update({
@@ -118,19 +140,6 @@ class DataAccessService {
     });
   }
 
-  /*
-   * get all the jobs in the job collection
-   * TODO: should change to - all the jobs that their date not already passed
-   */
-  Future<List<Job>> getAllJobs() async {
-    QuerySnapshot<Map<String, dynamic>> jobsSnap =
-    await _db.collection("jobs").get();
-    List<Job> jobs = [];
-    for (var jobDoc in jobsSnap.docs) {
-      jobs.add(Job.fromMap(jobDoc.data()));
-    }
-    return jobs;
-  }
 
   Future<void> approveWorker(Job job, String workerUid) async {
     _db.collection("jobs").doc(job.uid).update({
@@ -154,9 +163,7 @@ class DataAccessService {
 
   Future<Job> getJobByUid(String jobUid) async {
     QuerySnapshot<Map<String, dynamic>> jobsSnap =
-    await _db.collection("jobs").where("uid", isEqualTo: jobUid).get();
+        await _db.collection("jobs").where("uid", isEqualTo: jobUid).get();
     return Job.fromMap(jobsSnap.docs.first.data());
   }
-
-
 }

@@ -15,7 +15,7 @@ class JobsActions {
    */
   Future<List<Job>> getJobsOfTab(String majorTab) async {
     if (majorTab == "For You") {
-      return await das.getAllJobs();
+      return await das.getAllRelevantJobs();
     }
     return das.getJobsOfMajor(majorTab);
   }
