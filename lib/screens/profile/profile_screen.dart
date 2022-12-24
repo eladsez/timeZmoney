@@ -15,20 +15,24 @@ class ProfileScreen extends StatefulWidget {
   @override
   ProfileScreenState createState() => ProfileScreenState();
 }
+
 // TODO: render the image after it change
 class ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AuthActions.currUser.uid != widget.user.uid ? AppBar(
+        leading: const BackButton(color: Color(0xff01b2b8)),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        toolbarHeight: 30,
+      ): PreferredSize(preferredSize: const Size(0, 0), child: Container()),
       body: ListView(
         physics: const BouncingScrollPhysics(),
         children: [
           Align(
               alignment: Alignment.centerRight,
               child: buildSettingButton(widget.user)),
-          const SizedBox(
-            height: 10,
-          ),
           ProfileCircle(
             imagePath: AuthActions.currUser.uid == widget.user.uid
                 ? AuthActions.currUser.profileImageURL
@@ -37,17 +41,19 @@ class ProfileScreenState extends State<ProfileScreen> {
               switch (AuthActions.currUser.uid == widget.user.uid) {
                 case true:
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => EditProfileScreen(updateProfile: (void dummy) {
-                        setState(() {
-                          AuthActions.currUser.profileImageURL =
-                              AuthActions.currUser.profileImageURL;
-                        });
-                      })));
+                      builder: (context) =>
+                          EditProfileScreen(updateProfile: (void dummy) {
+                            setState(() {
+                              AuthActions.currUser.profileImageURL =
+                                  AuthActions.currUser.profileImageURL;
+                            });
+                          })));
                   break;
                 case false:
                   break;
               }
-            }, user: widget.user,
+            },
+            user: widget.user,
           ),
           const SizedBox(height: 24),
           buildName(widget.user),
@@ -57,7 +63,8 @@ class ProfileScreenState extends State<ProfileScreen> {
           const SizedBox(height: 48),
           buildAbout(widget.user),
           AuthActions.currUser.uid == widget.user.uid
-              ? Container() : BuildUserReviews(user: widget.user),
+              ? Container()
+              : BuildUserReviews(user: widget.user),
         ],
       ),
     );
@@ -78,7 +85,7 @@ class ProfileScreenState extends State<ProfileScreen> {
       );
 
   Widget buildSettingButton(CustomUser user) {
-    if (AuthActions.currUser.uid != widget.user.uid){
+    if (AuthActions.currUser.uid != widget.user.uid) {
       return IconButton(onPressed: () {}, icon: const Icon(IconData(0x0)));
     }
     return IconButton(
@@ -91,6 +98,7 @@ class ProfileScreenState extends State<ProfileScreen> {
       },
     );
   }
+
   Widget buildAbout(CustomUser user) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 48),
         child: Column(
@@ -105,17 +113,17 @@ class ProfileScreenState extends State<ProfileScreen> {
             ),
             const SizedBox(height: 16),
             Text(
-              AuthActions.currUser.uid == widget.user.uid ? (user.about == "Empty"
-                  ? "Your about is currently empty, Press the edit button to write it!"
-                  : user.about) : (user.about == "Empty"
-                  ? "This user has not written anything about him/herself yet!"
-                  : user.about),
+              AuthActions.currUser.uid == widget.user.uid
+                  ? (user.about == "Empty"
+                      ? "Your about is currently empty, Press the edit button to write it!"
+                      : user.about)
+                  : (user.about == "Empty"
+                      ? "This user has not written anything about him/herself yet!"
+                      : user.about),
               style: TextStyle(
                   fontSize: 16,
                   height: 1.4,
-                  color: user.about == "Empty"
-                      ? Colors.red
-                      : Colors.black),
+                  color: user.about == "Empty" ? Colors.red : Colors.black),
             ),
           ],
         ),

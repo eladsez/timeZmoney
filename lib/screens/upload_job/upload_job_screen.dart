@@ -62,20 +62,20 @@ class _UploadJobScreenState extends State<UploadJobScreen> {
             children: [
               InputField(
                 title: 'Title',
-                hint: 'Enter gig title here...',
+                hint: 'Enter job title here...',
                 fieldController: titleController,
               ),
 
               InputField(
                 title: 'Description',
-                hint: 'Enter gig Description here...',
+                hint: 'Enter job Description here...',
                 fieldController: descriptionController,
                 highet: 100,
               ),
               FutureBuilder(
                 future: jobsActions.getJobsMajors(),
                 builder: (context, majorsSnap) => InputField(
-                  title: 'Gig major',
+                  title: 'Job major',
                   hint: selectedMajor,
                   child: DropdownButton(
                     onChanged: (String? newMajor) {
@@ -249,7 +249,7 @@ class _UploadJobScreenState extends State<UploadJobScreen> {
       toolbarHeight: 35,
       title: const Center(
           child: Text(
-        'Gig Posting',
+        'Job Posting',
         style: TextStyle(
             fontSize: 26, fontWeight: FontWeight.bold, color: Colors.black),
       )),

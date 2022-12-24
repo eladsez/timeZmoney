@@ -22,7 +22,6 @@ class ProfileCircle extends StatefulWidget {
 class _ProfileCircleState extends State<ProfileCircle> {
   @override
   Widget build(BuildContext context) {
-    final color = Theme.of(context).colorScheme.primary;
 
     return Center(
       child: Stack(
@@ -31,7 +30,7 @@ class _ProfileCircleState extends State<ProfileCircle> {
           Positioned(
             bottom: 0,
             right: 4,
-            child: buildEditIcon(color, widget.user),
+            child: buildEditIcon(const Color(0xff01b2b8), widget.user),
           ),
         ],
       ),
@@ -67,7 +66,7 @@ class _ProfileCircleState extends State<ProfileCircle> {
             onPressed: widget.onClicked,
             icon: Icon(
               AuthActions.currUser.uid != widget.user.uid
-                  ? IconData(0x0) : Icons.edit,
+                  ? const IconData(0x0) : Icons.edit,
               color: Colors.white,
             ),
           ),
