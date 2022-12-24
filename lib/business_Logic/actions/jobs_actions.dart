@@ -67,6 +67,7 @@ class JobsActions {
   }
 /*
   * approve a worker for a job
+  * warning: it doesn't check if the amount needed for the job is already full
  */
   Future<void> approveUserToJob(Job job, String? workerUid) async {
     await das.approveWorker(job, workerUid!);
