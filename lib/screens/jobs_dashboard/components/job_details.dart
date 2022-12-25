@@ -172,102 +172,109 @@ UserActions userActions = UserActions();
 
 // returns the ditals of the job
   Widget jobDetailLine() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          children: [
-            const Icon(
-              Icons.date_range,
-              color: Colors.black45,
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            Text(
-              widget.job.date.toDate().toString().split(" ")[0],
-              style: const TextStyle(
-                  color: Colors.black45),
-            )
-          ],
-        ),
-        buildDivider(),
-        Row(
-          children: [
-            const Icon(
-              Icons.attach_money,
-              color: Colors.black45,
-            ),
-            Text(
-              widget.job.salary.toString(),
-              style: const TextStyle(
-                  color: Colors.black45),
-            )
-          ],
-        ),
-        buildDivider(),
-        Row(
-          children: [
-            const Icon(
-              Icons.people,
-              color: Colors.black45,
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            Text(
-              widget.job.amountNeeded.toString(),
-              style: const TextStyle(
-                  color: Colors.black45),
-            )
-          ],
-        ),
-        buildDivider(),
-        // the employer's profile button
-        AuthActions.currUser.uid == widget.job.employerUid ? Container() : FutureBuilder(
-            future: userActions.getUserByUid(widget.job.employerUid),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return Container(
-                  padding: const EdgeInsets.all(3),
-                  decoration: BoxDecoration(
-                    color: const Color(0xff01b2b8),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => ProfileScreen(
-                            user: snapshot.data!,
-                          ))
-                      );
-                    },
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.person,
-                          color: Colors.black45,
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          snapshot.data!.username,
-                          style: const TextStyle(
-                              color: Colors.black87),
-                        )
-                      ],
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * 0.9,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              const Icon(
+                Icons.date_range,
+                color: Colors.black45,
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              Text(
+                widget.job.date.toDate().toString().split(" ")[0],
+                style: const TextStyle(
+                    color: Colors.black45),
+              )
+            ],
+          ),
+          buildDivider(),
+          Row(
+            children: [
+              const Icon(
+                Icons.attach_money,
+                color: Colors.black45,
+              ),
+              Text(
+                widget.job.salary.toString(),
+                style: const TextStyle(
+                    color: Colors.black45),
+              )
+            ],
+          ),
+          buildDivider(),
+          Row(
+            children: [
+              const Icon(
+                Icons.people,
+                color: Colors.black45,
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              Text(
+                widget.job.amountNeeded.toString(),
+                style: const TextStyle(
+                    color: Colors.black45),
+              )
+            ],
+          ),
+          buildDivider(),
+          // the employer's profile button
+          AuthActions.currUser.uid == widget.job.employerUid ? Container() : FutureBuilder(
+              future: userActions.getUserByUid(widget.job.employerUid),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Container(
+                    padding: const EdgeInsets.all(3),
+                    decoration: BoxDecoration(
+                      color: const Color(0xff01b2b8),
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                  ),
-                );
-              } else {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ProfileScreen(
+                              user: snapshot.data!,
+                            ))
+                        );
+                      },
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.person,
+                            color: Colors.black45,
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.1,
+                            child: Text(
+                              snapshot.data!.username,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                  color: Colors.black87),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
               }
-            }
-        ),
-      ],
+          ),
+        ],
+      ),
     );
   }
 

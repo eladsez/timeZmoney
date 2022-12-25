@@ -98,6 +98,10 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
     return Expanded(
       child: Column(
         children: [
+          const SizedBox(
+            height: 20,
+          ),
+
           SizedBox(
             width: MediaQuery.of(context).size.width,
             height: 40,

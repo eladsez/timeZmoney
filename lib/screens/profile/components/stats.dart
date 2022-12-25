@@ -34,7 +34,7 @@ class _StatsState extends State<Stats> {
                   return buildButton(context, "Reviews", average);
 
                 } else {
-                  return const Loading();
+                  return const CircularProgressIndicator();
                 }
               }),
           buildDivider(),
@@ -45,7 +45,7 @@ class _StatsState extends State<Stats> {
                   int length = snapshot.data?.length ?? 0;
                   return buildButton(context, "Current jobs", length.toDouble());
                 } else {
-                  return const Loading();
+                  return const CircularProgressIndicator();
                 }
               }),
           buildDivider(),
@@ -56,7 +56,7 @@ class _StatsState extends State<Stats> {
                   int length = snapshot.data?.length ?? 0;
                   return buildButton(context, "Past Jobs", length.toDouble());
                 } else {
-                  return const Loading();
+                  return const CircularProgressIndicator();
                 }
               }),
         ],
