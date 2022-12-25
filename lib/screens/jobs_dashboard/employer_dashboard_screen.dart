@@ -78,83 +78,132 @@ class _EmployerDashboardScreenState extends State<EmployerDashboardScreen> {
                           closedElevation: 0,
                           middleColor: Colors.white,
                           closedColor: Colors.transparent,
-                          closedBuilder: (context, action) => Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          closedBuilder: (context, action) => Row(
                             children: [
-                              job[index].imageUrl != "None" ? ClipRRect(
-                                borderRadius: BorderRadius.circular(15),
-                                child: Image(
-                                    height: 80,
-                                    width: 140,
-                                    fit: BoxFit.cover,
-                                    image: ResizeImage(
-                                        NetworkImage(job[index].imageUrl),
-                                        height: 110,
-                                        width: 140)),
-                              ) : Container(),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Text(
-                                job[index].title,
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              cardSpace,
-                              Row(
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Icon(Icons.location_on,
-                                      color: Colors.black45),
+                                  job[index].imageUrl != "None" ? ClipRRect(
+                                    borderRadius: BorderRadius.circular(15),
+                                    child: Image(
+                                        height: 80,
+                                        width: 140,
+                                        fit: BoxFit.cover,
+                                        image: ResizeImage(
+                                            NetworkImage(job[index].imageUrl),
+                                            height: 110,
+                                            width: 140)),
+                                  ) : Container(),
                                   const SizedBox(
-                                    width: 10,
+                                    height: 10,
                                   ),
-                                  Text(
-                                    job[index].district,
-                                    style: const TextStyle(
-                                        color: Colors.black45),
+                                  SizedBox(
+                                    width: MediaQuery.of(context).size.width * 0.5,
+                                    child: Text(
+                                      job[index].title,
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
                                   ),
-                                ],
-                              ),
-                              cardSpace,
-                              Row(
-                                children: [
-                                  const Icon(
-                                    Icons.attach_money,
-                                    color: Colors.black45,
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    job[index].salary.toString(),
-                                    style: const TextStyle(
-                                        color: Colors.black45),
-                                  )
-                                ],
-                              ),
-                              cardSpace,
-                              Row(
-                                children: [
-                                  const Icon(
-                                    Icons.date_range,
-                                    color: Colors.black45,
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    job[index].date
-                                        .toDate()
-                                        .toString()
-                                        .split(" ")[0],
-                                    style: const TextStyle(
-                                        color: Colors.black45),
-                                  )
-                                ],
-                              ),
+                                  cardSpace,
+                                  Row(
+                                    children: [
+                                      const Icon(Icons.location_on,
+                                          color: Colors.black45),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      SizedBox(
+                                        width: MediaQuery.of(context).size.width * 0.5,
+                                        child: Text(
+                                          job[index].district,
+                                          style: const TextStyle(
+                                              color: Colors.black45),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
 
+                                    ],
+                                  ),
+                                  cardSpace,
+                                  Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.attach_money,
+                                        color: Colors.black45,
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      SizedBox(
+                                        width: MediaQuery.of(context).size.width * 0.5,
+                                        child: Text(
+                                          job[index].salary.toString(),
+                                          style: const TextStyle(
+                                              color: Colors.black45),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  cardSpace,
+                                  Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.date_range,
+                                        color: Colors.black45,
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        job[index].date
+                                            .toDate()
+                                            .toString()
+                                            .split(" ")[0],
+                                        style: const TextStyle(
+                                            color: Colors.black45),
+                                      )
+                                    ],
+                                  ),
+
+                                ],
+                              ),
+                              const Spacer(),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  // progress bar that shows the number of applicants that have been approved
+                                  const Text('Approved:'),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Stack(
+                                    children: [
+                                      CircularProgressIndicator(
+                                        value: job[index].approvedWorkers.length / job[index].amountNeeded,
+                                        valueColor: const AlwaysStoppedAnimation<Color>(Colors.green),
+                                        backgroundColor: Colors.grey,
+                                      ),
+                                      // position the label in the middle of the progress indicator
+                                      Positioned.fill(
+                                        child: Align(
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                            '${job[index].approvedWorkers.length}/${job[index].amountNeeded}',
+                                            style: TextStyle(color: Colors.grey[800], fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+
+
+
+                                ],
+                              )
                             ],
                           ),
                           openBuilder: (context, action) =>

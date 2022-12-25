@@ -151,7 +151,6 @@ class _JobDetailsState extends State<JobDetails> {
                     style: const TextStyle(fontSize: 18, color: Colors.black54),
                   ),
                   // if the current user is an employer, show a list of workers who applied for this job
-                  // TODO: replace the Container with the option to apply for the job
                   AuthActions.currUser.userType == "worker"
                       ? ApplyToJob(job: widget.job) : BuildApplicantsList(job: widget.job),
                 ],
