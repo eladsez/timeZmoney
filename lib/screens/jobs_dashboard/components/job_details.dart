@@ -14,8 +14,6 @@ class JobDetails extends StatefulWidget {
 }
 
 class _JobDetailsState extends State<JobDetails> {
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,9 +59,11 @@ class _JobDetailsState extends State<JobDetails> {
                             Rect.fromLTRB(0, 0, rect.width, rect.height + 200));
                       },
                       blendMode: BlendMode.dst,
-                      child: widget.job.imageUrl != "None" ? Image(
-                          fit: BoxFit.fill,
-                          image: NetworkImage(widget.job.imageUrl)) : Container(),
+                      child: widget.job.imageUrl != "None"
+                          ? Image(
+                              fit: BoxFit.fill,
+                              image: NetworkImage(widget.job.imageUrl))
+                          : Container(),
                     ),
                   ),
                 )
@@ -83,9 +83,9 @@ class _JobDetailsState extends State<JobDetails> {
                         Icons.location_on,
                         color: Colors.black38,
                       ),
-
                       Text(
                         widget.job.district,
+                        overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                             color: Colors.black38, fontSize: 16),
                       ),
@@ -108,39 +108,6 @@ class _JobDetailsState extends State<JobDetails> {
                       // ),
                       // direction button that will be used to navigate to the map screen
                       // to show the location of the job
-                      const Spacer(),
-                      GestureDetector(
-                        onTap: () {
-                          //TODO: navigate to the map screen
-                          // Navigator.of(context).push(MaterialPageRoute(
-                          //     builder: (context) => MapScreen()));
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: const Color(0xff01b2b8),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: const [
-                              Icon(
-                                Icons.directions,
-                                color: Colors.white,
-                              ),
-                              SizedBox(width: 8),
-                              Text(
-                                'Direction',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      )
-
                     ],
                   ),
                   const SizedBox(
@@ -152,12 +119,46 @@ class _JobDetailsState extends State<JobDetails> {
                   ),
                   // if the current user is an employer, show a list of workers who applied for this job
                   AuthActions.currUser.userType == "worker"
-                      ? ApplyToJob(job: widget.job) : BuildApplicantsList(job: widget.job),
+                      ? ApplyToJob(job: widget.job)
+                      : BuildApplicantsList(job: widget.job),
+                  const SizedBox(height: 50),
+                  AuthActions.currUser.uid != widget.job.employerUid
+                      ? GestureDetector(
+                          onTap: () {
+                            //TODO: navigate to the map screen
+                            // Navigator.of(context).push(MaterialPageRoute(
+                            //     builder: (context) => MapScreen()));
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: const Color(0xff01b2b8),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: const [
+                                Icon(
+                                  Icons.directions,
+                                  color: Colors.white,
+                                ),
+                                SizedBox(width: 8),
+                                Text(
+                                  'Direction',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      : Container(),
                 ],
               ),
             ),
-          )
-      ),
+          )),
     );
   }
 }

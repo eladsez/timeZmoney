@@ -1,26 +1,73 @@
 import 'package:flutter/material.dart';
+import 'package:time_z_money/business_Logic/actions/jobs_actions.dart';
+import 'package:time_z_money/business_Logic/actions/review_actions.dart';
 import 'package:time_z_money/business_Logic/models/CustomUser.dart';
+import 'package:time_z_money/business_Logic/models/Review.dart';
 
-class Stats extends StatelessWidget {
+import '../../../business_Logic/models/Job.dart';
+import '../../Loading_Screens/loading_screen.dart';
+
+class Stats extends StatefulWidget {
   const Stats(CustomUser user, {super.key});
 
+  @override
+  State<Stats> createState() => _StatsState();
+}
+
+class _StatsState extends State<Stats> {
+  JobsActions jobsActions = JobsActions();
+  ReviewActions reviewActions = ReviewActions();
   @override
   Widget build(BuildContext context) => Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          buildButton(context, '4.8', 'Rank'),
+          FutureBuilder(
+              future: reviewActions.getReviewsOnUser(),
+              builder: (context, AsyncSnapshot<List<JobReview>> snapshot) {
+                if (snapshot.hasData) {
+                  List<JobReview> reviews = snapshot.data ?? [];
+                  if(reviews.isEmpty)
+                    {
+                      return buildButton(context, "Reviews", 0);
+                    }
+                  double average = reviews.map((review) => review.stars).reduce((firstStarts, secondStars) => firstStarts + secondStars)/reviews.length;
+                  return buildButton(context, "Reviews", average);
+
+                } else {
+                  return const Loading();
+                }
+              }),
           buildDivider(),
-          buildButton(context, '35', 'Current Jobs'),
+          FutureBuilder(
+              future: jobsActions.getFutureJobs(),
+              builder: (context, AsyncSnapshot<List<Job>> snapshot) {
+                if (snapshot.hasData) {
+                  int length = snapshot.data?.length ?? 0;
+                  return buildButton(context, "Current jobs", length.toDouble());
+                } else {
+                  return const Loading();
+                }
+              }),
           buildDivider(),
-          buildButton(context, '50', 'Past Jobs'),
+          FutureBuilder(
+              future: jobsActions.getPastJobs(),
+              builder: (context, AsyncSnapshot<List<Job>> snapshot) {
+                if (snapshot.hasData) {
+                  int length = snapshot.data?.length ?? 0;
+                  return buildButton(context, "Past Jobs", length.toDouble());
+                } else {
+                  return const Loading();
+                }
+              }),
         ],
       );
+
   Widget buildDivider() => const SizedBox(
         height: 24,
         child: VerticalDivider(),
       );
 
-  Widget buildButton(BuildContext context, String value, String text) =>
+  Widget buildButton(BuildContext context, String value, double toDisplay) =>
       MaterialButton(
         padding: const EdgeInsets.symmetric(vertical: 4),
         onPressed: () {},
@@ -30,12 +77,12 @@ class Stats extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Text(
-              value,
+              value.compareTo("Reviews") == 0 ? toDisplay.toStringAsFixed(2) : toDisplay.toInt().toString(),
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
             ),
             const SizedBox(height: 2),
             Text(
-              text,
+              value,
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
           ],

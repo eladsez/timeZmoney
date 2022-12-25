@@ -89,4 +89,18 @@ class JobsActions {
   Future<void> postJob(Job nowJob) async{
     await das.createJob(nowJob);
   }
+
+  /*
+  Get all the jobs the current user did
+   */
+  Future<List<Job>> getPastJobs() async{
+    return await das.getPastJobsByUid(AuthActions.currUser.uid);
+  }
+
+  /*
+  Get all the jobs the current user is approved for
+   */
+  Future<List<Job>> getFutureJobs() async{
+    return await das.getFutureJobsByUid(AuthActions.currUser.uid);
+  }
 }
