@@ -281,6 +281,7 @@ class _UploadJobScreenState extends State<UploadJobScreen> {
                       double.parse(geoPointController.text.split(",")[0]),
                       double.parse(geoPointController.text.split(",")[1])),
                   salary: int.parse(salaryController.text),
+                  per: selectedPer,
                   signedWorkers: [],
                   title: titleController.text,
                   major: selectedMajor,

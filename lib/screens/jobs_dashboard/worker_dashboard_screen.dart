@@ -8,7 +8,6 @@ import 'package:time_z_money/screens/jobs_dashboard/components/job_details.dart'
 import '../../business_Logic/actions/jobs_actions.dart';
 import '../Loading_Screens/loading_screen.dart';
 
-
 class WorkerDashboardScreen extends StatefulWidget {
   const WorkerDashboardScreen({Key? key}) : super(key: key);
 
@@ -101,7 +100,6 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
           const SizedBox(
             height: 20,
           ),
-
           SizedBox(
             width: MediaQuery.of(context).size.width,
             height: 40,
@@ -203,28 +201,35 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
                                                         ),
                                                         Text(
                                                           job.title,
-                                                          overflow: TextOverflow.ellipsis,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
                                                           maxLines: 1,
                                                           style: const TextStyle(
                                                               fontWeight:
-                                                                  FontWeight.bold),
+                                                                  FontWeight
+                                                                      .bold),
                                                         ),
                                                         cardSpace,
                                                         Row(
                                                           children: [
                                                             const Icon(
-                                                                Icons.location_on,
-                                                                color: Colors.black45),
+                                                                Icons
+                                                                    .location_on,
+                                                                color: Colors
+                                                                    .black45),
                                                             const SizedBox(
                                                               width: 10,
                                                             ),
                                                             Flexible(
                                                                 child: Text(
-                                                                  job.district,
-                                                              overflow: TextOverflow.ellipsis,
+                                                              job.district,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
                                                               maxLines: 1,
                                                               style: const TextStyle(
-                                                                  color: Colors.black45),
+                                                                  color: Colors
+                                                                      .black45),
                                                             )),
                                                           ],
                                                         ),
@@ -232,16 +237,29 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
                                                         Row(
                                                           children: [
                                                             const Icon(
-                                                              Icons.attach_money,
-                                                              color: Colors.black45,
+                                                              Icons
+                                                                  .attach_money,
+                                                              color: Colors
+                                                                  .black45,
                                                             ),
                                                             const SizedBox(
                                                               width: 10,
                                                             ),
-                                                            Text(
-                                                              job.salary.toString(),
-                                                              style: const TextStyle(
-                                                                  color: Colors.black45),
+                                                            SizedBox(
+                                                              width: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width *
+                                                                  0.2,
+                                                              child: Text(
+                                                                "${job.salary} per ${job.per}",
+                                                                style: const TextStyle(
+                                                                    color: Colors
+                                                                        .black45),
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                              ),
                                                             )
                                                           ],
                                                         ),
@@ -250,15 +268,21 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
                                                           children: [
                                                             const Icon(
                                                               Icons.date_range,
-                                                              color: Colors.black45,
+                                                              color: Colors
+                                                                  .black45,
                                                             ),
                                                             const SizedBox(
                                                               width: 10,
                                                             ),
                                                             Text(
-                                                              job.date.toDate().toString().split(" ")[0],
+                                                              job.date
+                                                                  .toDate()
+                                                                  .toString()
+                                                                  .split(
+                                                                      " ")[0],
                                                               style: const TextStyle(
-                                                                  color: Colors.black45),
+                                                                  color: Colors
+                                                                      .black45),
                                                             )
                                                           ],
                                                         ),

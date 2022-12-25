@@ -7,6 +7,7 @@ class Job {
   String employerUid;
   GeoPoint location;
   int salary;
+  String per;
   List<dynamic> signedWorkers;
   List<dynamic> approvedWorkers;
   String title;
@@ -23,6 +24,7 @@ class Job {
       required this.employerUid,
       required this.location,
       required this.salary,
+      required this.per,
       required this.signedWorkers,
       required this.title,
       required this.major,
@@ -40,6 +42,7 @@ class Job {
       "employerUid": employerUid,
       "location": location,
       "salary": salary,
+      "per": per,
       "signedWorkers": signedWorkers,
       "title": title,
       "major": major,
@@ -59,6 +62,7 @@ class Job {
       employerUid: job["employerUid"],
       location: job["location"],
       salary: job["salary"],
+      per: job["per"],
       signedWorkers: job["signedWorkers"],
       title: job["title"],
       major: job["major"],

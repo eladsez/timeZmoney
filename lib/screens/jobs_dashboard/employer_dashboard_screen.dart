@@ -141,7 +141,7 @@ class _EmployerDashboardScreenState extends State<EmployerDashboardScreen> {
                                       SizedBox(
                                         width: MediaQuery.of(context).size.width * 0.5,
                                         child: Text(
-                                          job[index].salary.toString(),
+                                          "${job[index].salary} per ${job[index].per}",
                                           style: const TextStyle(
                                               color: Colors.black45),
                                           overflow: TextOverflow.ellipsis,
