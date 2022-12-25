@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:time_z_money/business_Logic/models/Job.dart';
 import '../business_Logic/models/CustomUser.dart';
+import '../business_Logic/models/Review.dart';
 
 class DataAccessService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -113,6 +114,15 @@ class DataAccessService {
   }
 
   /*
+  Filter jobs according to type(future or past)
+   */
+  List<Job> filterJobs(QuerySnapshot<Map<String, dynamic>> jobsSnap,String type){
+    List<Job> jobs = type.compareTo("future") == 0 ?
+    jobsSnap.docs.map((snap) => Job.fromMap(snap.data())).where((element) => element.date.compareTo(Timestamp.now()) > 0).toList():
+    jobsSnap.docs.map((snap) => Job.fromMap(snap.data())).where((element) => element.date.compareTo(Timestamp.now()) < 0).toList();
+    return jobs;
+  }
+  /*
    * get all relevant jobs in the job collection (for you major)
    * currently relevant jobs are that its date has not passed and there is still place to insert more workers
    */
@@ -166,5 +176,41 @@ class DataAccessService {
     QuerySnapshot<Map<String, dynamic>> jobsSnap =
         await _db.collection("jobs").where("uid", isEqualTo: jobUid).get();
     return Job.fromMap(jobsSnap.docs.first.data());
+  }
+
+  /*
+  Get all the jobs the user with this uid did in the past
+   */
+  Future<List<Job>> getPastJobsByUid(String uid) async{
+    QuerySnapshot<Map<String,dynamic>> jobsSnap = await _db.collection("jobs").where("approvedWorkers",arrayContains: uid).get();
+    return filterJobs(jobsSnap, "past");
+  }
+
+  /*
+  Get all the jobs the user with this uid is approved in
+   */
+  Future<List<Job>> getFutureJobsByUid(String uid) async{
+    QuerySnapshot<Map<String,dynamic>> jobsSnap = await _db.collection("jobs").where("approvedWorkers",arrayContains: uid).get();
+    return filterJobs(jobsSnap, "future");
+  }
+
+  /*
+  Get all reviews written on UID
+   */
+  Future<List<JobReview>> getReviewsOnUid(String uid) async{
+    QuerySnapshot<Map<String,dynamic>> reviewsSnap = await _db.collection("reviews").where("receiver",isEqualTo: uid).get();
+    List<JobReview> reviews = [];
+    for(var review in reviewsSnap.docs)
+      {
+        reviews.add(JobReview.fromMap(review.data()));
+      }
+    return reviews;
+  }
+
+  /*
+  Add review to database
+   */
+  Future<void> createReview(JobReview review) async{
+    await _db.collection("reviews").add(review.toMap());
   }
 }
