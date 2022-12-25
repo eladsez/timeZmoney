@@ -26,8 +26,13 @@ class _StatsState extends State<Stats> {
               builder: (context, AsyncSnapshot<List<JobReview>> snapshot) {
                 if (snapshot.hasData) {
                   List<JobReview> reviews = snapshot.data ?? [];
+                  if(reviews.isEmpty)
+                    {
+                      return buildButton(context, "Reviews", 0);
+                    }
                   double average = reviews.map((review) => review.stars).reduce((firstStarts, secondStars) => firstStarts + secondStars)/reviews.length;
                   return buildButton(context, "Reviews", average);
+
                 } else {
                   return const Loading();
                 }
