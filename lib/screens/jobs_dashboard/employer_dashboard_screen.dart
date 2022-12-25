@@ -6,6 +6,7 @@ import '../../business_Logic/actions/jobs_actions.dart';
 import '../../business_Logic/models/Job.dart';
 import '../Loading_Screens/loading_screen.dart';
 
+
 class EmployerDashboardScreen extends StatefulWidget {
   const EmployerDashboardScreen({Key? key}) : super(key: key);
 
@@ -184,7 +185,7 @@ class _EmployerDashboardScreenState extends State<EmployerDashboardScreen> {
                                     children: [
                                       CircularProgressIndicator(
                                         value: job[index].approvedWorkers.length / job[index].amountNeeded,
-                                        valueColor: const AlwaysStoppedAnimation<Color>(Colors.green),
+                                        valueColor: const AlwaysStoppedAnimation<Color>(Color(0xff01b2b8)),
                                         backgroundColor: Colors.grey,
                                       ),
                                       // position the label in the middle of the progress indicator

@@ -1,11 +1,18 @@
+import 'dart:io';
+import 'dart:core';
 import 'package:flutter/material.dart';
+import 'package:time_z_money/business_Logic/actions/jobs_actions.dart';
+import 'package:time_z_money/business_Logic/actions/user_actions.dart';
+import 'package:time_z_money/business_Logic/models/CustomUser.dart';
 import 'package:time_z_money/screens/jobs_dashboard/components/apply_to_job.dart';
 import '../../../business_Logic/actions/auth_actions.dart';
 import '../../../business_Logic/models/Job.dart';
+import '../../profile/profile_screen.dart';
 import 'build_applicants_list.dart';
+import 'coWorkers.dart';
 
 class JobDetails extends StatefulWidget {
-  const JobDetails({super.key, required this.job});
+   JobDetails({super.key, required this.job});
 
   final Job job;
 
@@ -14,8 +21,10 @@ class JobDetails extends StatefulWidget {
 }
 
 class _JobDetailsState extends State<JobDetails> {
+UserActions userActions = UserActions();
   @override
   Widget build(BuildContext context) {
+    Stopwatch stopwatch = Stopwatch();
     return Scaffold(
       body: NestedScrollView(
           headerSliverBuilder: ((context, innerBoxIsScrolled) => [
@@ -54,7 +63,7 @@ class _JobDetailsState extends State<JobDetails> {
                         return const LinearGradient(
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
-                          colors: [Colors.black, Colors.white12],
+                          colors:  [Colors.transparent, Colors.black],
                         ).createShader(
                             Rect.fromLTRB(0, 0, rect.width, rect.height + 200));
                       },
@@ -83,33 +92,59 @@ class _JobDetailsState extends State<JobDetails> {
                         Icons.location_on,
                         color: Colors.black38,
                       ),
-                      Text(
-                        widget.job.district,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                            color: Colors.black38, fontSize: 16),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.5,
+                        child: Text(
+                          widget.job.district,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                              color: Colors.black38, fontSize: 16),
+                        ),
                       ),
-
-                      // RatingBar.builder(
-                      //   itemSize: 25,
-                      //   initialRating: 3,
-                      //   minRating: 1,
-                      //   direction: Axis.horizontal,
-                      //   allowHalfRating: true,
-                      //   itemCount: 5,
-                      //   itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                      //   itemBuilder: (context, _) => const Icon(
-                      //     Icons.star,
-                      //     color: Colors.amber,
-                      //   ),
-                      //   onRatingUpdate: (rating) {
-                      //     print(rating);
-                      //   },
-                      // ),
+                      const Spacer(),
                       // direction button that will be used to navigate to the map screen
                       // to show the location of the job
+                      AuthActions.currUser.uid != widget.job.employerUid
+                          ? GestureDetector(
+                        onTap: () {
+                          //TODO: navigate to the map screen
+                          // Navigator.of(context).push(MaterialPageRoute(
+                          //     builder: (context) => MapScreen()));
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.only(
+                              left: 5, right: 5, top: 7, bottom: 7),
+                          decoration: BoxDecoration(
+                            color: const Color(0xff01b2b8),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: const [
+                              Icon(
+                                Icons.directions,
+                                color: Colors.white,
+                              ),
+                              SizedBox(width: 2),
+                              Text(
+                                'Direction',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ) : Container(),
                     ],
                   ),
+                  // the job detail line
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  jobDetailLine(),
+
                   const SizedBox(
                     height: 20,
                   ),
@@ -119,46 +154,129 @@ class _JobDetailsState extends State<JobDetails> {
                   ),
                   // if the current user is an employer, show a list of workers who applied for this job
                   AuthActions.currUser.userType == "worker"
-                      ? ApplyToJob(job: widget.job)
+                      ? (widget.job.approvedWorkers.contains(AuthActions.currUser.uid)
+                      ? CoWorkersList(job: widget.job)
+                      : ApplyToJob(job: widget.job))
                       : BuildApplicantsList(job: widget.job),
                   const SizedBox(height: 50),
-                  AuthActions.currUser.uid != widget.job.employerUid
-                      ? GestureDetector(
-                          onTap: () {
-                            //TODO: navigate to the map screen
-                            // Navigator.of(context).push(MaterialPageRoute(
-                            //     builder: (context) => MapScreen()));
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: const Color(0xff01b2b8),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: const [
-                                Icon(
-                                  Icons.directions,
-                                  color: Colors.white,
-                                ),
-                                SizedBox(width: 8),
-                                Text(
-                                  'Direction',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        )
-                      : Container(),
                 ],
               ),
             ),
-          )),
+          )
+      ),
+
+    );
+
+  }
+
+
+// returns the ditals of the job
+  Widget jobDetailLine() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            const Icon(
+              Icons.date_range,
+              color: Colors.black45,
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            Text(
+              widget.job.date.toDate().toString().split(" ")[0],
+              style: const TextStyle(
+                  color: Colors.black45),
+            )
+          ],
+        ),
+        buildDivider(),
+        Row(
+          children: [
+            const Icon(
+              Icons.attach_money,
+              color: Colors.black45,
+            ),
+            Text(
+              widget.job.salary.toString(),
+              style: const TextStyle(
+                  color: Colors.black45),
+            )
+          ],
+        ),
+        buildDivider(),
+        Row(
+          children: [
+            const Icon(
+              Icons.people,
+              color: Colors.black45,
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            Text(
+              widget.job.amountNeeded.toString(),
+              style: const TextStyle(
+                  color: Colors.black45),
+            )
+          ],
+        ),
+        buildDivider(),
+        // the employer's profile button
+        AuthActions.currUser.uid == widget.job.employerUid ? Container() : FutureBuilder(
+            future: userActions.getUserByUid(widget.job.employerUid),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Container(
+                  padding: const EdgeInsets.all(3),
+                  decoration: BoxDecoration(
+                    color: const Color(0xff01b2b8),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => ProfileScreen(
+                            user: snapshot.data!,
+                          ))
+                      );
+                    },
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.person,
+                          color: Colors.black45,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          snapshot.data!.username,
+                          style: const TextStyle(
+                              color: Colors.black87),
+                        )
+                      ],
+                    ),
+                  ),
+                );
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            }
+        ),
+      ],
     );
   }
+
+
+  Widget buildDivider() => const SizedBox(
+    height: 24,
+    child: VerticalDivider(
+      color: Colors.black26,
+      thickness: 1,
+    ),
+  );
 }

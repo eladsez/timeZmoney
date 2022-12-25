@@ -49,19 +49,8 @@ class JobsActions {
     return await das.getJobByUid(jobUid);
   }
 
-  /*
-   * get a list of CustomUser from a list of uid
-   */
-  Future<List<CustomUser>> getUsersFromUid(List<dynamic> uids) async {
-    List<CustomUser> users = [];
-    for (String uid in uids) {
-      CustomUser? user = await das.getCustomUserByUid(uid);
-      if (user != null) {
-        users.add(user);
-      }
-    }
-    return users;
-  }
+
+
 
   Future<void> addUserToWaitList(Job job) async {
     await das.addWorkerToWaitList(job,AuthActions.currUser.uid);
@@ -103,4 +92,6 @@ class JobsActions {
   Future<List<Job>> getFutureJobs() async{
     return await das.getFutureJobsByUid(AuthActions.currUser.uid);
   }
+
+
 }

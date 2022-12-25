@@ -1,5 +1,5 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:time_z_money/business_Logic/actions/user_actions.dart';
 import 'package:time_z_money/screens/profile/profile_screen.dart';
 
 import '../../../business_Logic/actions/jobs_actions.dart';
@@ -16,6 +16,7 @@ class BuildApplicantsList extends StatefulWidget {
 }
 
 class _BuildApplicantsListState extends State<BuildApplicantsList> {
+  UserActions userActions = UserActions();
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -81,8 +82,8 @@ class _BuildApplicantsListState extends State<BuildApplicantsList> {
             BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.41),
         child: FutureBuilder<List<CustomUser>>(
             future: isApplied
-                ? JobsActions().getUsersFromUid(widget.job.signedWorkers)
-                : JobsActions().getUsersFromUid(widget.job.approvedWorkers),
+                ? userActions.getUsersFromUid(widget.job.signedWorkers)
+                : userActions.getUsersFromUid(widget.job.approvedWorkers),
             builder: (context, AsyncSnapshot<List<CustomUser>> snapshot) {
               if (snapshot.hasData) {
                 if (snapshot.data!.isNotEmpty) {
@@ -132,7 +133,11 @@ class _BuildApplicantsListState extends State<BuildApplicantsList> {
                               MaterialPageRoute(
                                   builder: (context) => ProfileScreen(
                                         user: applicants[userIndex],
-                                      )))));
+                                      )
+                              )
+                          )
+                      )
+                  );
                 } else {
                   return const Center(
                     child: Text("No applicants yet"),

@@ -7,13 +7,15 @@ class InputField extends StatelessWidget {
   final TextEditingController? fieldController;
   final Widget? child;
   final double highet;
+  final TextInputType keyboardType;
 
-  const InputField(
+   const InputField(
       {Key? key,
         required this.title,
         required this.hint,
         this.fieldController,
-        this.child, this.highet = 52})
+        this.keyboardType = TextInputType.text,
+        this.child, this.highet = 52,})
       : super(key: key);
 
   @override
@@ -47,6 +49,7 @@ class InputField extends StatelessWidget {
                         fontSize: 16, fontWeight: FontWeight.w400),
                     obscureText: false,
                     autocorrect: false,
+                    keyboardType: keyboardType,
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: hint,
