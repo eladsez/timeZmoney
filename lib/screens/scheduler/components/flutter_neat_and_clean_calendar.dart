@@ -285,7 +285,6 @@ class _CalendarState extends State<Calendar> {
             _selectedDate.year, _selectedDate.month, _selectedDate.day)] ??
         [];
 
-    print('eventsMap has ${eventsMap?.length} entries');
   }
 
   Widget get nameAndIconRow {
@@ -380,7 +379,6 @@ class _CalendarState extends State<Calendar> {
                           _selectedDate.month, _selectedDate.day)] ??
                       [];
                 });
-                print('Date chosen: ${_selectedDate.toIso8601String()}');
                 onJumpToDateSelected(_selectedDate);
               }
             });
@@ -680,7 +678,6 @@ class _CalendarState extends State<Calendar> {
   }
 
   Column singleDayTimeWidget(String start, String end) {
-    print('SingleDayEvent');
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -692,11 +689,9 @@ class _CalendarState extends State<Calendar> {
   }
 
   Column allOrMultiDayDayTimeWidget(NeatCleanCalendarEvent event) {
-    print('=== Summary: ${event.summary}');
     String start = DateFormat('HH:mm').format(event.startTime).toString();
     String end = DateFormat('HH:mm').format(event.endTime).toString();
     if (event.isAllDay) {
-      print('AllDayEvent - ${event.summary}');
       return Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -709,16 +704,13 @@ class _CalendarState extends State<Calendar> {
     if (event.multiDaySegement == MultiDaySegement.first) {
       // The event begins on the selcted day.
       // Just show the start time, no end time.
-      print('MultiDayEvent: start - ${event.summary}');
       end = '';
     } else if (event.multiDaySegement == MultiDaySegement.last) {
       // The event ends on the selcted day.
       // Just show the end time, no start time.
-      print('MultiDayEvent: end - ${event.summary}');
       start = widget.multiDayEndText;
     } else {
       // The event spans multiple days.
-      print('MultiDayEvent: middle - ${event.summary}');
       start = widget.allDayEventText;
       end = '';
     }
