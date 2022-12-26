@@ -30,19 +30,19 @@ class MapDirectionState extends State<MapDirection> {
     GoogleMapController googleMapController = await _controller.future;
     location.onLocationChanged.listen(
       (newLoc) {
-        setState(() {
-          currentLocation = newLoc;
-          googleMapController.animateCamera(
-            CameraUpdate.newCameraPosition(
-              CameraPosition(
-                zoom: 18,
-                target: LatLng(
-                  newLoc.latitude!,
-                  newLoc.longitude!,
-                ),
+        currentLocation = newLoc;
+        googleMapController.animateCamera(
+          CameraUpdate.newCameraPosition(
+            CameraPosition(
+              zoom: 18,
+              target: LatLng(
+                newLoc.latitude!,
+                newLoc.longitude!,
               ),
             ),
-          );
+          ),
+        );
+        setState(() {
         });
       },
     );
