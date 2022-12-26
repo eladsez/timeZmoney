@@ -8,6 +8,7 @@ import 'package:time_z_money/business_Logic/models/CustomUser.dart';
 import 'package:time_z_money/screens/jobs_dashboard/components/apply_to_job.dart';
 import '../../../business_Logic/actions/auth_actions.dart';
 import '../../../business_Logic/models/Job.dart';
+import '../../maps/direction_map.dart';
 import '../../profile/profile_screen.dart';
 import 'build_applicants_list.dart';
 import 'coWorkers.dart';
@@ -108,9 +109,9 @@ UserActions userActions = UserActions();
                       AuthActions.currUser.uid != widget.job.employerUid
                           ? GestureDetector(
                         onTap: () {
-                          //TODO: navigate to the map screen
-                          // Navigator.of(context).push(MaterialPageRoute(
-                          //     builder: (context) => MapScreen()));
+                          // TODO: navigate to the map screen
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => MapDirection(dest: widget.job.location,)));
                         },
                         child: Container(
                           padding: const EdgeInsets.only(
