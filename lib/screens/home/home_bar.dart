@@ -113,8 +113,8 @@ class _State extends State<HomeAppbar> {
                 const SizedBox(
                   height: 10,
                 ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.5,
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.4,
                     child: Text(
                       AuthActions.currUser.username,
                       overflow: TextOverflow.ellipsis,
