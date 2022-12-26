@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:time_z_money/business_Logic/actions/auth_actions.dart';
+import 'package:time_z_money/utils/constants.dart';
 import '../../../business_Logic/actions/jobs_actions.dart';
 import '../../../business_Logic/models/Job.dart';
 
@@ -59,7 +60,7 @@ class _ApplyToJobState extends State<ApplyToJob> {
               }
             },
             style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blueGrey.shade400,
+                backgroundColor: Color(0xff01b2b8),
                 shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10)))),
             child: const Text("Click to Apply")),

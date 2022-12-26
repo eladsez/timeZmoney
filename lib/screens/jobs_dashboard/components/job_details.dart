@@ -6,6 +6,7 @@ import 'package:time_z_money/business_Logic/actions/jobs_actions.dart';
 import 'package:time_z_money/business_Logic/actions/user_actions.dart';
 import 'package:time_z_money/business_Logic/models/CustomUser.dart';
 import 'package:time_z_money/screens/jobs_dashboard/components/apply_to_job.dart';
+import 'package:time_z_money/utils/constants.dart';
 import '../../../business_Logic/actions/auth_actions.dart';
 import '../../../business_Logic/models/Job.dart';
 import '../../maps/direction_map.dart';
@@ -38,10 +39,11 @@ class _JobDetailsState extends State<JobDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // backgroundColor: constColor,
       body: NestedScrollView(
           headerSliverBuilder: ((context, innerBoxIsScrolled) => [
                 SliverAppBar(
-                  backgroundColor: const Color(0xff01b2b8),
+                  backgroundColor: Color(0xff01b2b8),
                   elevation: 0,
                   leading: GestureDetector(
                     onTap: () => Navigator.of(context).pop(),
@@ -52,7 +54,7 @@ class _JobDetailsState extends State<JobDetails> {
                             shape: BoxShape.circle, color: Colors.white),
                         child: const Icon(
                           Icons.arrow_back,
-                          color: Color(0xff01b2b8),
+                          color: constColor,
                         )),
                   ),
                   expandedHeight: MediaQuery.of(context).size.height * 0.45,
@@ -65,7 +67,7 @@ class _JobDetailsState extends State<JobDetails> {
                     title: Text(
                       widget.job.title.toUpperCase(),
                       style: const TextStyle(
-                          color: Colors.black,
+                          color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: 14,
                           letterSpacing: 1.8),
@@ -118,6 +120,7 @@ class _JobDetailsState extends State<JobDetails> {
 
               ]),
           body: SingleChildScrollView(
+
             child: Padding(
               padding: const EdgeInsets.all(20),
               child: Column(
@@ -155,7 +158,7 @@ class _JobDetailsState extends State<JobDetails> {
                           padding: const EdgeInsets.only(
                               left: 5, right: 5, top: 7, bottom: 7),
                           decoration: BoxDecoration(
-                            color: const Color(0xff01b2b8),
+                            color: Color(0xff01b2b8),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Row(
@@ -263,56 +266,6 @@ class _JobDetailsState extends State<JobDetails> {
                       color: Colors.black45),
                 )
               ],
-            ),
-            // buildDivider(),
-            // the employer's profile button
-            AuthActions.currUser.uid == widget.job.employerUid ? Container() : FutureBuilder(
-                future: userActions.getUserByUid(widget.job.employerUid),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    // return Container(
-                    //   padding: const EdgeInsets.all(3),
-                    //   decoration: BoxDecoration(
-                    //     color: const Color(0xff01b2b8),
-                    //     borderRadius: BorderRadius.circular(10),
-                    //   ),
-                    //   child: GestureDetector(
-                    //     onTap: () {
-                    //       Navigator.of(context).push(MaterialPageRoute(
-                    //           builder: (context) => ProfileScreen(
-                    //             user: snapshot.data!,
-                    //           ))
-                    //       );
-                    //     },
-                    //     child: Row(
-                    //       children: [
-                    //         const Icon(
-                    //           Icons.person,
-                    //           color: Colors.black45,
-                    //         ),
-                    //         const SizedBox(
-                    //           width: 10,
-                    //         ),
-                    //         SizedBox(
-                    //           width: MediaQuery.of(context).size.width * 0.1,
-                    //           child: Text(
-                    //             snapshot.data!.username,
-                    //             overflow: TextOverflow.ellipsis,
-                    //             style: const TextStyle(
-                    //                 color: Colors.black87),
-                    //           ),
-                    //         )
-                    //       ],
-                    //     ),
-                    //   ),
-                    // );
-                    return Container();
-                  } else {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                }
             ),
           ],
         ),

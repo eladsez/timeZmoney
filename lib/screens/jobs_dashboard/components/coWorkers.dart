@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:time_z_money/business_Logic/actions/auth_actions.dart';
 import 'package:time_z_money/screens/profile/profile_screen.dart';
 
 
@@ -57,8 +58,10 @@ class _CoWorkersListState extends State<CoWorkersList> {
             future: userActions.getUsersFromUid(widget.job.approvedWorkers),
             builder: (context, AsyncSnapshot<List<CustomUser>> snapshot) {
               if (snapshot.hasData) {
-                if (snapshot.data!.isNotEmpty) {
+                if (snapshot.data!.isNotEmpty && snapshot.data!.length > 1) {
                   var applicants = snapshot.data;
+                  // remmove the current user from the list
+                  applicants!.removeWhere((element) => element.uid == AuthActions.currUser!.uid);
                   return ListView.builder(
                       shrinkWrap: true,
                       itemCount: applicants?.length,
@@ -90,7 +93,12 @@ class _CoWorkersListState extends State<CoWorkersList> {
                   );
                 } else {
                   return const Center(
-                    child: Text("You are the only one here"),
+                    child: Text("It seems like you are the only one here :(",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 15,
+
+                      ),),
                   );
                 }
               } else {
