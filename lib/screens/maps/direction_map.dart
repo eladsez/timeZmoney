@@ -50,7 +50,7 @@ class MapDirectionState extends State<MapDirection> {
 
   Future<void> setCurrentLocation() async {
     currentLocation = await location.getLocation();
-    setState((){});
+    setState(() {});
     getPolyPoints();
   }
 
@@ -87,7 +87,7 @@ class MapDirectionState extends State<MapDirection> {
               initialCameraPosition: CameraPosition(
                 target: LatLng(
                     currentLocation!.latitude!, currentLocation!.longitude!),
-                zoom: 5,
+                zoom: 15,
               ),
               polylines: {
                 Polyline(
@@ -112,6 +112,19 @@ class MapDirectionState extends State<MapDirection> {
                 _controller.complete(mapController);
               },
             ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
+      floatingActionButton: GestureDetector(
+        onTap: () => Navigator.of(context).pop(),
+        child: Container(
+            padding: const EdgeInsets.all(2),
+            margin: const EdgeInsets.all(10),
+            decoration: const BoxDecoration(
+                shape: BoxShape.circle, color: Colors.white),
+            child: const Icon(
+              Icons.arrow_back,
+              color: Color(0xff01b2b8),
+            )),
+      ),
     );
   }
 }
