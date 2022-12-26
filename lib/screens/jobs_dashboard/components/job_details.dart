@@ -23,10 +23,20 @@ class JobDetails extends StatefulWidget {
 }
 
 class _JobDetailsState extends State<JobDetails> {
-UserActions userActions = UserActions();
+  // the employer of the job
+  late CustomUser employer;
+  UserActions userActions = UserActions();
+
+  // init the employer
+  @override
+  void initState() {
+    super.initState();
+    Future<CustomUser?> tmp = userActions.getUserByUid(widget.job.employerUid).then((value) => employer = value!);
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    Stopwatch stopwatch = Stopwatch();
     return Scaffold(
       body: NestedScrollView(
           headerSliverBuilder: ((context, innerBoxIsScrolled) => [
@@ -77,7 +87,35 @@ UserActions userActions = UserActions();
                           : Container(),
                     ),
                   ),
-                )
+                  actions: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 15.0),
+                      child: Wrap(
+                        spacing: -10,
+                        direction: Axis.vertical,
+                        crossAxisAlignment: WrapCrossAlignment.center,
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.person),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ProfileScreen(
+                                            user: employer,
+                                          )
+                                  )
+                              );
+                            },
+                          ),
+                          const Text('Employer', style: TextStyle(fontSize: 10)),
+                        ],
+                      ),
+                    )
+
+                  ],
+                ),
+
               ]),
           body: SingleChildScrollView(
             child: Padding(
