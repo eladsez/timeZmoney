@@ -89,7 +89,7 @@ class ProfileScreenState extends State<ProfileScreen> {
       return IconButton(onPressed: () {}, icon: const Icon(IconData(0x0)));
     }
     return IconButton(
-      icon: const Icon(Icons.settings, size: 26, color: Color(0xff01b2b8)),
+      icon: const Icon(Icons.logout, size: 26, color: Color(0xff01b2b8)),
       onPressed: () {
         // Navigator.of(context).push(MaterialPageRoute(builder: (context) {
         //   return const ProfileSetting(); // add this shit
