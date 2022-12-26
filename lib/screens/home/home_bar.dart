@@ -101,7 +101,7 @@ class _State extends State<HomeAppbar> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 30.0),
+            padding: const EdgeInsets.only(left: 20.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -113,20 +113,25 @@ class _State extends State<HomeAppbar> {
                 const SizedBox(
                   height: 10,
                 ),
-                Text(
-                  AuthActions.currUser.username,
-                  style: const TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black),
-                ),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.5,
+                    child: Text(
+                      AuthActions.currUser.username,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                    ),
+                  ),
+
               ],
             ),
           ),
           Row(
             children: [
               Padding(
-                padding: const EdgeInsets.all(15),
+                padding: const EdgeInsets.all(10),
                 child: Container(
                   margin: const EdgeInsets.only(top: 40, right: 17),
                   transform: Matrix4.rotationZ(100),
@@ -153,7 +158,7 @@ class _State extends State<HomeAppbar> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(10.0),
+                padding: const EdgeInsets.all(15.0),
                 child: ClipOval(
                   child: Image.network(
                     AuthActions.currUser.profileImageURL,
