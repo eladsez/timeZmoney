@@ -1,5 +1,6 @@
 import 'package:time_z_money/business_Logic/actions/storage_actions.dart';
 import '../../data_access/firestore_dal.dart';
+import '../../screens/scheduler/components/neat_and_clean_calendar_event.dart';
 import '../models/CustomUser.dart';
 import '../models/Job.dart';
 import 'auth_actions.dart';
@@ -49,13 +50,11 @@ class JobsActions {
     return await das.getJobByUid(jobUid);
   }
 
-
-
-
   Future<void> addUserToWaitList(Job job) async {
-    await das.addWorkerToWaitList(job,AuthActions.currUser.uid);
+    await das.addWorkerToWaitList(job, AuthActions.currUser.uid);
     job.signedWorkers.add(AuthActions.currUser.uid);
   }
+
 /*
   * approve a worker for a job
   * warning: it doesn't check if the amount needed for the job is already full
@@ -70,28 +69,40 @@ class JobsActions {
   Future<void> removeUserFromJob(Job job, String? workerUid) async {
     await das.removeWorker(job, workerUid!);
   }
-  
-  Future<String> chooseUploadJobImage(String jobTitle) async{
-    return await storageActions.uploadImage("jobsImages/$jobTitle"); // TODO: change the remote image name to something more unique
+
+  Future<String> chooseUploadJobImage(String jobTitle) async {
+    return await storageActions.uploadImage(
+        "jobsImages/$jobTitle"); // TODO: change the remote image name to something more unique
   }
 
-  Future<void> postJob(Job nowJob) async{
+  Future<void> postJob(Job nowJob) async {
     await das.createJob(nowJob);
   }
 
   /*
   Get all the jobs the current user did
    */
-  Future<List<Job>> getPastJobs() async{
+  Future<List<Job>> getPastJobs() async {
     return await das.getPastJobsByUid(AuthActions.currUser.uid);
   }
 
   /*
   Get all the jobs the current user is approved for
    */
-  Future<List<Job>> getFutureJobs() async{
+  Future<List<Job>> getFutureJobs() async {
     return await das.getFutureJobsByUid(AuthActions.currUser.uid);
   }
 
+  Future<List<NeatCleanCalendarEvent>> getCurrUserEvent() async {
+    List<Job> jobs = AuthActions.currUser.userType == "worker"
+        ? await das.getAllWorkerApprovalJobs(AuthActions.currUser.uid)
+        : await das.getJobsOfEmployer(AuthActions.currUser.uid);
 
+    return jobs
+        .map((job) => NeatCleanCalendarEvent(job.title,
+            description: job.district,
+            startTime: job.date.toDate(),
+            endTime: job.date.toDate()))
+        .toList();
+  }
 }
