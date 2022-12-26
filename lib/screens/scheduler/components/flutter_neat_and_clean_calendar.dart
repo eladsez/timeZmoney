@@ -285,7 +285,6 @@ class _CalendarState extends State<Calendar> {
             _selectedDate.year, _selectedDate.month, _selectedDate.day)] ??
         [];
 
-    print('eventsMap has ${eventsMap?.length} entries');
   }
 
   Widget get nameAndIconRow {
@@ -380,7 +379,6 @@ class _CalendarState extends State<Calendar> {
                           _selectedDate.month, _selectedDate.day)] ??
                       [];
                 });
-                print('Date chosen: ${_selectedDate.toIso8601String()}');
                 onJumpToDateSelected(_selectedDate);
               }
             });
@@ -554,7 +552,7 @@ class _CalendarState extends State<Calendar> {
       return GestureDetector(
         onTap: toggleExpanded,
         child: Container(
-          color: widget.bottomBarColor ?? Color.fromRGBO(200, 200, 200, 0.2),
+          color: widget.bottomBarColor ?? const Color.fromRGBO(200, 200, 200, 0.2),
           height: 40,
           margin: EdgeInsets.only(top: 8.0),
           padding: EdgeInsets.all(0),
@@ -599,7 +597,7 @@ class _CalendarState extends State<Calendar> {
             // Create a list of events that are occurring on the currently selected day, if there are
             // any. Otherwise, display an empty Container.
             ? ListView.builder(
-                padding: EdgeInsets.all(0.0),
+                padding: const EdgeInsets.all(0.0),
                 itemBuilder: (BuildContext context, int index) {
                   final NeatCleanCalendarEvent event = _selectedEvents![index];
                   final String start =
@@ -627,7 +625,7 @@ class _CalendarState extends State<Calendar> {
                               ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5.0,
                           ),
                           Expanded(
@@ -639,11 +637,10 @@ class _CalendarState extends State<Calendar> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(event.summary,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .subtitle2),
-                                  SizedBox(
-                                    height: 10.0,
+                                    style: const TextStyle(fontWeight: FontWeight.w600),
+                                  ),
+                                  const SizedBox(
+                                    height: 5.0,
                                   ),
                                   Text(
                                     event.description,
@@ -681,7 +678,6 @@ class _CalendarState extends State<Calendar> {
   }
 
   Column singleDayTimeWidget(String start, String end) {
-    print('SingleDayEvent');
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -693,11 +689,9 @@ class _CalendarState extends State<Calendar> {
   }
 
   Column allOrMultiDayDayTimeWidget(NeatCleanCalendarEvent event) {
-    print('=== Summary: ${event.summary}');
     String start = DateFormat('HH:mm').format(event.startTime).toString();
     String end = DateFormat('HH:mm').format(event.endTime).toString();
     if (event.isAllDay) {
-      print('AllDayEvent - ${event.summary}');
       return Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -710,16 +704,13 @@ class _CalendarState extends State<Calendar> {
     if (event.multiDaySegement == MultiDaySegement.first) {
       // The event begins on the selcted day.
       // Just show the start time, no end time.
-      print('MultiDayEvent: start - ${event.summary}');
       end = '';
     } else if (event.multiDaySegement == MultiDaySegement.last) {
       // The event ends on the selcted day.
       // Just show the end time, no start time.
-      print('MultiDayEvent: end - ${event.summary}');
       start = widget.multiDayEndText;
     } else {
       // The event spans multiple days.
-      print('MultiDayEvent: middle - ${event.summary}');
       start = widget.allDayEventText;
       end = '';
     }

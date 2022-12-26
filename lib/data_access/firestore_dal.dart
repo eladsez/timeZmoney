@@ -179,19 +179,29 @@ class DataAccessService {
   }
 
   /*
-  Get all the jobs the user with this uid did in the past
+  Get all the jobs the worker user with this uid did in the past
    */
-  Future<List<Job>> getPastJobsByUid(String uid) async{
-    QuerySnapshot<Map<String,dynamic>> jobsSnap = await _db.collection("jobs").where("approvedWorkers",arrayContains: uid).get();
+  Future<List<Job>> getPastJobsByUid(String workerUid) async{
+    QuerySnapshot<Map<String,dynamic>> jobsSnap = await _db.collection("jobs").where("approvedWorkers",arrayContains: workerUid).get();
     return filterJobs(jobsSnap, "past");
   }
 
   /*
   Get all the jobs the user with this uid is approved in
    */
-  Future<List<Job>> getFutureJobsByUid(String uid) async{
-    QuerySnapshot<Map<String,dynamic>> jobsSnap = await _db.collection("jobs").where("approvedWorkers",arrayContains: uid).get();
+  Future<List<Job>> getFutureJobsByUid(String workerUid) async{
+    QuerySnapshot<Map<String,dynamic>> jobsSnap = await _db.collection("jobs").where("approvedWorkers",arrayContains: workerUid).get();
     return filterJobs(jobsSnap, "future");
+  }
+
+  /*
+   * get all the approval jobs of a worker (past and future)
+  */
+  Future<List<Job>> getAllWorkerApprovalJobs(String workerUid) async{
+    List<Job> past = await getPastJobsByUid(workerUid);
+    List<Job> future = await getFutureJobsByUid(workerUid);
+    past.addAll(future);
+    return past;
   }
 
   /*
