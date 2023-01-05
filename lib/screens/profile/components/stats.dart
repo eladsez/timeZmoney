@@ -3,13 +3,15 @@ import 'package:time_z_money/business_Logic/actions/jobs_actions.dart';
 import 'package:time_z_money/business_Logic/actions/review_actions.dart';
 import 'package:time_z_money/business_Logic/models/CustomUser.dart';
 import 'package:time_z_money/business_Logic/models/Review.dart';
+import 'package:time_z_money/screens/profile/components/job_list_view.dart';
+import 'package:time_z_money/screens/profile/components/review_list_view.dart';
 
 import '../../../business_Logic/models/Job.dart';
-import '../../Loading_Screens/loading_screen.dart';
 
 class Stats extends StatefulWidget {
-  const Stats(CustomUser user, {super.key});
 
+  const Stats({super.key,required this.user});
+  final CustomUser user;
   @override
   State<Stats> createState() => _StatsState();
 }
@@ -17,40 +19,43 @@ class Stats extends StatefulWidget {
 class _StatsState extends State<Stats> {
   JobsActions jobsActions = JobsActions();
   ReviewActions reviewActions = ReviewActions();
+
   @override
   Widget build(BuildContext context) => Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           FutureBuilder(
-              future: reviewActions.getReviewsOnUser(),
+              future: reviewActions.getReviewsOnUser(widget.user),
               builder: (context, AsyncSnapshot<List<JobReview>> snapshot) {
                 if (snapshot.hasData) {
                   List<JobReview> reviews = snapshot.data ?? [];
-                  if(reviews.isEmpty)
-                    {
-                      return buildButton(context, "Reviews", 0);
-                    }
-                  double average = reviews.map((review) => review.stars).reduce((firstStarts, secondStars) => firstStarts + secondStars)/reviews.length;
+                  if (reviews.isEmpty) {
+                    return buildButton(context, "Reviews", 0);
+                  }
+                  double average = reviews.map((review) => review.stars).reduce(
+                          (firstStarts, secondStars) =>
+                              firstStarts + secondStars) /
+                      reviews.length;
                   return buildButton(context, "Reviews", average);
-
                 } else {
                   return const CircularProgressIndicator();
                 }
               }),
           buildDivider(),
           FutureBuilder(
-              future: jobsActions.getFutureJobs(),
+              future: widget.user.userType?.compareTo("employer")==0? jobsActions.getFutureJobsCreated(widget.user):jobsActions.getFutureJobsApproved(widget.user),
               builder: (context, AsyncSnapshot<List<Job>> snapshot) {
                 if (snapshot.hasData) {
                   int length = snapshot.data?.length ?? 0;
-                  return buildButton(context, "Current jobs", length.toDouble());
+                  return buildButton(
+                      context, "Current Jobs", length.toDouble());
                 } else {
                   return const CircularProgressIndicator();
                 }
               }),
           buildDivider(),
           FutureBuilder(
-              future: jobsActions.getPastJobs(),
+              future: widget.user.userType?.compareTo("employer")==0? jobsActions.getPastJobsCreated(widget.user):jobsActions.getPastJobsApproved(widget.user),
               builder: (context, AsyncSnapshot<List<Job>> snapshot) {
                 if (snapshot.hasData) {
                   int length = snapshot.data?.length ?? 0;
@@ -70,14 +75,26 @@ class _StatsState extends State<Stats> {
   Widget buildButton(BuildContext context, String value, double toDisplay) =>
       MaterialButton(
         padding: const EdgeInsets.symmetric(vertical: 4),
-        onPressed: () {},
+        onPressed: () => {
+          if(value.compareTo("Past Jobs") == 0){
+            Navigator.push(context, MaterialPageRoute(builder: (context) => JobListViewer(kind: "past",user: widget.user)))
+          }
+          else if(value.compareTo("Current Jobs") == 0){
+            Navigator.push(context, MaterialPageRoute(builder: (context) => JobListViewer(kind: "future",user: widget.user)))
+          }
+          else{
+            Navigator.push(context, MaterialPageRoute(builder: (context) => ReviewListViewer(user: widget.user)))
+          }
+        },
         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Text(
-              value.compareTo("Reviews") == 0 ? toDisplay.toStringAsFixed(2) : toDisplay.toInt().toString(),
+              value.compareTo("Reviews") == 0
+                  ? toDisplay.toStringAsFixed(2)
+                  : toDisplay.toInt().toString(),
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
             ),
             const SizedBox(height: 2),

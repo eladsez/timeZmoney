@@ -82,16 +82,31 @@ class JobsActions {
   /*
   Get all the jobs the current user did
    */
-  Future<List<Job>> getPastJobs() async {
-    return await das.getPastJobsByUid(AuthActions.currUser.uid);
+  Future<List<Job>> getPastJobsApproved(CustomUser user) async {
+    return await das.getPastJobsAppliedByUid(user.uid!);
   }
 
   /*
   Get all the jobs the current user is approved for
    */
-  Future<List<Job>> getFutureJobs() async {
-    return await das.getFutureJobsByUid(AuthActions.currUser.uid);
+  Future<List<Job>> getFutureJobsApproved(CustomUser user) async {
+    return await das.getFutureJobsAppliedByUid(user.uid!);
   }
+
+  /*
+  Get all future jobs created by the current user
+   */
+  Future<List<Job>> getFutureJobsCreated(CustomUser user) async{
+    return await das.getFutureJobsCreatedByUid(user.uid!);
+  }
+
+  /*
+  Get all future jobs created by the current user
+   */
+  Future<List<Job>> getPastJobsCreated(CustomUser user) async{
+    return await das.getPastJobsCreatedByUid(user.uid!);
+  }
+
 
   Future<List<NeatCleanCalendarEvent>> getCurrUserEvent() async {
     List<Job> jobs = AuthActions.currUser.userType == "worker"

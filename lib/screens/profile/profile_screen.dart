@@ -59,7 +59,7 @@ class ProfileScreenState extends State<ProfileScreen> {
           buildName(widget.user),
           const SizedBox(height: 24),
           const SizedBox(height: 24),
-          Stats(widget.user),
+          Stats(user: widget.user),
           const SizedBox(height: 48),
           buildAbout(widget.user),
           AuthActions.currUser.uid == widget.user.uid
