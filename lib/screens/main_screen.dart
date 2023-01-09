@@ -1,6 +1,7 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:time_z_money/screens/chat/chat_main.dart';
+import 'package:time_z_money/screens/jobs_dashboard/search_job_screen.dart';
 import 'package:time_z_money/screens/profile/profile_screen.dart';
 import 'package:time_z_money/screens/scheduler/scheduler.dart';
 import 'package:time_z_money/screens/upload_job/upload_job_screen.dart';
@@ -15,6 +16,7 @@ enum BottomNavigationBarState {
   jobPosting,
   scheduler,
   chat,
+  searchJob,
   dummy,
   profile, // need to modify
   error
@@ -78,6 +80,8 @@ class _MainScreenState extends State<MainScreen> {
         return const CalendarScreen();
       case BottomNavigationBarState.chat:
         return const ChatScreen();
+      case BottomNavigationBarState.searchJob:
+        return const SearchJobScreen();
       default:
         return Container();
     }
@@ -115,11 +119,12 @@ class _MainScreenState extends State<MainScreen> {
                   //TODO: implement 2 of worker
                     selectedNavBar = AuthActions.currUser.userType == "employer"
                         ? BottomNavigationBarState.jobPosting
-                        :BottomNavigationBarState.error;
+                        :BottomNavigationBarState.searchJob;
                     break;
                   case 3:
                     selectedNavBar = BottomNavigationBarState.chat;
                     break;
+
                   case 4:
                     selectedNavBar = BottomNavigationBarState.profile;
                     break;

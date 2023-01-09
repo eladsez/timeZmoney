@@ -23,6 +23,10 @@ class JobsActions {
     return das.getJobsOfMajor(majorTab);
   }
 
+  Future<List<Job>> getAllJobs() async {
+    return await das.getAllRelevantJobs();
+  }
+
   /*
    * get the available majors from the jobsMajors collection
    * The "For You" major always will be the first
