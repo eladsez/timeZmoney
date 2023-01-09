@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:time_z_money/business_Logic/actions/jobs_actions.dart';
 import 'package:time_z_money/screens/scheduler/components/flutter_neat_and_clean_calendar.dart';
 
+import '../../utils/helper_functions.dart';
+import '../../utils/theme.dart';
+
 class CalendarScreen extends StatefulWidget {
   const CalendarScreen({super.key});
 
@@ -12,6 +15,7 @@ class CalendarScreen extends StatefulWidget {
 }
 
 class _CalendarScreenState extends State<CalendarScreen> {
+  AppTheme theme = HelperFunctions.isDarkMode ? DarkTheme() : LightTheme();
   late Map<DateTime, List<NeatCleanCalendarEvent>> _events;
 
   JobsActions jobsActions = JobsActions();
@@ -28,7 +32,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: theme.backgroundColor,
       body: FutureBuilder(
         future: jobsActions.getCurrUserEvent(),
           builder: (context, eventListSnap) {
@@ -38,18 +42,19 @@ class _CalendarScreenState extends State<CalendarScreen> {
           }
           return  SafeArea(
         child: Calendar(
+          bottomBarArrowColor: theme.secondaryIconColor,
           events: _events,
-          bottomBarColor: Colors.white,
-          bottomBarTextStyle: const TextStyle(fontFamily: 'ProstoOne'),
+          bottomBarColor: theme.appBarColor,
+          bottomBarTextStyle: TextStyle(fontFamily: 'ProstoOne', color: theme.titleColor),
           startOnMonday: true,
           weekDays: const ['M0N', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'],
           eventsList: eventList,
           isExpandable: true,
           eventDoneColor: Colors.green,
-          selectedColor: Colors.pink,
-          selectedTodayColor: const Color(0xff01b2b8),
-          todayColor: const Color(0xff01b2b8),
-          eventColor: null,
+          selectedColor: theme.accentColor!.withOpacity(0.5),
+          selectedTodayColor: theme.accentColor,
+          todayColor: Colors.red,
+          eventColor: theme.accentColor,
           locale: 'en_US',
           todayButtonText: 'Today',
           allDayEventText: 'All the day',
@@ -57,8 +62,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
           isExpanded: true,
           expandableDateFormat: 'EEEE, dd. MMMM yyyy',
           datePickerType: DatePickerType.date,
-          dayOfWeekStyle: const TextStyle(
-              color: Colors.black, fontWeight: FontWeight.w800, fontSize: 11),
+          defaultDayColor: theme.textFieldTextColor,
+          defaultOutOfMonthDayColor: theme.accentColor,
+
+          displayMonthTextStyle: TextStyle(fontFamily: 'ProstoOne', color: theme.titleColor),
+          dayOfWeekStyle: TextStyle(
+              color: theme.titleColor, fontWeight: FontWeight.w800, fontSize: 11),
         ),
       );}),
     );

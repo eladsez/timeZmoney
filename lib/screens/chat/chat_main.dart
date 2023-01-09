@@ -1,30 +1,9 @@
-import 'package:chatview/chatview.dart';
 import 'package:flutter/material.dart';
 
+import 'package:chatview/chatview.dart';
+import '../../utils/helper_functions.dart';
+import '../../utils/theme.dart';
 import 'data.dart';
-import 'models/theme.dart';
-
-void main() {
-  runApp(const Example());
-}
-
-class Example extends StatelessWidget {
-  const Example({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Chat UI Demo',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primaryColor: const Color(0xffEE5366),
-        colorScheme:
-        ColorScheme.fromSwatch(accentColor: const Color(0xffEE5366)),
-      ),
-      home: const ChatScreen(),
-    );
-  }
-}
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({Key? key}) : super(key: key);
@@ -34,8 +13,7 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  AppTheme theme = LightTheme();
-  bool isDarkTheme = false;
+  AppTheme theme = HelperFunctions.isDarkMode ? DarkTheme() : LightTheme();
   final currentUser = ChatUser(
     id: '1',
     name: 'Flutter',
@@ -101,12 +79,13 @@ class _ChatScreenState extends State<ChatScreen> {
           userStatus: "online",
           userStatusTextStyle: const TextStyle(color: Colors.grey),
           actions: [
+            // go to a list of conversations
             IconButton(
-              onPressed: _onThemeIconTap,
+              onPressed: (){},
               icon: Icon(
-                isDarkTheme
-                    ? Icons.brightness_4_outlined
-                    : Icons.dark_mode_outlined,
+                HelperFunctions.isDarkMode
+                    ? Icons.people
+                    : Icons.people_outline,
                 color: theme.themeIconColor,
               ),
             ),
@@ -131,7 +110,7 @@ class _ChatScreenState extends State<ChatScreen> {
           replyMessageColor: theme.replyMessageColor,
           defaultSendButtonColor: theme.sendButtonColor,
           replyDialogColor: theme.replyDialogColor,
-          replyTitleColor: theme.replyTitleColor,
+          replyTitleColor: theme.titleColor,
           textFieldBackgroundColor: theme.textFieldBackgroundColor,
           closeIconColor: theme.closeIconColor,
           textFieldConfig: TextFieldConfiguration(
@@ -170,7 +149,7 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
         reactionPopupConfig: ReactionPopupConfiguration(
           shadow: BoxShadow(
-            color: isDarkTheme ? Colors.black54 : Colors.grey.shade400,
+            color: HelperFunctions.isDarkMode ? Colors.black54 : Colors.grey.shade400,
             blurRadius: 20,
           ),
           backgroundColor: theme.reactionPopupColor,
@@ -197,7 +176,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 color: theme.inComingChatBubbleColor,
                 boxShadow: [
                   BoxShadow(
-                    color: isDarkTheme ? Colors.black12 : Colors.grey.shade200,
+                    color: HelperFunctions.isDarkMode ? Colors.black12 : Colors.grey.shade200,
                     offset: const Offset(0, 20),
                     blurRadius: 40,
                   )
@@ -249,17 +228,5 @@ class _ChatScreenState extends State<ChatScreen> {
         replyMessage: replyMessage,
       ),
     );
-  }
-
-  void _onThemeIconTap() {
-    setState(() {
-      if (isDarkTheme) {
-        theme = LightTheme();
-        isDarkTheme = false;
-      } else {
-        theme = DarkTheme();
-        isDarkTheme = true;
-      }
-    });
   }
 }

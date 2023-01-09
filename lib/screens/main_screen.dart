@@ -7,6 +7,7 @@ import 'package:time_z_money/screens/scheduler/scheduler.dart';
 import 'package:time_z_money/screens/upload_job/upload_job_screen.dart';
 
 import '../business_Logic/actions/auth_actions.dart';
+import '../utils/helper_functions.dart';
 import '../utils/theme.dart';
 import 'home/home_screen.dart';
 
@@ -27,8 +28,9 @@ enum BottomNavigationBarState {
  Here we will check which user is connected and build the screens for him (also depend if he is worker or employer)
  */
 class MainScreen extends StatefulWidget {
-  const MainScreen({Key? key}) : super(key: key);
+  MainScreen({Key? key, required this.theme}) : super(key: key);
 
+  AppTheme theme;
   @override
   State<MainScreen> createState() => _MainScreenState();
 }
@@ -44,24 +46,24 @@ class _MainScreenState extends State<MainScreen> {
   // This method is responsible for the bottom navigation icons.
   List<Widget> buildNavigationIcons() {
     return AuthActions.currUser.userType == "worker"
-        ? const [
-      Icon(Icons.home, size: 26, color: Color(0xff01b2b8)),
+        ? [
+      Icon(Icons.home, size: 26, color: widget.theme.accentColor),
       Icon(Icons.calendar_month_outlined,
-          size: 26, color: Color(0xff01b2b8)),
-      Icon(Icons.search, size: 28, color: Color(0xff01b2b8)),
+          size: 26, color: widget.theme.accentColor),
+      Icon(Icons.search, size: 28, color: widget.theme.accentColor),
       Icon(Icons.chat_bubble_outline_sharp,
-          size: 26, color: Color(0xff01b2b8)),
+          size: 26, color: widget.theme.accentColor),
       Icon(Icons.person_outline_rounded,
-          size: 26, color: Color(0xff01b2b8)),
+          size: 26, color: widget.theme.accentColor),
     ]
-        : const [
-      Icon(Icons.home, size: 26, color: Color(0xff01b2b8)),
-      Icon(Icons.calendar_month_outlined, size: 26, color: Color(0xff01b2b8)),
-      Icon(Icons.add_outlined, size: 28, color: Color(0xff01b2b8)),
+        : [
+      Icon(Icons.home, size: 26, color: widget.theme.accentColor),
+      Icon(Icons.calendar_month_outlined, size: 26, color: widget.theme.accentColor),
+      Icon(Icons.add_outlined, size: 28, color: widget.theme.accentColor),
       Icon(Icons.chat_bubble_outline_sharp,
-          size: 26, color: Color(0xff01b2b8)),
+          size: 26, color: widget.theme.accentColor),
       Icon(Icons.person_outline_rounded,
-          size: 26, color: Color(0xff01b2b8)),
+          size: 26, color: widget.theme.accentColor),
     ];
   }
 
@@ -73,7 +75,7 @@ class _MainScreenState extends State<MainScreen> {
       case BottomNavigationBarState.home:
         return const HomeScreen();
       case BottomNavigationBarState.profile:
-        return ProfileScreen(user: AuthActions.currUser,);
+        return ProfileScreen(user: AuthActions.currUser, callBack: refresh,);
       case BottomNavigationBarState.jobPosting:
         return const UploadJobScreen();
       case BottomNavigationBarState.scheduler:
@@ -87,18 +89,20 @@ class _MainScreenState extends State<MainScreen> {
     }
   }
 
+  refresh(AppTheme theme) {
+    setState(() {widget.theme = theme;});
+  }
+
   @override
   Widget build(BuildContext context) {
-    AppTheme theme = LightTheme();
-    bool isDarkTheme = false;
     return Scaffold(
       body: bodyBuilder(),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(bottom: 5.0),
         child: CurvedNavigationBar(
-          color: Colors.white,
-          backgroundColor: Colors.grey.withOpacity(0.1),
-          buttonBackgroundColor: Colors.yellow,
+          color: widget.theme.appBarColor!,
+          backgroundColor: widget.theme.secondaryIconColor!,
+          buttonBackgroundColor: widget.theme.cardColor,
           height: 50,
           items: buildNavigationIcons(),
           animationDuration: const Duration(microseconds: 200),

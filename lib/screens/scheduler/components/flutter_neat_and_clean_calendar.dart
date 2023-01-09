@@ -1,6 +1,8 @@
 library flutter_neat_and_clean_calendar;
 
 import 'package:flutter/material.dart';
+import '../../../utils/helper_functions.dart';
+import '../../../utils/theme.dart';
 import 'date_picker_config.dart';
 import 'platform_widgets.dart';
 import './date_utils.dart';
@@ -173,6 +175,7 @@ class Calendar extends StatefulWidget {
 }
 
 class _CalendarState extends State<Calendar> {
+  AppTheme theme = HelperFunctions.isDarkMode ? DarkTheme() : LightTheme();
   final calendarUtils = Utils();
   late List<DateTime> selectedMonthsDays;
   late Iterable<DateTime> selectedWeekDays;
@@ -296,11 +299,11 @@ class _CalendarState extends State<Calendar> {
     if (!widget.hideArrows) {
       leftArrow = PlatformIconButton(
         onPressed: isExpanded ? previousMonth : previousWeek,
-        icon: Icon(Icons.chevron_left),
+        icon: Icon(Icons.chevron_left, color: theme.secondaryIconColor),
       );
       rightArrow = PlatformIconButton(
         onPressed: isExpanded ? nextMonth : nextWeek,
-        icon: Icon(Icons.chevron_right),
+        icon: Icon(Icons.chevron_right, color: theme.secondaryIconColor),
       );
     } else {
       leftArrow = Container();
@@ -309,7 +312,7 @@ class _CalendarState extends State<Calendar> {
 
     if (!widget.hideTodayIcon) {
       todayIcon = GestureDetector(
-        child: Text(widget.todayButtonText),
+        child: Text(widget.todayButtonText , style: TextStyle(color: theme.titleColor)),
         onTap: resetToToday,
       );
     } else {
@@ -319,7 +322,7 @@ class _CalendarState extends State<Calendar> {
     if (widget.datePickerType != null &&
         widget.datePickerType != DatePickerType.hidden) {
       jumpDateIcon = GestureDetector(
-        child: Icon(Icons.date_range_outlined),
+        child: Icon(Icons.date_range_outlined, color: theme.secondaryIconColor),
         onTap: () {
           if (widget.datePickerType == DatePickerType.year) {
             // show year picker
@@ -621,7 +624,7 @@ class _CalendarState extends State<Calendar> {
                             child: Padding(
                               padding: const EdgeInsets.all(4.0),
                               child: Container(
-                                color: event.color,
+                                color: theme.accentColor,
                               ),
                             ),
                           ),
@@ -637,13 +640,17 @@ class _CalendarState extends State<Calendar> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(event.summary,
-                                    style: const TextStyle(fontWeight: FontWeight.w600),
+                                    style: TextStyle(fontWeight: FontWeight.w600,
+                                    color: theme.appBarTitleTextStyle),
                                   ),
                                   const SizedBox(
                                     height: 5.0,
                                   ),
                                   Text(
                                     event.description,
+                                    style: TextStyle(
+                                      color: theme.textFieldTextColor,
+                                    ),
                                     overflow: TextOverflow.ellipsis,
                                   )
                                 ],
@@ -682,8 +689,8 @@ class _CalendarState extends State<Calendar> {
       crossAxisAlignment: CrossAxisAlignment.end,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(start, style: Theme.of(context).textTheme.bodyText1),
-        Text(end, style: Theme.of(context).textTheme.bodyText1),
+        Text(start, style: TextStyle(color: theme.textFieldTextColor)),
+        Text(end, style: TextStyle(color: theme.textFieldTextColor)),
       ],
     );
   }

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
-class InputField extends StatelessWidget {
+import '../../../utils/helper_functions.dart';
+import '../../../utils/theme.dart';
 
+
+class InputField extends StatelessWidget {
+  AppTheme theme = HelperFunctions.isDarkMode ? DarkTheme() : LightTheme();
   final String title;
   final String hint;
   final TextEditingController? fieldController;
@@ -9,14 +13,13 @@ class InputField extends StatelessWidget {
   final double highet;
   final TextInputType keyboardType;
 
-   const InputField(
-      {Key? key,
+   InputField(
+      {super.key,
         required this.title,
         required this.hint,
         this.fieldController,
         this.keyboardType = TextInputType.text,
-        this.child, this.highet = 52,})
-      : super(key: key);
+        this.child, this.highet = 52,});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +30,7 @@ class InputField extends StatelessWidget {
         children: [
           Text(
             title,
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: theme.titleColor),
           ),
           Container(
             alignment: Alignment.center,
@@ -45,16 +48,16 @@ class InputField extends StatelessWidget {
               children: [
                 Expanded(
                   child: TextFormField(
-                    style: const TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.w400),
+                    style: TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.w400, color: theme.textFieldTextColor),
                     obscureText: false,
                     autocorrect: false,
                     keyboardType: keyboardType,
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: hint,
-                      hintStyle: const TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.w400),
+                      hintStyle: TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.w400, color: theme.textFieldTextColor),
                     ),
                     controller: fieldController,
                     readOnly: child != null ? true : false,

@@ -5,6 +5,8 @@ import 'package:time_z_money/business_Logic/models/Job.dart';
 
 import '../../business_Logic/actions/auth_actions.dart';
 import '../../business_Logic/actions/jobs_actions.dart';
+import '../../utils/helper_functions.dart';
+import '../../utils/theme.dart';
 import 'Component/button.dart';
 import 'Component/inputfiled.dart';
 import 'Component/places_search.dart';
@@ -17,6 +19,7 @@ class UploadJobScreen extends StatefulWidget {
 }
 
 class _UploadJobScreenState extends State<UploadJobScreen> {
+  AppTheme theme = HelperFunctions.isDarkMode ? DarkTheme() : LightTheme();
   final JobsActions jobsActions = JobsActions();
   late final TextEditingController titleController;
   late final TextEditingController descriptionController;
@@ -65,7 +68,7 @@ class _UploadJobScreenState extends State<UploadJobScreen> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
           ),
-          elevation: 2,
+          elevation: theme.elevation,
           margin: const EdgeInsets.all(10),
           child: GestureDetector(
             onTap: () async {
@@ -91,6 +94,7 @@ class _UploadJobScreenState extends State<UploadJobScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar(),
+      backgroundColor: theme.backgroundColor,
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -129,10 +133,10 @@ class _UploadJobScreenState extends State<UploadJobScreen> {
                             )
                             .toList()
                         : [const DropdownMenuItem<String>(child: Text(" "))],
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.keyboard_arrow_down,
                       size: 32,
-                      color: Colors.grey,
+                      color: theme.secondaryIconColor,
                     ),
                     elevation: 3,
                     underline: Container(height: 0),
@@ -145,9 +149,9 @@ class _UploadJobScreenState extends State<UploadJobScreen> {
                 hint: DateFormat.yMd().format(selectedDate),
                 child: IconButton(
                   onPressed: () => getDateFromUser(),
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.calendar_today_outlined,
-                    color: Colors.grey,
+                    color: theme.secondaryIconColor,
                   ),
                 ),
               ),
@@ -160,9 +164,9 @@ class _UploadJobScreenState extends State<UploadJobScreen> {
                       hint: startTime,
                       child: IconButton(
                         onPressed: () => getTimeFromUser(isStartTime: true),
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.access_time_rounded,
-                          color: Colors.grey,
+                          color: theme.secondaryIconColor,
                         ),
                       ),
                     ),
@@ -173,9 +177,9 @@ class _UploadJobScreenState extends State<UploadJobScreen> {
                       hint: endTime,
                       child: IconButton(
                         onPressed: () => getTimeFromUser(isStartTime: false),
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.access_time_rounded,
-                          color: Colors.grey,
+                          color: theme.secondaryIconColor,
                         ),
                       ),
                     ),
@@ -199,10 +203,10 @@ class _UploadJobScreenState extends State<UploadJobScreen> {
                         ),
                       )
                       .toList(),
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.keyboard_arrow_down,
                     size: 32,
-                    color: Colors.grey,
+                    color: theme.secondaryIconColor,
                   ),
                   elevation: 3,
                   underline: Container(height: 0),
@@ -240,10 +244,10 @@ class _UploadJobScreenState extends State<UploadJobScreen> {
                               ),
                             )
                             .toList(),
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.keyboard_arrow_down,
                           size: 32,
-                          color: Colors.grey,
+                          color: theme.secondaryIconColor,
                         ),
                         elevation: 3,
                         underline: Container(height: 0),
@@ -327,16 +331,19 @@ class _UploadJobScreenState extends State<UploadJobScreen> {
 
   AppBar appBar() {
     return AppBar(
-      toolbarHeight: 35,
-      title: const Center(
+      toolbarHeight: 36,
+      title: Center(
           child: Text(
         'Job Posting',
         style: TextStyle(
-            fontSize: 26, fontWeight: FontWeight.bold, color: Colors.black),
+            fontSize: 26,
+            fontWeight:
+            FontWeight.bold,
+            color: theme.titleColor),
       )),
       shadowColor: Colors.black.withOpacity(0.4),
       bottomOpacity: 0.9,
-      backgroundColor: Colors.white,
+      backgroundColor: theme.appBarColor,
     );
   }
 

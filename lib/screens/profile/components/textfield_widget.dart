@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../utils/helper_functions.dart';
+import '../../../utils/theme.dart';
+
 class TextFieldWidget extends StatefulWidget {
   final int maxLines;
   final String label;
@@ -7,7 +10,7 @@ class TextFieldWidget extends StatefulWidget {
   final TextEditingController controller;
   final TextAlign align;
 
-  const TextFieldWidget({
+  TextFieldWidget({
     Key? key,
     this.maxLines = 1,
     required this.label,
@@ -21,13 +24,14 @@ class TextFieldWidget extends StatefulWidget {
 }
 
 class TextFieldWidgetState extends State<TextFieldWidget> {
+  AppTheme theme = HelperFunctions.isDarkMode ? DarkTheme() : LightTheme();
   @override
   Widget build(BuildContext context) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             widget.label,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: theme.titleColor),
           ),
           const SizedBox(height: 8),
           TextField(
@@ -36,6 +40,8 @@ class TextFieldWidgetState extends State<TextFieldWidget> {
             decoration: InputDecoration(
               hintText:
                   "Your about is currently empty, Press the edit button to write it!",
+              hintStyle: TextStyle(
+                  color: theme.textFieldTextColor),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
               ),

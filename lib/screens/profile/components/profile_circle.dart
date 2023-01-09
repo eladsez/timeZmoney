@@ -2,18 +2,21 @@ import 'package:flutter/material.dart';
 
 import '../../../business_Logic/actions/auth_actions.dart';
 import '../../../business_Logic/models/CustomUser.dart';
+import '../../../utils/helper_functions.dart';
+import '../../../utils/theme.dart';
 
 class ProfileCircle extends StatefulWidget {
   final String imagePath;
   final bool isEdit;
   final VoidCallback onClicked;
   final CustomUser user;
+  final AppTheme theme;
 
-  const ProfileCircle(
+  ProfileCircle(
       {super.key,
       required this.imagePath,
       this.isEdit = false,
-      required this.onClicked, required this.user});
+      required this.onClicked, required this.user, required this.theme});
 
   @override
   State<ProfileCircle> createState() => _ProfileCircleState();
@@ -30,7 +33,7 @@ class _ProfileCircleState extends State<ProfileCircle> {
           Positioned(
             bottom: 0,
             right: 4,
-            child: buildEditIcon(const Color(0xff01b2b8), widget.user),
+            child: buildEditIcon(widget.theme.accentColor, widget.user),
           ),
         ],
       ),
@@ -52,14 +55,14 @@ class _ProfileCircleState extends State<ProfileCircle> {
     );
   }
 
-  Widget buildEditIcon(Color color, CustomUser user) => Visibility(
+  Widget buildEditIcon(Color? color, CustomUser user) => Visibility(
     visible:  AuthActions.currUser.uid != widget.user.uid
         ? false : true,
     child: buildCircle(
         color: Colors.white,
         all: 0.2,
         child: buildCircle(
-          color: color,
+          color: color!,
           all: 0.2,
           child: IconButton(
             iconSize: 20,

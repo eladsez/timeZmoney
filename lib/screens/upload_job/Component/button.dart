@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../../../utils/helper_functions.dart';
+import '../../../utils/theme.dart';
+
 class PostButton extends StatelessWidget {
-  const PostButton({required this.label, required this.onTap, Key? key})
+  AppTheme theme = HelperFunctions.isDarkMode ? DarkTheme() : LightTheme();
+  PostButton({required this.label, required this.onTap, Key? key})
       : super(key: key);
 
   final String label;
@@ -17,7 +21,7 @@ class PostButton extends StatelessWidget {
         width: 120,
         height: 45,
         decoration: BoxDecoration(
-          color: const Color(0xff01b2b8),
+          color: theme.accentColor,
           borderRadius: BorderRadius.circular(25),
         ),
         child: Text(

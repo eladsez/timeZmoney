@@ -3,6 +3,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import '../../business_Logic/actions/auth_actions.dart';
 import '../../business_Logic/actions/message_actions.dart';
+import '../../utils/helper_functions.dart';
 import '../../utils/theme.dart';
 
 class HomeAppbar extends StatefulWidget {
@@ -13,8 +14,7 @@ class HomeAppbar extends StatefulWidget {
 }
 
 class _State extends State<HomeAppbar> {
-  AppTheme theme = LightTheme();
-  bool isDarkTheme = false;
+  AppTheme theme = HelperFunctions.isDarkMode ? DarkTheme() : LightTheme();
   final MessageActions messageActions = MessageActions();
 
   void updateNotifications(RemoteMessage message) {
@@ -90,9 +90,9 @@ class _State extends State<HomeAppbar> {
   Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height * 0.135,
-      decoration: const BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
+      decoration: BoxDecoration(
+          color: theme.appBarColor,
+          boxShadow: const [
             BoxShadow(
                 color: Colors.black12, blurRadius: 5, offset: Offset(0, 1))
           ],
@@ -108,10 +108,9 @@ class _State extends State<HomeAppbar> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   'Welcome Home',
-                  style: TextStyle(
-                      color: Colors.grey, fontWeight: FontWeight.bold),
+                  style: theme.titleTextStyle,
                 ),
                 const SizedBox(
                   height: 10,
@@ -121,10 +120,10 @@ class _State extends State<HomeAppbar> {
                     child: Text(
                       AuthActions.currUser.username,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
+                      style: TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black),
+                          color: theme.nameColor),
                     ),
                   ),
 
@@ -174,17 +173,5 @@ class _State extends State<HomeAppbar> {
         ],
       ),
     );
-  }
-
-  void _onThemeIconTap() {
-    setState(() {
-      if (isDarkTheme) {
-        theme = LightTheme();
-        isDarkTheme = false;
-      } else {
-        theme = DarkTheme();
-        isDarkTheme = true;
-      }
-    });
   }
 }

@@ -13,17 +13,24 @@ class AppTheme {
   //variables definition
 
   // main colors
+  final Color? accentColor; // for buttons and such
   final Color? appBarColor;
   final Color? backArrowColor;
-  final Color? backgroundColor;
+  final Color? backgroundColor;  // background color of the app
+  final Color? cardColor; // background color of the cards, lists, etc.
   final Color? appBarTitleTextStyle;
 
   // text and text fields colors
   final Color? textFieldBackgroundColor;
   final Color? textFieldTextColor;
   final Color? titleColor;
+  final Color? nameColor;
+  final Color? emailColor;
+  final TextStyle? titleTextStyle;
 
   // icons colors
+  final Color? mainIconColor; // should be the app's main accent color
+  final Color? secondaryIconColor; // light gray color
   final Color? themeIconColor;
   final Color? closeIconColor;
   final Color? shareIconBackgroundColor;
@@ -73,17 +80,24 @@ class AppTheme {
   // constructor
   AppTheme({
     // main colors
+    this.accentColor,
     this.appBarColor,
     this.backArrowColor,
     this.backgroundColor,
+    this.cardColor,
 
     // text and text fields colors
     this.textFieldTextColor,
     this.titleColor,
     this.textFieldBackgroundColor,
     this.appBarTitleTextStyle,
+    this.nameColor,
+    this.emailColor,
+    this.titleTextStyle,
 
     // icons colors
+    this.mainIconColor,
+    this.secondaryIconColor,
     this.cameraIconColor,
     this.galleryIconColor,
     this.closeIconColor,
@@ -136,16 +150,25 @@ class AppTheme {
 class DarkTheme extends AppTheme {
   DarkTheme({
     // main colors
+    Color accentColor = const Color(0xff9f85ff),
     Color appBarColor = const Color(0xff1d1b25),
     Color backArrowColor = Colors.white,
     Color backgroundColor = const Color(0xff272336),
+    Color cardColor = const Color(0xff383152),
 
     // text and text fields colors
     Color textFieldTextColor = Colors.white,
     Color titleColor = Colors.white,
-    Color appBarTitleTextStyle = Colors.white,
+    Color appBarTitleTextColor = Colors.white,
+    Color nameColor = Colors.white,
+    Color emailColor = Colors.grey,
+    TextStyle titleTextStyle = const TextStyle(
+        color: Colors.grey,
+        fontWeight: FontWeight.bold),
 
     // icons colors
+    Color mainIconColor = Colors.white,
+    Color secondaryIconColor = Colors.grey,
     Color closeIconColor = Colors.white,
     Color shareIconBackgroundColor = const Color(0xff383152),
     Color cameraIconColor = const Color(0xff757575),
@@ -193,17 +216,24 @@ class DarkTheme extends AppTheme {
     Color messageTimeTextColor = Colors.white,
   }) : super(
     // main colors
+    accentColor: accentColor,
     appBarColor: appBarColor,
     backgroundColor: backgroundColor,
     backArrowColor: backArrowColor,
+    cardColor: cardColor,
 
     // text and text fields colors
     textFieldBackgroundColor: textFieldBackgroundColor,
     titleColor: titleColor,
-    appBarTitleTextStyle: appBarTitleTextStyle,
+    appBarTitleTextStyle: appBarTitleTextColor,
     textFieldTextColor: textFieldTextColor,
+    nameColor: nameColor,
+    emailColor: emailColor,
+    titleTextStyle: titleTextStyle,
 
     // icons colors
+    mainIconColor: mainIconColor,
+    secondaryIconColor: secondaryIconColor,
     closeIconColor: closeIconColor,
     shareIconBackgroundColor: shareIconBackgroundColor,
     themeIconColor: themeIconColor,
@@ -256,17 +286,27 @@ class DarkTheme extends AppTheme {
 class LightTheme extends AppTheme {
   LightTheme({
     // main colors
+    Color accentColor = const Color(0xff01b2b8),
     Color appBarColor = Colors.white,
     Color backArrowColor = const Color(0xffEE5366),
     Color backgroundColor = const Color(0xffeeeeee),
+    Color cardColor = Colors.white,
 
     // text and text fields colors
     Color textFieldTextColor = Colors.black,
-    Color titleColor = const Color(0xffEE5366),
+    Color titleColor = Colors.black,
     Color textFieldBackgroundColor = Colors.white,
-    Color appBarTitleTextStyle = Colors.black,
+    Color appBarTitleTextColor = Colors.black,
+    Color nameColor = Colors.black,
+    Color emailColor = Colors.grey,
+    TextStyle titleTextStyle = const TextStyle(
+        color: Colors.grey,
+        fontWeight: FontWeight.bold),
+
 
     // icons colors
+    Color mainIconColor = const Color(0xffEE5366),
+    Color secondaryIconColor = Colors.grey,
     Color closeIconColor = Colors.black,
     Color shareIconBackgroundColor = const Color(0xFFE0E0E0),
     Color cameraIconColor = Colors.black,
@@ -313,17 +353,24 @@ class LightTheme extends AppTheme {
     Color messageTimeTextColor = Colors.black,
   }) : super(
     // main colors
+    accentColor: accentColor,
     backgroundColor: backgroundColor,
     appBarColor: appBarColor,
     backArrowColor: backArrowColor,
+    cardColor: cardColor,
 
     // text and text fields colors
     titleColor: titleColor,
     textFieldBackgroundColor: textFieldBackgroundColor,
-    appBarTitleTextStyle: appBarTitleTextStyle,
+    appBarTitleTextStyle: appBarTitleTextColor,
     textFieldTextColor: textFieldTextColor,
+    nameColor: nameColor,
+    emailColor: emailColor,
+    titleTextStyle: titleTextStyle,
 
     // icons colors
+    mainIconColor: mainIconColor,
+    secondaryIconColor: secondaryIconColor,
     closeIconColor: closeIconColor,
     shareIconBackgroundColor: shareIconBackgroundColor,
     themeIconColor: themeIconColor,

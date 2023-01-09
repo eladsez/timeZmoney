@@ -4,6 +4,8 @@ import 'package:time_z_money/data_access/auth.dart';
 import 'package:time_z_money/screens/Authenticate/Authenticate_screen.dart';
 import 'package:time_z_money/screens/main_screen.dart';
 import '../business_Logic/actions/auth_actions.dart';
+import '../utils/helper_functions.dart';
+import '../utils/theme.dart';
 import 'Loading_Screens/loading_logo.dart';
 
 class AppWrapper extends StatefulWidget {
@@ -14,7 +16,7 @@ class AppWrapper extends StatefulWidget {
 }
 
 class _AppWrapperState extends State<AppWrapper> {
-  
+  AppTheme theme = HelperFunctions.isDarkMode ? DarkTheme() : LightTheme();
   late final AuthActions authActions = AuthActions();
 
 
@@ -35,12 +37,12 @@ class _AppWrapperState extends State<AppWrapper> {
                         // create the fireStore entry for the user and only then build home
                         future: authActions.signupSecondStage(),
                         builder: (context, dummy) {
-                          return const MainScreen();
+                          return MainScreen(theme: theme,);
                         },
                       );
                     } else if (loginState.hasData && loginState.data == true) {
                       // in case we in signIn
-                      return const MainScreen();
+                      return MainScreen(theme: theme,);
                     } else {
                       return const LoadingLogo();
                     }

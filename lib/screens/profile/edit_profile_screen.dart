@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../business_Logic/actions/auth_actions.dart';
 import '../../business_Logic/actions/user_actions.dart';
+import '../../utils/helper_functions.dart';
+import '../../utils/theme.dart';
 import 'components/profile_circle.dart';
 import 'components/textfield_widget.dart';
 
@@ -16,6 +18,7 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class EditProfileScreenState extends State<EditProfileScreen> {
+  AppTheme theme = HelperFunctions.isDarkMode ? DarkTheme() : LightTheme();
   late final TextEditingController aboutController;
   late final TextEditingController ageController;
   late final TextEditingController genderController;
@@ -47,16 +50,20 @@ class EditProfileScreenState extends State<EditProfileScreen> {
     var ages = List<int>.generate(120 - 16, (i) => i + 16);
     var genders = ['Male', 'Female', "Undefined"];
     return Scaffold(
+      backgroundColor: theme.backgroundColor,
         appBar: AppBar(
-          leading: const BackButton(color: Color(0xff01b2b8)),
+          leading: BackButton(color: theme.backArrowColor),
           backgroundColor: Colors.transparent,
-          elevation: 0,
+          elevation: theme.elevation,
+          foregroundColor: theme.appBarColor,
+          toolbarHeight: (MediaQuery.of(context).size.height * 0.135)/2,
         ),
         body: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 32),
+          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
           physics: const BouncingScrollPhysics(),
           children: [
             ProfileCircle(
+              theme: theme,
                 imagePath: AuthActions.currUser.profileImageURL,
                 isEdit: true,
                 onClicked: () async {
@@ -71,15 +78,16 @@ class EditProfileScreenState extends State<EditProfileScreen> {
                     width: 100,
                     child: Column(
                       children: [
-                        const Text('Age'),
+                        Text('Age', style: TextStyle(color: theme.titleColor)),
                         const Padding(padding: EdgeInsets.all(3)),
                         // add smalls arrows to the sides of the dropdown
                         Row(
                           children: [
-                            const Padding(
-                              padding: EdgeInsets.only(right: 0.05),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 0.05),
                               child: Icon(
                                   CupertinoIcons.chevron_up_chevron_down,
+                                  color: theme.secondaryIconColor,
                                   size: 17),
                             ),
                             Expanded(
@@ -87,7 +95,7 @@ class EditProfileScreenState extends State<EditProfileScreen> {
                                 scrollController: FixedExtentScrollController(
                                     initialItem:
                                         ages.indexOf(AuthActions.currUser.age)),
-                                backgroundColor: Colors.white,
+                                backgroundColor: theme.cardColor,
                                 itemExtent: 32.0,
                                 onSelectedItemChanged: (int index) {
                                   setState(() {
@@ -97,7 +105,7 @@ class EditProfileScreenState extends State<EditProfileScreen> {
                                 children: List<Widget>.generate(ages.length,
                                     (int index) {
                                   return Center(
-                                    child: Text(ages[index].toString()),
+                                    child: Text(ages[index].toString(), style: TextStyle(color: theme.textFieldTextColor)),
                                   );
                                 }),
                               ),
@@ -111,14 +119,15 @@ class EditProfileScreenState extends State<EditProfileScreen> {
                     width: 150,
                     child: Column(
                       children: [
-                        const Text('Gender'),
+                        Text('Gender', style: TextStyle(color: theme.titleColor)),
                         const Padding(padding: EdgeInsets.all(3)),
                         Row(
                           children: [
-                            const Padding(
+                            Padding(
                               padding: EdgeInsets.only(right: 0.05),
                               child: Icon(
                                   CupertinoIcons.chevron_up_chevron_down,
+                                  color: theme.secondaryIconColor,
                                   size: 17),
                             ),
                             SizedBox(
@@ -128,7 +137,7 @@ class EditProfileScreenState extends State<EditProfileScreen> {
                                 scrollController: FixedExtentScrollController(
                                     initialItem: genders
                                         .indexOf(AuthActions.currUser.gender)),
-                                backgroundColor: Colors.white,
+                                backgroundColor: theme.cardColor,
                                 itemExtent: 30.0,
                                 onSelectedItemChanged: (int index) {
                                   setState(() {
@@ -138,7 +147,7 @@ class EditProfileScreenState extends State<EditProfileScreen> {
                                 children: List<Widget>.generate(genders.length,
                                     (int index) {
                                   return Center(
-                                    child: Text(genders[index]),
+                                    child: Text(genders[index], style: TextStyle(color: theme.textFieldTextColor)),
                                   );
                                 }),
                               ),
@@ -161,7 +170,7 @@ class EditProfileScreenState extends State<EditProfileScreen> {
             const SizedBox(height: 20),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xff01b2b8),
+                backgroundColor: theme.accentColor,
                 shape: const StadiumBorder(),
                 onPrimary: Colors.white,
                 padding:

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:time_z_money/screens/jobs_dashboard/components/job_details.dart';
 
 import '../../business_Logic/actions/jobs_actions.dart';
+import '../../utils/helper_functions.dart';
+import '../../utils/theme.dart';
 import '../upload_job/Component/inputfiled.dart';
 
 class SearchJobScreen extends StatefulWidget {
@@ -13,6 +15,7 @@ class SearchJobScreen extends StatefulWidget {
 }
 
 class _SearchJobScreen extends State<SearchJobScreen> {
+  AppTheme theme = HelperFunctions.isDarkMode ? DarkTheme() : LightTheme();
   final JobsActions jobsActions = JobsActions();
   late final TextEditingController searchController;
   String selectedJob = "Choose job here...";
@@ -33,6 +36,7 @@ class _SearchJobScreen extends State<SearchJobScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: appBar(),
+        backgroundColor: theme.backgroundColor,
         body: SingleChildScrollView(
             child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -41,19 +45,25 @@ class _SearchJobScreen extends State<SearchJobScreen> {
                     const SizedBox(
                       height: 20,
                     ),
-                    const Padding(
-                      padding: EdgeInsets.only(top: 15.0, bottom: 0.5),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15.0, bottom: 0.5),
                       child: Text(
-                        'Are you looking for a job ?',
-                        style: TextStyle(fontSize: 17),
+                        'Are you looking for a job?',
+                        style: TextStyle(
+                            color: theme.textFieldTextColor,
+                            fontSize: 17),
                       ),
                     ),
                     FutureBuilder(
                       future: jobsActions.getAllJobs(),
                       builder: (context, jobsSnap) => InputField(
                         title: '',
-                        hint: selectedJob,
+                        hint: '',
                         child: DropdownButton(
+                          hint: Text(selectedJob,
+                            style: TextStyle(
+                              color: theme.textFieldTextColor),
+                          ),
                           onChanged: (String? newJob) {
                             setState(() {
                               selectedJob = newJob!;
@@ -70,15 +80,15 @@ class _SearchJobScreen extends State<SearchJobScreen> {
                               .map<DropdownMenuItem<String>>(
                                 (job) => DropdownMenuItem<String>(
                               value: job.title,
-                              child: Text(job.title),
+                              child: Text(job.title, style: TextStyle(color: theme.textFieldTextColor),),
                             ),
                           )
                               .toList()
                               : [const DropdownMenuItem<String>(child: Text(" "))],
-                          icon: const Icon(
+                          icon: Icon(
                             Icons.keyboard_arrow_down,
                             size: 32,
-                            color: Colors.grey,
+                            color: theme.secondaryIconColor,
                           ),
                           elevation: 3,
                           underline: Container(height: 0),
@@ -94,21 +104,27 @@ class _SearchJobScreen extends State<SearchJobScreen> {
                     //   ),
                     // ),
                   ],
-                ))));
+                )
+            )
+        )
+    );
   }
 
   AppBar appBar() {
     return AppBar(
       toolbarHeight: 70,
-      title: const Center(
+      title: Center(
           child: Text(
         'Search Job',
         style: TextStyle(
-            fontSize: 35, fontWeight: FontWeight.bold, color: Colors.black),
+            fontSize: 35,
+            fontWeight:
+            FontWeight.bold,
+            color: theme.titleColor),
       )),
       shadowColor: Colors.black.withOpacity(0.4),
       bottomOpacity: 0.9,
-      backgroundColor: Colors.white,
+      backgroundColor: theme.appBarColor,
     );
   }
 }

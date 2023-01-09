@@ -3,6 +3,13 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 
 class HelperFunctions {
+  static bool isDarkMode = false;
+
+  // toggle dark mode
+  static void toggleDarkMode() {
+    isDarkMode = !isDarkMode;
+  }
+
   static Widget wrapWithAnimatedBuilder({
     required Animation<Offset> animation,
     required Widget child,
