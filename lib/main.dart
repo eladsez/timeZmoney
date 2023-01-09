@@ -1,7 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:time_z_money/screens/chat/chat_main.dart';
+import 'package:time_z_money/screens/home/home_screen.dart';
 import 'package:time_z_money/screens/splash_screen.dart';
 import 'utils/firebase_options.dart';
 import 'package:flutter/material.dart';
+import 'utils/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

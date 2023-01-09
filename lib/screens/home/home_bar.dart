@@ -3,6 +3,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import '../../business_Logic/actions/auth_actions.dart';
 import '../../business_Logic/actions/message_actions.dart';
+import '../../utils/theme.dart';
 
 class HomeAppbar extends StatefulWidget {
   const HomeAppbar({Key? key}) : super(key: key);
@@ -12,6 +13,8 @@ class HomeAppbar extends StatefulWidget {
 }
 
 class _State extends State<HomeAppbar> {
+  AppTheme theme = LightTheme();
+  bool isDarkTheme = false;
   final MessageActions messageActions = MessageActions();
 
   void updateNotifications(RemoteMessage message) {
@@ -171,5 +174,17 @@ class _State extends State<HomeAppbar> {
         ],
       ),
     );
+  }
+
+  void _onThemeIconTap() {
+    setState(() {
+      if (isDarkTheme) {
+        theme = LightTheme();
+        isDarkTheme = false;
+      } else {
+        theme = DarkTheme();
+        isDarkTheme = true;
+      }
+    });
   }
 }

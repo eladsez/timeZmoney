@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:time_z_money/business_Logic/models/CustomUser.dart';
 import '../../business_Logic/actions/auth_actions.dart';
+import '../../utils/theme.dart';
 import 'components/build_user_reviews.dart';
 import 'components/stats.dart';
 import 'components/profile_circle.dart';
@@ -18,15 +19,18 @@ class ProfileScreen extends StatefulWidget {
 
 // TODO: render the image after it change
 class ProfileScreenState extends State<ProfileScreen> {
+  AppTheme theme = LightTheme();
+  bool isDarkTheme = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AuthActions.currUser.uid != widget.user.uid ? AppBar(
-        leading: const BackButton(color: Color(0xff01b2b8)),
-        backgroundColor: Colors.transparent,
+        leading: BackButton(color: theme.backArrowColor),
+        backgroundColor: theme.appBarColor,
         elevation: 0,
         toolbarHeight: 30,
       ): PreferredSize(preferredSize: const Size(0, 0), child: Container()),
+      backgroundColor: theme.backgroundColor,
       body: ListView(
         physics: const BouncingScrollPhysics(),
         children: [
@@ -88,14 +92,28 @@ class ProfileScreenState extends State<ProfileScreen> {
     if (AuthActions.currUser.uid != widget.user.uid) {
       return IconButton(onPressed: () {}, icon: const Icon(IconData(0x0)));
     }
-    return IconButton(
-      icon: const Icon(Icons.logout, size: 26, color: Color(0xff01b2b8)),
-      onPressed: () {
-        // Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-        //   return const ProfileSetting(); // add this shit
-        // }));
-        FirebaseAuth.instance.signOut();
-      },
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        IconButton(
+          onPressed: _onThemeIconTap,
+          icon: Icon(
+            isDarkTheme
+                ? Icons.brightness_4_outlined
+                : Icons.dark_mode_outlined,
+            color: theme.themeIconColor,
+          ),
+        ),
+        IconButton(
+          icon: const Icon(Icons.logout, size: 26, color: Color(0xff01b2b8)),
+          onPressed: () {
+            // Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+            //   return const ProfileSetting(); // add this shit
+            // }));
+            FirebaseAuth.instance.signOut();
+          },
+        ),
+      ],
     );
   }
 
@@ -128,4 +146,16 @@ class ProfileScreenState extends State<ProfileScreen> {
           ],
         ),
       );
+
+  void _onThemeIconTap() {
+    setState(() {
+      if (isDarkTheme) {
+        theme = LightTheme();
+        isDarkTheme = false;
+      } else {
+        theme = DarkTheme();
+        isDarkTheme = true;
+      }
+    });
+  }
 }
