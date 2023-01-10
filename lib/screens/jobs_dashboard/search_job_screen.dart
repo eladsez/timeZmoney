@@ -58,12 +58,9 @@ class _SearchJobScreen extends State<SearchJobScreen> {
                       future: jobsActions.getAllJobs(),
                       builder: (context, jobsSnap) => InputField(
                         title: '',
-                        hint: '',
+                        hint: selectedJob,
                         child: DropdownButton(
-                          hint: Text(selectedJob,
-                            style: TextStyle(
-                              color: theme.textFieldTextColor),
-                          ),
+                          dropdownColor: theme.cardColor,
                           onChanged: (String? newJob) {
                             setState(() {
                               selectedJob = newJob!;
@@ -79,12 +76,13 @@ class _SearchJobScreen extends State<SearchJobScreen> {
                               ? jobsSnap.data!
                               .map<DropdownMenuItem<String>>(
                                 (job) => DropdownMenuItem<String>(
+
                               value: job.title,
                               child: Text(job.title, style: TextStyle(color: theme.textFieldTextColor),),
                             ),
                           )
                               .toList()
-                              : [const DropdownMenuItem<String>(child: Text(" "))],
+                              : [DropdownMenuItem<String>(child: Text(" ", style: TextStyle(color: theme.textFieldTextColor)))],
                           icon: Icon(
                             Icons.keyboard_arrow_down,
                             size: 32,

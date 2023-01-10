@@ -9,6 +9,8 @@ import 'package:time_z_money/screens/jobs_dashboard/components/apply_to_job.dart
 import 'package:time_z_money/utils/constants.dart';
 import '../../../business_Logic/actions/auth_actions.dart';
 import '../../../business_Logic/models/Job.dart';
+import '../../../utils/helper_functions.dart';
+import '../../../utils/theme.dart';
 import '../../maps/direction_map.dart';
 import '../../profile/profile_screen.dart';
 import 'build_applicants_list.dart';
@@ -24,6 +26,7 @@ class JobDetails extends StatefulWidget {
 }
 
 class _JobDetailsState extends State<JobDetails> {
+  AppTheme theme = HelperFunctions.isDarkMode ? DarkTheme() : LightTheme();
   // the employer of the job
   late CustomUser employer;
   UserActions userActions = UserActions();
@@ -39,22 +42,20 @@ class _JobDetailsState extends State<JobDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: constColor,
+      backgroundColor: theme.backgroundColor,
       body: NestedScrollView(
           headerSliverBuilder: ((context, innerBoxIsScrolled) => [
                 SliverAppBar(
-                  backgroundColor: Color(0xff01b2b8),
-                  elevation: 0,
+                  backgroundColor: theme.appBarColor,
+                  elevation: theme.elevation,
                   leading: GestureDetector(
                     onTap: () => Navigator.of(context).pop(),
                     child: Container(
                         padding: const EdgeInsets.all(2),
                         margin: const EdgeInsets.all(10),
-                        decoration: const BoxDecoration(
-                            shape: BoxShape.circle, color: Colors.white),
-                        child: const Icon(
+                        child: Icon(
                           Icons.arrow_back,
-                          color: constColor,
+                          color: theme.backArrowColor,
                         )),
                   ),
                   expandedHeight: MediaQuery.of(context).size.height * 0.45,
@@ -66,11 +67,18 @@ class _JobDetailsState extends State<JobDetails> {
                     titlePadding: const EdgeInsets.all(20),
                     title: Text(
                       widget.job.title.toUpperCase(),
-                      style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                      style: TextStyle(
+                          color: theme.titleColor,
                           fontSize: 14,
-                          letterSpacing: 1.8),
+                          letterSpacing: 1.8,
+                          shadows: const [
+                          Shadow(
+                            blurRadius: 10.0,
+                            color: Colors.black,
+                            offset: Offset(1.0, 1.0),
+                          ),
+                        ],
+                      ),
                     ),
                     background: ShaderMask(
                       shaderCallback: (rect) {
@@ -97,8 +105,10 @@ class _JobDetailsState extends State<JobDetails> {
                         direction: Axis.vertical,
                         crossAxisAlignment: WrapCrossAlignment.center,
                         children: [
+                          // if the user is the employer of the job, don't show the profile button
+                          widget.job.employerUid != AuthActions.currUser!.uid ?
                           IconButton(
-                            icon: const Icon(Icons.person),
+                            icon: Icon(Icons.person, color: theme.backArrowColor),
                             onPressed: () {
                               Navigator.push(
                                   context,
@@ -109,8 +119,10 @@ class _JobDetailsState extends State<JobDetails> {
                                   )
                               );
                             },
-                          ),
-                          const Text('Employer', style: TextStyle(fontSize: 10)),
+                          ) : Container(),
+                          widget.job.employerUid != AuthActions.currUser!.uid
+                              ? Text('Employer', style: TextStyle(fontSize: 10, color: theme.backArrowColor))
+                              : Container(),
                         ],
                       ),
                     )
@@ -131,17 +143,17 @@ class _JobDetailsState extends State<JobDetails> {
                   ),
                   Row(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.location_on,
-                        color: Colors.black38,
+                        color: theme.secondaryIconColor,
                       ),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.5,
                         child: Text(
                           widget.job.district,
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                              color: Colors.black38, fontSize: 16),
+                          style: TextStyle(
+                              color: theme.secondaryIconColor, fontSize: 16),
                         ),
                       ),
                       const Spacer(),
@@ -158,7 +170,7 @@ class _JobDetailsState extends State<JobDetails> {
                           padding: const EdgeInsets.only(
                               left: 5, right: 5, top: 7, bottom: 7),
                           decoration: BoxDecoration(
-                            color: Color(0xff01b2b8),
+                            color: theme.accentColor,
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Row(
@@ -192,7 +204,7 @@ class _JobDetailsState extends State<JobDetails> {
                   ),
                   Text(
                     widget.job.description,
-                    style: const TextStyle(fontSize: 18, color: Colors.black54),
+                    style: TextStyle(fontSize: 18, color: theme.textFieldTextColor),
                   ),
                   // if the current user is an employer, show a list of workers who applied for this job
                   AuthActions.currUser.userType == "worker"
@@ -222,48 +234,48 @@ class _JobDetailsState extends State<JobDetails> {
           children: [
             Row(
               children: [
-                const Icon(
+                Icon(
                   Icons.date_range,
-                  color: Colors.black45,
+                  color: theme.secondaryIconColor,
                 ),
                 const SizedBox(
                   width: 10,
                 ),
                 Text(
                   widget.job.date.toDate().toString().split(" ")[0],
-                  style: const TextStyle(
-                      color: Colors.black45),
+                  style: TextStyle(
+                      color: theme.secondaryIconColor),
                 )
               ],
             ),
             buildDivider(),
             Row(
               children: [
-                const Icon(
+                Icon(
                   Icons.attach_money,
-                  color: Colors.black45,
+                  color: theme.secondaryIconColor,
                 ),
                 Text(
                   "${widget.job.salary} per ${widget.job.per}",
-                  style: const TextStyle(
-                      color: Colors.black45),
+                  style: TextStyle(
+                      color: theme.secondaryIconColor),
                 )
               ],
             ),
             buildDivider(),
             Row(
               children: [
-                const Icon(
+                Icon(
                   Icons.people,
-                  color: Colors.black45,
+                  color: theme.secondaryIconColor,
                 ),
                 const SizedBox(
                   width: 10,
                 ),
                 Text(
                   widget.job.amountNeeded.toString(),
-                  style: const TextStyle(
-                      color: Colors.black45),
+                  style: TextStyle(
+                      color: theme.secondaryIconColor),
                 )
               ],
             ),
@@ -274,10 +286,10 @@ class _JobDetailsState extends State<JobDetails> {
   }
 
 
-  Widget buildDivider() => const SizedBox(
+  Widget buildDivider() => SizedBox(
     height: 24,
     child: VerticalDivider(
-      color: Colors.black26,
+      color: theme.secondaryIconColor,
       thickness: 1,
     ),
   );

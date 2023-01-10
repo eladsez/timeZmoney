@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../business_Logic/models/CustomUser.dart';
+import '../../../utils/helper_functions.dart';
+import '../../../utils/theme.dart';
 
 class BuildUserReviews extends StatefulWidget {
   const BuildUserReviews({super.key, required this.user});
@@ -12,6 +14,7 @@ class BuildUserReviews extends StatefulWidget {
 }
 
 class _BuildUserReviewsState extends State<BuildUserReviews> {
+  AppTheme theme = HelperFunctions.isDarkMode ? DarkTheme() : LightTheme();
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -19,10 +22,19 @@ class _BuildUserReviewsState extends State<BuildUserReviews> {
           const SizedBox(
             height: 50,
           ),
-          const Text(
+          Container(
+            height: 0.5,
+            width: double.infinity,
+            color: theme.secondaryIconColor,
+            margin: const EdgeInsets.symmetric(vertical: 5),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Text(
             "Reviews",
             style: TextStyle(
-                fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold),
+                fontSize: 20, color: theme.titleColor, fontWeight: FontWeight.bold),
           ),
           // add separator
           Container(
@@ -36,11 +48,11 @@ class _BuildUserReviewsState extends State<BuildUserReviews> {
               itemCount: 3,
               itemBuilder: (context, index) {
                 //TODO: add the reviews to the firestore so we can get them from there.
-                return const ListTile(
+                return ListTile(
                   // put a dammy review
                   title: Text(
                     "This is a review",
-                    style: TextStyle(fontSize: 18),
+                    style: TextStyle(fontSize: 18, color: theme.textFieldTextColor),
                   ),
 
                 );

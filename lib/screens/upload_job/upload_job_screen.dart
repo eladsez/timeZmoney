@@ -118,6 +118,7 @@ class _UploadJobScreenState extends State<UploadJobScreen> {
                   title: 'Job major',
                   hint: selectedMajor,
                   child: DropdownButton(
+                    dropdownColor: theme.cardColor,
                     onChanged: (String? newMajor) {
                       setState(() {
                         selectedMajor = newMajor!;
@@ -128,7 +129,7 @@ class _UploadJobScreenState extends State<UploadJobScreen> {
                             .map<DropdownMenuItem<String>>(
                               (major) => DropdownMenuItem<String>(
                                 value: major,
-                                child: Text(major),
+                                child: Text(major, style: TextStyle(color: theme.textFieldTextColor),),
                               ),
                             )
                             .toList()
@@ -190,6 +191,7 @@ class _UploadJobScreenState extends State<UploadJobScreen> {
                 title: 'Workers needed',
                 hint: '${selectedWorkersNeeded.toString()} needed',
                 child: DropdownButton<int>(
+                  dropdownColor: theme.cardColor,
                   onChanged: (int? value) {
                     setState(() {
                       selectedWorkersNeeded = value!;
@@ -199,7 +201,7 @@ class _UploadJobScreenState extends State<UploadJobScreen> {
                       .map<DropdownMenuItem<int>>(
                         (number) => DropdownMenuItem<int>(
                           value: number,
-                          child: Text('${number.toString()} needed'),
+                          child: Text('${number.toString()} needed', style: TextStyle(color: theme.textFieldTextColor),),
                         ),
                       )
                       .toList(),
@@ -231,6 +233,7 @@ class _UploadJobScreenState extends State<UploadJobScreen> {
                       title: 'Per',
                       hint: selectedPer,
                       child: DropdownButton(
+                        dropdownColor: theme.cardColor,
                         onChanged: (String? newMajor) {
                           setState(() {
                             selectedPer = newMajor!;
@@ -240,7 +243,7 @@ class _UploadJobScreenState extends State<UploadJobScreen> {
                             .map<DropdownMenuItem<String>>(
                               (major) => DropdownMenuItem<String>(
                                 value: major,
-                                child: Text(major),
+                                child: Text(major, style: TextStyle(color: theme.textFieldTextColor),),
                               ),
                             )
                             .toList(),

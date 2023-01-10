@@ -80,6 +80,15 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
                                           majorsListSnap.data!.indexOf(tab)
                                       ? theme.accentColor
                                       : theme.cardColor,
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: Colors.black
+                                            .withOpacity(0.1),
+                                        blurRadius: 1,
+                                        spreadRadius: 0,
+                                        offset:
+                                        const Offset(0, 1)),
+                                  ],
                                 ),
                                 child: Text(
                                   tab,
@@ -87,7 +96,7 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
                                       color: selectedMajorIndex ==
                                               majorsListSnap.data!.indexOf(tab)
                                           ? Colors.white70
-                                          : Colors.black54),
+                                          : theme.secondaryIconColor),
                                 ),
                               ),
                             ))
@@ -169,7 +178,7 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
                                                   boxShadow: [
                                                     BoxShadow(
                                                         color: Colors.black
-                                                            .withOpacity(0.1),
+                                                            .withOpacity(0.3),
                                                         blurRadius: 10,
                                                         spreadRadius: 0,
                                                         offset:

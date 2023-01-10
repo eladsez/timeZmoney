@@ -3,6 +3,8 @@ import 'package:time_z_money/business_Logic/actions/auth_actions.dart';
 import 'package:time_z_money/utils/constants.dart';
 import '../../../business_Logic/actions/jobs_actions.dart';
 import '../../../business_Logic/models/Job.dart';
+import '../../../utils/helper_functions.dart';
+import '../../../utils/theme.dart';
 
 class ApplyToJob extends StatefulWidget {
   const ApplyToJob({super.key, required this.job});
@@ -14,6 +16,7 @@ class ApplyToJob extends StatefulWidget {
 }
 
 class _ApplyToJobState extends State<ApplyToJob> {
+  AppTheme theme = HelperFunctions.isDarkMode ? DarkTheme() : LightTheme();
   JobsActions actions = JobsActions();
 
   @override
@@ -23,10 +26,15 @@ class _ApplyToJobState extends State<ApplyToJob> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const SizedBox(
-          height: 50,
+          height: 30,
         ),
         // add separator
-        Container(height: 0),
+        Container(
+        height: 0.5,
+        width: double.infinity,
+        color: theme.secondaryIconColor,
+        margin: const EdgeInsets.symmetric(vertical: 5),
+        ),
         ElevatedButton(
             onPressed: () async {
               // check if the user already applied to the job
@@ -60,10 +68,11 @@ class _ApplyToJobState extends State<ApplyToJob> {
               }
             },
             style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xff01b2b8),
+                backgroundColor: theme.accentColor,
                 shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10)))),
-            child: const Text("Click to Apply")),
+            child: const Text("Click to Apply", style: TextStyle(color: Colors.white))
+        )
       ],
     );
   }

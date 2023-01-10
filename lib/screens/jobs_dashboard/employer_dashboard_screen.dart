@@ -74,7 +74,7 @@ class _EmployerDashboardScreenState extends State<EmployerDashboardScreen> {
                               boxShadow: [
                                 BoxShadow(
                                     color: Colors.black
-                                        .withOpacity(0.1),
+                                        .withOpacity(0.3),
                                     blurRadius: 10,
                                     spreadRadius: 0,
                                     offset:
@@ -207,9 +207,6 @@ class _EmployerDashboardScreenState extends State<EmployerDashboardScreen> {
                                         ),
                                       ],
                                     ),
-
-
-
                                   ],
                                 )
                               ],

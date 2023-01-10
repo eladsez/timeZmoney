@@ -5,6 +5,8 @@ import 'package:time_z_money/screens/profile/profile_screen.dart';
 import '../../../business_Logic/actions/jobs_actions.dart';
 import '../../../business_Logic/models/CustomUser.dart';
 import '../../../business_Logic/models/Job.dart';
+import '../../../utils/helper_functions.dart';
+import '../../../utils/theme.dart';
 
 class BuildApplicantsList extends StatefulWidget {
   BuildApplicantsList({super.key, required this.job});
@@ -16,6 +18,7 @@ class BuildApplicantsList extends StatefulWidget {
 }
 
 class _BuildApplicantsListState extends State<BuildApplicantsList> {
+  AppTheme theme = HelperFunctions.isDarkMode ? DarkTheme() : LightTheme();
   UserActions userActions = UserActions();
   @override
   Widget build(BuildContext context) {
@@ -24,33 +27,33 @@ class _BuildApplicantsListState extends State<BuildApplicantsList> {
         const SizedBox(
           height: 50,
         ),
-        const Text(
+        Text(
           "Applicants",
           style: TextStyle(
-              fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold),
+              fontSize: 20, color: theme.titleColor, fontWeight: FontWeight.bold),
         ),
         // add separator
         Container(
           height: 0.5,
           width: double.infinity,
-          color: Colors.black12,
+          color: theme.secondaryIconColor,
           margin: const EdgeInsets.symmetric(vertical: 5),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: const [
+          children: [
             Text(
               "Wait list",
               style: TextStyle(
                   fontSize: 20,
-                  color: Colors.black,
+                  color: theme.titleColor,
                   fontWeight: FontWeight.bold),
             ),
             Text(
               "Approved",
               style: TextStyle(
                   fontSize: 20,
-                  color: Colors.black,
+                  color: theme.titleColor,
                   fontWeight: FontWeight.bold),
             ),
           ],
@@ -62,8 +65,8 @@ class _BuildApplicantsListState extends State<BuildApplicantsList> {
           children: [
             // wait list
             buildListOfApplicants(true),
-            const Divider(
-              color: Colors.black,
+            Divider(
+              color: theme.secondaryIconColor,
               thickness: 0.5,
               indent: 10,
               endIndent: 10,
@@ -101,7 +104,7 @@ class _BuildApplicantsListState extends State<BuildApplicantsList> {
                           ),
                           title: Text(
                             applicants[userIndex].username,
-                            style: const TextStyle(fontSize: 12),
+                            style: TextStyle(fontSize: 12, color: theme.nameColor),
                             overflow: TextOverflow.ellipsis,
                           ),
                           // subtitle: Text(applicantApplied[index].email),
@@ -139,8 +142,8 @@ class _BuildApplicantsListState extends State<BuildApplicantsList> {
                       )
                   );
                 } else {
-                  return const Center(
-                    child: Text("No applicants yet"),
+                  return Center(
+                    child: Text("No applicants yet", style: TextStyle(color: theme.textFieldTextColor)),
                   );
                 }
               } else {
@@ -155,24 +158,26 @@ class _BuildApplicantsListState extends State<BuildApplicantsList> {
   Future applicantsApprovalPopup(
       CustomUser user, int userIndex, bool isApplied) async {
     return showDialog(
+      barrierColor: Colors.grey.withOpacity(0.1),
       context: context,
       builder: (context) {
         return AlertDialog(
+          backgroundColor: theme.cardColor,
           title: isApplied
-              ? const Text(
+              ? Text(
                   "Approve User",
                   style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold),
+                      color: theme.titleColor, fontWeight: FontWeight.bold),
                 )
-              : const Text(
+              : Text(
                   "Remove User",
                   style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold),
+                      color: theme.titleColor, fontWeight: FontWeight.bold),
                 ),
           content: isApplied
-              ? const Text("Are you sure you want to add this user to the job?")
-              : const Text(
-                  "Are you sure you want to remove this user from the job?"),
+              ? Text("Are you sure you want to add this user to the job?", style: TextStyle(color: theme.textFieldTextColor))
+              : Text(
+                  "Are you sure you want to remove this user from the job?", style: TextStyle(color: theme.textFieldTextColor)),
           actions: [
             TextButton(
               onPressed: () async {
@@ -187,13 +192,13 @@ class _BuildApplicantsListState extends State<BuildApplicantsList> {
                 });
                 Navigator.pop(context);
               },
-              child: const Text("Yes"),
+              child: const Text("Yes", style: TextStyle(color: Colors.green)),
             ),
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: const Text("No"),
+              child: const Text("No", style: TextStyle(color: Colors.red)),
             ),
           ],
         );
@@ -203,17 +208,19 @@ class _BuildApplicantsListState extends State<BuildApplicantsList> {
 
   void fullPopup() {
     showDialog(
+      barrierColor: Colors.grey.withOpacity(0.1),
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text("Error"),
-          content: const Text("You can't add more workers to the job"),
+          backgroundColor: theme.cardColor,
+          title: Text("Error", style: TextStyle(color: theme.titleColor)),
+          content: Text("You can't add more workers to the job", style: TextStyle(color: theme.textFieldTextColor)),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: const Text("Ok"),
+              child: Text("Ok", style: TextStyle(color: theme.accentColor)),
             ),
           ],
         );

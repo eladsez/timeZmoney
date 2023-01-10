@@ -6,6 +6,8 @@ import 'package:time_z_money/screens/profile/profile_screen.dart';
 import '../../../business_Logic/actions/user_actions.dart';
 import '../../../business_Logic/models/CustomUser.dart';
 import '../../../business_Logic/models/Job.dart';
+import '../../../utils/helper_functions.dart';
+import '../../../utils/theme.dart';
 
 class CoWorkersList extends StatefulWidget {
   CoWorkersList({super.key, required this.job});
@@ -17,6 +19,7 @@ class CoWorkersList extends StatefulWidget {
 }
 
 class _CoWorkersListState extends State<CoWorkersList> {
+  AppTheme theme = HelperFunctions.isDarkMode ? DarkTheme() : LightTheme();
   UserActions userActions = UserActions();
   @override
   Widget build(BuildContext context) {
@@ -25,16 +28,16 @@ class _CoWorkersListState extends State<CoWorkersList> {
         const SizedBox(
           height: 50,
         ),
-        const Text(
+        Text(
           "Co-Workers",
           style: TextStyle(
-              fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold),
+              fontSize: 20, color: theme.titleColor, fontWeight: FontWeight.bold),
         ),
         // add separator
         Container(
           height: 0.5,
           width: double.infinity,
-          color: Colors.black12,
+          color: theme.secondaryIconColor,
           margin: const EdgeInsets.symmetric(vertical: 5),
         ),
         Row(
@@ -77,7 +80,7 @@ class _CoWorkersListState extends State<CoWorkersList> {
                             width: MediaQuery.of(context).size.width * 0.3,
                             child: Text(
                               applicants[userIndex].username,
-                              style: const TextStyle(fontSize: 12),
+                              style: TextStyle(fontSize: 12, color: theme.nameColor),
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -92,12 +95,12 @@ class _CoWorkersListState extends State<CoWorkersList> {
                       )
                   );
                 } else {
-                  return const Center(
+                  return Center(
                     child: Text("It seems like you are the only one here :(",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 15,
-
+                        color: theme.textFieldTextColor,
                       ),),
                   );
                 }

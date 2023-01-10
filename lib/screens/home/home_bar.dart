@@ -48,6 +48,9 @@ class _State extends State<HomeAppbar> {
         context: context,
         builder: ((context) => StatefulBuilder(
             builder: ((context, setState) => Container(
+                  decoration: BoxDecoration(
+                    color: theme.accentColor,
+                  ),
                   padding: const EdgeInsets.all(20),
                   child: MessageActions.notifications.isEmpty
                       ? const Text("No new notifications")
@@ -146,9 +149,9 @@ class _State extends State<HomeAppbar> {
                             style: const TextStyle(color: Colors.white),
                           ),
                           showBadge: true,
-                          child: const Icon(
+                          child: Icon(
                             Icons.notifications,
-                            color: Colors.black26,
+                            color: theme.accentColor,
                           ),
                         ),
                         onPressed: () {
