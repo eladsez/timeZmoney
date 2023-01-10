@@ -174,6 +174,7 @@ class _JobListViewerState extends State<JobListViewer> {
                                     ],
                                   ),
                                   const Spacer(),
+                                  job[index].employerUid != widget.user.uid ? Container() :
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
