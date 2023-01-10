@@ -13,10 +13,20 @@ class _AuthenticateState extends State<Authenticate> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CustomPaint(
-        painter: GreenPainter(),
+        body: Center(
+      child: Container(
+        decoration: const BoxDecoration(
+            gradient: LinearGradient(
+          begin: Alignment.topRight,
+          end: Alignment.bottomLeft,
+          stops: [0.1, 0.9],
+          colors: [
+            Color(0xff60f8ff),
+            Colors.yellow,
+          ],
+        )),
         child: const SignupLoginContent(),
       ),
-    );
+    ));
   }
 }
