@@ -1,6 +1,9 @@
 import 'package:badges/badges.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:time_z_money/business_Logic/models/Job.dart';
+import 'package:time_z_money/screens/jobs_dashboard/components/job_details.dart';
+
 import '../../business_Logic/actions/auth_actions.dart';
 import '../../business_Logic/actions/message_actions.dart';
 import '../../utils/helper_functions.dart';
@@ -17,14 +20,17 @@ class _State extends State<HomeAppbar> {
   AppTheme theme = HelperFunctions.isDarkMode ? DarkTheme() : LightTheme();
   final MessageActions messageActions = MessageActions();
 
-  void updateNotifications(RemoteMessage message) {
+  void updateNotifications(dynamic message) {
     setState(() {
       // if the list doesn't contain this message, add it
       // we need it because we have another listener if we don't on the home_bar screen
-      if (!MessageActions.notifications
+      if (message is RemoteMessage && !MessageActions.notifications
           .map((msg) => msg.messageId)
           .toList()
           .contains(message.messageId)) {
+        MessageActions.notifications.add(message);
+      }
+      if (message is Job) {
         MessageActions.notifications.add(message);
       }
     });
@@ -42,6 +48,39 @@ class _State extends State<HomeAppbar> {
     super.dispose();
   }
 
+  Widget buildNotification(String title, String body, Job? job) {
+    return Column(
+      children: [
+        ListTile(
+          onTap: () {
+            if (job != null) {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => JobDetails(
+                            job: job,
+                          )));
+            }
+          },
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          tileColor: Theme.of(context).primaryColor,
+          title: Text(
+            title,
+            style: const TextStyle(color: Colors.white),
+          ),
+          subtitle: Text(
+            body,
+            style: const TextStyle(color: Colors.white60),
+          ),
+        ),
+        const Divider(
+          color: Colors.transparent,
+        )
+      ],
+    );
+  }
+
   void onNotificationPressed() {
     showModalBottomSheet(
         barrierColor: Colors.black.withOpacity(0.3),
@@ -57,32 +96,19 @@ class _State extends State<HomeAppbar> {
                       : ListView(
                           children: MessageActions.notifications.map(
                             (notification) {
-                              if (notification.notification == null) {
-                                return const Text("No new notifications");
+                              if (notification is Job) {
+                                return buildNotification(
+                                    'You have been approved for the job',
+                                    notification.title,
+                                    notification);
                               }
-                              return Column(
-                                children: [
-                                  ListTile(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(20)),
-                                    tileColor: Theme.of(context).primaryColor,
-                                    title: Text(
-                                      notification.notification!.title!,
-                                      style:
-                                          const TextStyle(color: Colors.white),
-                                    ),
-                                    subtitle: Text(
-                                      notification.notification!.body!,
-                                      style: const TextStyle(
-                                          color: Colors.white60),
-                                    ),
-                                  ),
-                                  const Divider(
-                                    color: Colors.transparent,
-                                  )
-                                ],
-                              );
+                              if (notification.notification == null) {
+                                return const Text("unavailable notification");
+                              }
+                              return buildNotification(
+                                  notification.notification!.title!,
+                                  notification.notification!.body!,
+                                  null);
                             },
                           ).toList(),
                         ),
@@ -94,12 +120,11 @@ class _State extends State<HomeAppbar> {
     return Container(
       height: MediaQuery.of(context).size.height * 0.135,
       decoration: BoxDecoration(
-          color: theme.appBarColor,
-          boxShadow: const [
-            BoxShadow(
-                color: Colors.black12, blurRadius: 5, offset: Offset(0, 1))
-          ],
-          ),
+        color: theme.appBarColor,
+        boxShadow: const [
+          BoxShadow(color: Colors.black12, blurRadius: 5, offset: Offset(0, 1))
+        ],
+      ),
       padding: EdgeInsets.only(
           top: MediaQuery.of(context).padding.top, //for responsive
           left: MediaQuery.of(context).padding.bottom),
@@ -118,18 +143,17 @@ class _State extends State<HomeAppbar> {
                 const SizedBox(
                   height: 10,
                 ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.4,
-                    child: Text(
-                      AuthActions.currUser.username,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                          color: theme.nameColor),
-                    ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.4,
+                  child: Text(
+                    AuthActions.currUser.username,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: theme.nameColor),
                   ),
-
+                ),
               ],
             ),
           ),

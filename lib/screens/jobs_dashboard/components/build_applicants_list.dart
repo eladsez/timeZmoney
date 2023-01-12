@@ -182,7 +182,7 @@ class _BuildApplicantsListState extends State<BuildApplicantsList> {
             TextButton(
               onPressed: () async {
                 isApplied
-                    ? JobsActions().approveUserToJob(widget.job, user.uid)
+                    ? JobsActions().approveUserToJob(widget.job, "${user.uid},unseen")
                     : JobsActions().removeUserFromJob(widget.job, user.uid);
                 setState(() {
                   // get the updated job from the database

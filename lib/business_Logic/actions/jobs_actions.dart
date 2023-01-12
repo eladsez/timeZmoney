@@ -111,11 +111,15 @@ class JobsActions {
     return await das.getPastJobsCreatedByUid(user.uid!);
   }
 
+  updateUnseenToSeen(Job job) async {
+    await das.updateUnseenToSeen(job, AuthActions.currUser.uid!);
+  }
+
 
   Future<List<NeatCleanCalendarEvent>> getCurrUserEvent() async {
     List<Job> jobs = AuthActions.currUser.userType == "worker"
-        ? await das.getAllWorkerApprovalJobs(AuthActions.currUser.uid)
-        : await das.getJobsOfEmployer(AuthActions.currUser.uid);
+        ? await das.getAllWorkerApprovalJobs(AuthActions.currUser.uid!)
+        : await das.getJobsOfEmployer(AuthActions.currUser.uid!);
 
     return jobs
         .map((job) => NeatCleanCalendarEvent(job.title,

@@ -1,17 +1,37 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:time_z_money/business_Logic/actions/jobs_actions.dart';
+import 'package:time_z_money/business_Logic/models/Job.dart';
+import '../../data_access/firestore_dal.dart';
 import '../../data_access/messaging_dal.dart';
+import 'auth_actions.dart';
 
 class MessageActions{
 
 
   final MessagingAccess mesa = MessagingAccess();
-  static List<RemoteMessage> notifications = []; // the notification the currUser held
+  final JobsActions jobsActions = JobsActions();
+  static List notifications = []; // the notification the currUser held
+
 
   static backgroundMessageHandler(){
    // TODO: seems to not listening all the time need to fix it
     // TODO: see reference here: https://github.com/HDEVCODER/fcmflutter3.3/blob/main/lib/main.dart
 
+  }
+
+  void findNewApprovals(updateNotifications) async{
+    List<Job> jobs = await jobsActions.getFutureJobsApproved(AuthActions.currUser!.uid!);
+
+    for (Job job in jobs){
+      for (String uid_seen in job.approvedWorkers){
+        if (uid_seen.contains(AuthActions.currUser.uid!) && uid_seen.split(",")[1] == "unseen"){
+          updateNotifications(job);
+          jobsActions.updateUnseenToSeen(job);
+          break;
+        }
+      }
+    }
   }
 
   /*
@@ -22,6 +42,7 @@ class MessageActions{
    * (callback function)
    */
   void initNotification(ValueChanged<RemoteMessage> updateNotifications){
+    findNewApprovals(updateNotifications);
     mesa.requestPermission();
     mesa.listenForNotifications(updateNotifications);
   }

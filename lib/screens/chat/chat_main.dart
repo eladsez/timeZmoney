@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:chatview/chatview.dart';
+import '../../business_Logic/actions/auth_actions.dart';
+import '../../data_access/chat_dal.dart';
 import '../../utils/helper_functions.dart';
 import '../../utils/theme.dart';
 import 'data.dart';
@@ -8,42 +10,52 @@ import 'data.dart';
 class ChatScreen extends StatefulWidget {
   const ChatScreen({Key? key}) : super(key: key);
 
+
   @override
   State<ChatScreen> createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  final _chatAccessService = ChatAccessService();
+
   AppTheme theme = HelperFunctions.isDarkMode ? DarkTheme() : LightTheme();
   final currentUser = ChatUser(
-    id: '1',
-    name: 'Flutter',
-    profilePhoto: Data.profileImage,
+    id: AuthActions.currUser.uid,
+    name: AuthActions.currUser.username,
+    profilePhoto: AuthActions.currUser.profileImageURL,
   );
+
   final _chatController = ChatController(
     initialMessageList: Data.messageList,
     scrollController: ScrollController(),
-    chatUsers: [
-      ChatUser(
-        id: '2',
-        name: 'Simform',
-        profilePhoto: Data.profileImage,
-      ),
-      ChatUser(
-        id: '3',
-        name: 'Jhon',
-        profilePhoto: Data.profileImage,
-      ),
-      ChatUser(
-        id: '4',
-        name: 'Mike',
-        profilePhoto: Data.profileImage,
-      ),
-      ChatUser(
-        id: '5',
-        name: 'Rich',
-        profilePhoto: Data.profileImage,
-      ),
-    ],
+    chatUsers: _chatAccessService.getUsers();
+    // chatUsers: [
+    //   ChatUser(
+    //     id: '1',
+    //     name: 'nnnnnn',
+    //     profilePhoto: Data.profileImage,
+    //   ),
+    //   ChatUser(
+    //     id: '2',
+    //     name: 'Simform',
+    //     profilePhoto: Data.profileImage,
+    //   ),
+    //   ChatUser(
+    //     id: '3',
+    //     name: 'Jhon',
+    //     profilePhoto: Data.profileImage,
+    //   ),
+    //   ChatUser(
+    //     id: '4',
+    //     name: 'Mike',
+    //     profilePhoto: Data.profileImage,
+    //   ),
+    //   ChatUser(
+    //     id: '5',
+    //     name: 'Rich',
+    //     profilePhoto: Data.profileImage,
+    //   ),
+    // ],
   );
 
   @override
@@ -60,6 +72,7 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
           onReloadButtonTap: () {},
         ),
+        // showTypingIndicator: true,
         typeIndicatorConfig: TypeIndicatorConfiguration(
           flashingCircleBrightColor: theme.flashingCircleBrightColor,
           flashingCircleDarkColor: theme.flashingCircleDarkColor,
@@ -219,7 +232,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   void _onSendTap(String message, ReplyMessage replyMessage) {
     final id = int.parse(Data.messageList.last.id) + 1;
-    _chatController.addMessage(
+    _chatController..addMessage(
       Message(
         id: id.toString(),
         createdAt: DateTime.now(),
