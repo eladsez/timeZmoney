@@ -128,27 +128,3 @@ class MapDirectionState extends State<MapDirection> {
     );
   }
 }
-
-// TODO: check if we need to add those function for permission
-
-// void _getCurrentLocation() async {
-//   Position position = await _determinePosition();
-//   setState(() {
-//     currentLocation = currentLocation;
-//   });
-// }
-//
-// Future<Position> _determinePosition() async {
-//   LocationPermission permission;
-//
-//   permission = await Geolocator.checkPermission();
-//
-//   if(permission == LocationPermission.denied) {
-//     permission = await Geolocator.requestPermission();
-//     if(permission == LocationPermission.denied) {
-//       return Future.error('Location Permissions are denied');
-//     }
-//   }
-//
-//   return await Geolocator.getCurrentPosition();
-// }

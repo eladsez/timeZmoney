@@ -17,7 +17,7 @@ import 'build_applicants_list.dart';
 import 'coWorkers.dart';
 
 class JobDetails extends StatefulWidget {
-   JobDetails({super.key, required this.job});
+  JobDetails({super.key, required this.job});
 
   final Job job;
 
@@ -27,6 +27,7 @@ class JobDetails extends StatefulWidget {
 
 class _JobDetailsState extends State<JobDetails> {
   AppTheme theme = HelperFunctions.isDarkMode ? DarkTheme() : LightTheme();
+
   // the employer of the job
   late CustomUser employer;
   UserActions userActions = UserActions();
@@ -35,9 +36,10 @@ class _JobDetailsState extends State<JobDetails> {
   @override
   void initState() {
     super.initState();
-    Future<CustomUser?> tmp = userActions.getUserByUid(widget.job.employerUid).then((value) => employer = value!);
+    Future<CustomUser?> tmp = userActions
+        .getUserByUid(widget.job.employerUid)
+        .then((value) => employer = value!);
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -68,10 +70,10 @@ class _JobDetailsState extends State<JobDetails> {
                     title: Text(
                       widget.job.title.toUpperCase(),
                       style: TextStyle(
-                          color: theme.titleColor,
-                          fontSize: 14,
-                          letterSpacing: 1.8,
-                          shadows: const [
+                        color: theme.titleColor,
+                        fontSize: 14,
+                        letterSpacing: 1.8,
+                        shadows: const [
                           Shadow(
                             blurRadius: 10.0,
                             color: Colors.black,
@@ -85,7 +87,7 @@ class _JobDetailsState extends State<JobDetails> {
                         return const LinearGradient(
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
-                          colors:  [Colors.transparent, Colors.black],
+                          colors: [Colors.transparent, Colors.black],
                         ).createShader(
                             Rect.fromLTRB(0, 0, rect.width, rect.height + 200));
                       },
@@ -106,33 +108,33 @@ class _JobDetailsState extends State<JobDetails> {
                         crossAxisAlignment: WrapCrossAlignment.center,
                         children: [
                           // if the user is the employer of the job, don't show the profile button
-                          widget.job.employerUid != AuthActions.currUser!.uid ?
-                          IconButton(
-                            icon: Icon(Icons.person, color: theme.backArrowColor),
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ProfileScreen(
-                                            user: employer,
-                                          )
-                                  )
-                              );
-                            },
-                          ) : Container(),
                           widget.job.employerUid != AuthActions.currUser!.uid
-                              ? Text('Employer', style: TextStyle(fontSize: 10, color: theme.backArrowColor))
+                              ? IconButton(
+                                  icon: Icon(Icons.person,
+                                      color: theme.backArrowColor),
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => ProfileScreen(
+                                                  user: employer,
+                                                )));
+                                  },
+                                )
+                              : Container(),
+                          widget.job.employerUid != AuthActions.currUser!.uid
+                              ? Text('Employer',
+                                  style: TextStyle(
+                                      fontSize: 10,
+                                      color: theme.backArrowColor))
                               : Container(),
                         ],
                       ),
                     )
-
                   ],
                 ),
-
               ]),
           body: SingleChildScrollView(
-
             child: Padding(
               padding: const EdgeInsets.all(20),
               child: Column(
@@ -161,37 +163,40 @@ class _JobDetailsState extends State<JobDetails> {
                       // to show the location of the job
                       AuthActions.currUser.uid != widget.job.employerUid
                           ? GestureDetector(
-                        onTap: () {
-                          // TODO: navigate to the map screen
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => MapDirection(dest: widget.job.location,)));
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.only(
-                              left: 5, right: 5, top: 7, bottom: 7),
-                          decoration: BoxDecoration(
-                            color: theme.accentColor,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: const [
-                              Icon(
-                                Icons.directions,
-                                color: Colors.white,
-                              ),
-                              SizedBox(width: 2),
-                              Text(
-                                'Direction',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
+                              onTap: () {
+                                // TODO: navigate to the map screen
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => MapDirection(
+                                          dest: widget.job.location,
+                                        )));
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.only(
+                                    left: 5, right: 5, top: 7, bottom: 7),
+                                decoration: BoxDecoration(
+                                  color: theme.accentColor,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: const [
+                                    Icon(
+                                      Icons.directions,
+                                      color: Colors.white,
+                                    ),
+                                    SizedBox(width: 2),
+                                    Text(
+                                      'Direction',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                      ) : Container(),
+                            )
+                          : Container(),
                     ],
                   ),
                   // the job detail line
@@ -204,25 +209,25 @@ class _JobDetailsState extends State<JobDetails> {
                   ),
                   Text(
                     widget.job.description,
-                    style: TextStyle(fontSize: 18, color: theme.textFieldTextColor),
+                    style: TextStyle(
+                        fontSize: 18, color: theme.textFieldTextColor),
                   ),
                   // if the current user is an employer, show a list of workers who applied for this job
                   AuthActions.currUser.userType == "worker"
-                      ? (widget.job.approvedWorkers.contains(AuthActions.currUser.uid)
-                      ? CoWorkersList(job: widget.job)
-                      : ApplyToJob(job: widget.job))
-                      : BuildApplicantsList(job: widget.job),
+                      ? (widget.job.approvedWorkers
+                              .contains(AuthActions.currUser.uid)
+                          ? CoWorkersList(job: widget.job)
+                          : ApplyToJob(job: widget.job))
+                      : AuthActions.currUser.uid == widget.job.employerUid
+                          ? BuildApplicantsList(job: widget.job)
+                          : Container(),
                   const SizedBox(height: 50),
                 ],
               ),
             ),
-          )
-      ),
-
+          )),
     );
-
   }
-
 
 // returns the ditals of the job
   Widget jobDetailLine() {
@@ -243,8 +248,7 @@ class _JobDetailsState extends State<JobDetails> {
                 ),
                 Text(
                   widget.job.date.toDate().toString().split(" ")[0],
-                  style: TextStyle(
-                      color: theme.secondaryIconColor),
+                  style: TextStyle(color: theme.secondaryIconColor),
                 )
               ],
             ),
@@ -257,8 +261,7 @@ class _JobDetailsState extends State<JobDetails> {
                 ),
                 Text(
                   "${widget.job.salary} per ${widget.job.per}",
-                  style: TextStyle(
-                      color: theme.secondaryIconColor),
+                  style: TextStyle(color: theme.secondaryIconColor),
                 )
               ],
             ),
@@ -274,8 +277,7 @@ class _JobDetailsState extends State<JobDetails> {
                 ),
                 Text(
                   widget.job.amountNeeded.toString(),
-                  style: TextStyle(
-                      color: theme.secondaryIconColor),
+                  style: TextStyle(color: theme.secondaryIconColor),
                 )
               ],
             ),
@@ -285,12 +287,11 @@ class _JobDetailsState extends State<JobDetails> {
     );
   }
 
-
   Widget buildDivider() => SizedBox(
-    height: 24,
-    child: VerticalDivider(
-      color: theme.secondaryIconColor,
-      thickness: 1,
-    ),
-  );
+        height: 24,
+        child: VerticalDivider(
+          color: theme.secondaryIconColor,
+          thickness: 1,
+        ),
+      );
 }
