@@ -172,12 +172,13 @@ class DataAccessService {
 
   Future<void> removeWorker(Job job, String workerUid) async {
     _db.collection("jobs").doc(job.uid).update({
-      "approvedWorkers": FieldValue.arrayRemove(["$workerUid,unseen", "$workerUid,seen"]),
+      "approvedWorkers": FieldValue.arrayRemove(["$workerUid,unseen", "$workerUid,seen", workerUid]),
       "signedWorkers": FieldValue.arrayUnion([workerUid])
     });
     // update the job object
     job.approvedWorkers.remove("$workerUid,unseen");
     job.approvedWorkers.remove("$workerUid,seen");
+    job.approvedWorkers.remove(workerUid);
     job.signedWorkers.add(workerUid);
   }
 
@@ -209,8 +210,8 @@ class DataAccessService {
     QuerySnapshot<Map<String,dynamic>> seenJobsSnap = await _db.collection("jobs").where("approvedWorkers",arrayContains: "$workerUid,seen").get();
     QuerySnapshot<Map<String,dynamic>> unseenJobsSnap = await _db.collection("jobs").where("approvedWorkers",arrayContains: "$workerUid,unseen").get();
     // merge to tow lists
-    seenJobsSnap.docs.addAll(unseenJobsSnap.docs);
-    return filterJobs(seenJobsSnap, "future");
+    unseenJobsSnap.docs.addAll(seenJobsSnap.docs);
+    return filterJobs(unseenJobsSnap, "future");
   }
 
   Future<List<Job>> getFutureJobsCreatedByUid(String employerUid) async{

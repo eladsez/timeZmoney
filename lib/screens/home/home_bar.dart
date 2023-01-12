@@ -24,10 +24,11 @@ class _State extends State<HomeAppbar> {
     setState(() {
       // if the list doesn't contain this message, add it
       // we need it because we have another listener if we don't on the home_bar screen
-      if (message is RemoteMessage && !MessageActions.notifications
-          .map((msg) => msg.messageId)
-          .toList()
-          .contains(message.messageId)) {
+      if (message is RemoteMessage &&
+          !MessageActions.notifications
+              .map((msg) => msg.messageId)
+              .toList()
+              .contains(message.messageId)) {
         MessageActions.notifications.add(message);
       }
       if (message is Job) {
@@ -38,6 +39,9 @@ class _State extends State<HomeAppbar> {
 
   @override
   void initState() {
+    if (AuthActions.currUser.userType == "worker") {
+      messageActions.findNewApprovals(updateNotifications);
+    }
     messageActions.initNotification(updateNotifications);
     super.initState();
   }
@@ -112,7 +116,9 @@ class _State extends State<HomeAppbar> {
                             },
                           ).toList(),
                         ),
-                )))));
+                ))))).whenComplete(() => setState(() {
+          MessageActions.notifications.removeWhere((element) => true);
+        }));
   }
 
   @override
@@ -161,28 +167,33 @@ class _State extends State<HomeAppbar> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(10),
-                child: Container(
-                  margin: const EdgeInsets.only(top: 40, right: 17),
-                  transform: Matrix4.rotationZ(100),
-                  child: Stack(
-                    children: [
-                      IconButton(
-                        icon: Badge(
-                          badgeContent: Text(
-                            MessageActions.notifications.length.toString(),
-                            style: const TextStyle(color: Colors.white),
+                child: GestureDetector(
+                  onTap: () {
+                    onNotificationPressed();
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 30, right: 7),
+                    transform: Matrix4.rotationZ(100),
+                    child: Stack(
+                      children: [
+                        IconButton(
+                          icon: Badge(
+                            badgeContent: Text(
+                              MessageActions.notifications.length.toString(),
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                            showBadge: true,
+                            child: Icon(
+                              Icons.notifications,
+                              color: theme.accentColor,
+                            ),
                           ),
-                          showBadge: true,
-                          child: Icon(
-                            Icons.notifications,
-                            color: theme.accentColor,
-                          ),
+                          onPressed: () {
+                            onNotificationPressed();
+                          },
                         ),
-                        onPressed: () {
-                          onNotificationPressed();
-                        },
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),

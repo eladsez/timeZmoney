@@ -86,7 +86,7 @@ class _BuildApplicantsListState extends State<BuildApplicantsList> {
         child: FutureBuilder<List<CustomUser>>(
             future: isApplied
                 ? userActions.getUsersFromUid(widget.job.signedWorkers)
-                : userActions.getUsersFromUid(widget.job.approvedWorkers),
+                : userActions.getUsersFromUid(widget.job.approvedWorkers.map((cut) => cut.split(",")[0]).toList()),
             builder: (context, AsyncSnapshot<List<CustomUser>> snapshot) {
               if (snapshot.hasData) {
                 if (snapshot.data!.isNotEmpty) {
@@ -182,7 +182,7 @@ class _BuildApplicantsListState extends State<BuildApplicantsList> {
             TextButton(
               onPressed: () async {
                 isApplied
-                    ? JobsActions().approveUserToJob(widget.job, "${user.uid},unseen")
+                    ? JobsActions().approveUserToJob(widget.job, user.uid)
                     : JobsActions().removeUserFromJob(widget.job, user.uid);
                 setState(() {
                   // get the updated job from the database

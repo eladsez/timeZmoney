@@ -28,34 +28,34 @@ class _ChatScreenState extends State<ChatScreen> {
   final _chatController = ChatController(
     initialMessageList: Data.messageList,
     scrollController: ScrollController(),
-    chatUsers: _chatAccessService.getUsers();
-    // chatUsers: [
-    //   ChatUser(
-    //     id: '1',
-    //     name: 'nnnnnn',
-    //     profilePhoto: Data.profileImage,
-    //   ),
-    //   ChatUser(
-    //     id: '2',
-    //     name: 'Simform',
-    //     profilePhoto: Data.profileImage,
-    //   ),
-    //   ChatUser(
-    //     id: '3',
-    //     name: 'Jhon',
-    //     profilePhoto: Data.profileImage,
-    //   ),
-    //   ChatUser(
-    //     id: '4',
-    //     name: 'Mike',
-    //     profilePhoto: Data.profileImage,
-    //   ),
-    //   ChatUser(
-    //     id: '5',
-    //     name: 'Rich',
-    //     profilePhoto: Data.profileImage,
-    //   ),
-    // ],
+    // chatUsers: _chatAccessService.getUsers();
+    chatUsers: [
+      ChatUser(
+        id: '1',
+        name: 'nnnnnn',
+        profilePhoto: Data.profileImage,
+      ),
+      ChatUser(
+        id: '2',
+        name: 'Simform',
+        profilePhoto: Data.profileImage,
+      ),
+      ChatUser(
+        id: '3',
+        name: 'Jhon',
+        profilePhoto: Data.profileImage,
+      ),
+      ChatUser(
+        id: '4',
+        name: 'Mike',
+        profilePhoto: Data.profileImage,
+      ),
+      ChatUser(
+        id: '5',
+        name: 'Rich',
+        profilePhoto: Data.profileImage,
+      ),
+    ],
   );
 
   @override

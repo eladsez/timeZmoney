@@ -41,6 +41,6 @@ class ChatAccessService {
 
   Stream<QuerySnapshot<Map<String, dynamic>>> getMessages(String idUser) =>
       _db.collection('chats/$idUser/messages')
-          .snapshots().;
+          .snapshots();
 
 }

@@ -1,12 +1,8 @@
-import 'dart:io';
 import 'dart:core';
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:time_z_money/business_Logic/actions/jobs_actions.dart';
 import 'package:time_z_money/business_Logic/actions/user_actions.dart';
 import 'package:time_z_money/business_Logic/models/CustomUser.dart';
 import 'package:time_z_money/screens/jobs_dashboard/components/apply_to_job.dart';
-import 'package:time_z_money/utils/constants.dart';
 import '../../../business_Logic/actions/auth_actions.dart';
 import '../../../business_Logic/models/Job.dart';
 import '../../../utils/helper_functions.dart';
