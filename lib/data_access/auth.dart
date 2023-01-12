@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../business_Logic/models/CustomUser.dart';
 
@@ -55,5 +56,17 @@ class AuthService {
           print('Case ${e.toString()} is not yet implemented');
       }
     }
+  }
+
+
+  Future googleSignIn(CustomUser user) async{
+
+    final GoogleSignInAccount? googleUser = await GoogleSignIn(scopes: ["email"]).signIn();
+    final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+    await FirebaseAuth.instance.signInWithCredential(credential);
   }
 }

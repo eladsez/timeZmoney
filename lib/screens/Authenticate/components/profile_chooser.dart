@@ -84,50 +84,62 @@ class _ProfileChooserScreenState extends State<ProfileChooserScreen> {
   Widget build(BuildContext context) {
     widthScreenSize = MediaQuery.of(context).size.width;
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.arrow_circle_right_sharp),
-          onPressed: () async {
-            if (selectedUserProfile == null) {
-              return;// in case he didn't choose anything (should be popup or something)
-            }
-            String firstSignUpCode = await authActions.chooseProfile(selectedUserProfile!);
-            if (firstSignUpCode != "OK"){
-              ScaffoldMessenger.of(context).showSnackBar( SnackBar(
-                content: Text(firstSignUpCode),
-                backgroundColor: Colors.red,
-                duration: const Duration(milliseconds: 1500),
-              ));
-
-            }
-            Navigator.pop(context); // pop the profileChooserScreen
-          }),
-      body: CustomPaint(
-        painter: GreenPainter(),
-        child: Container(
-          // margin: const EdgeInsets.only(top: 100),
-          alignment: Alignment.topCenter,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              getTitle(),
-              const SizedBox(
-                height: 50,
+        floatingActionButton: FloatingActionButton(
+            child: const Icon(Icons.arrow_circle_right_sharp),
+            onPressed: () async {
+              if (selectedUserProfile == null) {
+                return; // in case he didn't choose anything (should be popup or something)
+              }
+              String firstSignUpCode =
+                  await authActions.chooseProfile(selectedUserProfile!);
+              if (firstSignUpCode != "OK") {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  content: Text(firstSignUpCode),
+                  backgroundColor: Colors.red,
+                  duration: const Duration(milliseconds: 1500),
+                ));
+              }
+              Navigator.pop(context); // pop the profileChooserScreen
+            }),
+        // body: CustomPaint(
+        //   painter: GreenPainter(),
+        body: Center(
+          child: Container(
+            decoration: const BoxDecoration(
+                gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              stops: [0.1,0.9],
+              colors: [
+                 Color(0xff60f8ff),
+                Colors.yellow,
+              ],
+            )),
+            child: Container(
+              // margin: const EdgeInsets.only(top: 100),
+              alignment: Alignment.topCenter,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  getTitle(),
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 10),
+                    width: 300,
+                    child: Center(child: description),
+                  ),
+                  typeButton("Worker", workerColor, workerChoice),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  typeButton("Employer", employerColor, employerChoice),
+                ],
               ),
-              Container(
-                margin: const EdgeInsets.only(top: 10),
-                width: 300,
-                child: Center(child: description),
-              ),
-              typeButton("Worker", workerColor, workerChoice),
-              const SizedBox(
-                height: 20,
-              ),
-              typeButton("Employer", employerColor, employerChoice),
-            ],
+            ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 }

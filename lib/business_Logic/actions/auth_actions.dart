@@ -33,6 +33,10 @@ class AuthActions {
     setCurrUser(curr!);
   }
 
+  Future logInGoogle() async{
+
+  }
+
   /*
   The first stage signup sign the new user in fireBase auth and trigger the appWrapper stream
   */
