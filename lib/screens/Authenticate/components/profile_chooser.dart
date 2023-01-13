@@ -109,14 +109,8 @@ class _ProfileChooserScreenState extends State<ProfileChooserScreen> {
                     userType: (selectedUserProfile == UserProfile.employer)
                         ? "employer"
                         : "worker");
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MainScreen(
-                          theme: HelperFunctions.isDarkMode
-                              ? DarkTheme()
-                              : LightTheme()),
-                    ));
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => MainScreen()));
               }
             }),
         // body: CustomPaint(

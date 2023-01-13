@@ -34,6 +34,7 @@ class _AppWrapperState extends State<AppWrapper> {
                   builder: (_, loginState) {
                     print("Elad debug in signIp: ${loginState.data}");
                     print("Elad debug in google state: ${AuthActions.googleSignIn}");
+                    print(AuthActions.currUser?.toMap);
                     if (loginState.hasData && loginState.data == false && AuthActions.googleSignIn){ // googleSignUp Stage
                       return const ProfileChooserScreen();
                     }
@@ -43,12 +44,12 @@ class _AppWrapperState extends State<AppWrapper> {
                         // create the fireStore entry for the user and only then build home
                         future: authActions.signupSecondStage(),
                         builder: (context, dummy) {
-                          return MainScreen(theme: theme,);
+                          return MainScreen();
                         },
                       );
                     } else if (loginState.hasData && loginState.data == true) {
                       // in case we in signIn
-                      return MainScreen(theme: theme,);
+                      return MainScreen();
                     } else {
                       return const LoadingLogo();
                     }

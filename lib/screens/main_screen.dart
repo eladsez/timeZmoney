@@ -29,9 +29,9 @@ enum BottomNavigationBarState {
  Here we will check which user is connected and build the screens for him (also depend if he is worker or employer)
  */
 class MainScreen extends StatefulWidget {
-  MainScreen({Key? key, required this.theme}) : super(key: key);
+  MainScreen({Key? key}) : super(key: key);
 
-  AppTheme theme;
+  AppTheme theme = HelperFunctions.isDarkMode ? DarkTheme() : LightTheme();
   @override
   State<MainScreen> createState() => _MainScreenState();
 }
