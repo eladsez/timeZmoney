@@ -4,7 +4,6 @@ import 'package:time_z_money/business_Logic/actions/jobs_actions.dart';
 import 'package:time_z_money/business_Logic/actions/review_actions.dart';
 import 'package:time_z_money/business_Logic/models/CustomUser.dart';
 import 'package:time_z_money/business_Logic/models/Review.dart';
-import 'package:time_z_money/screens/profile/components/review_list_view.dart';
 import 'package:time_z_money/screens/profile/components/xpopup/appbar.dart';
 import 'package:time_z_money/screens/profile/components/xpopup/card.dart';
 
