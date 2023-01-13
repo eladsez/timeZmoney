@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:time_z_money/screens/profile/components/src/appbar.dart';
-import 'package:time_z_money/screens/profile/components/src/card.dart';
-import 'package:time_z_money/screens/profile/components/src/gutter.dart';
+import 'package:time_z_money/screens/profile/components/xpopup/appbar.dart';
+import 'package:time_z_money/screens/profile/components/xpopup/card.dart';
+import 'package:time_z_money/screens/profile/components/xpopup/gutter.dart';
 
 import '../../../business_Logic/actions/jobs_actions.dart';
 import '../../../business_Logic/models/CustomUser.dart';

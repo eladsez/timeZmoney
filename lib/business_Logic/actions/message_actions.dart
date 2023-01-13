@@ -19,6 +19,11 @@ class MessageActions{
 
   }
 
+  /*
+   * Responsible to find new jobs that the current connected user is in theirs approved list
+   * but didn't see it yet
+   * Its adding those jobs to the notification list to be represent in the home app bar
+   */
   void findNewApprovals(updateNotifications) async{
     List<Job> jobs = await jobsActions.getFutureJobsApproved(AuthActions.currUser);
     for (Job job in jobs){
