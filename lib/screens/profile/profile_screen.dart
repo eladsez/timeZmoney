@@ -129,7 +129,7 @@ class ProfileScreenState extends State<ProfileScreen> {
             // Navigator.of(context).push(MaterialPageRoute(builder: (context) {
             //   return const ProfileSetting(); // add this shit
             // }));
-            FirebaseAuth.instance.signOut();
+            AuthActions().signOut();
           },
         ),
       ],

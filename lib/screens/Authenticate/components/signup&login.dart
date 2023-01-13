@@ -134,14 +134,11 @@ class _SignupLoginContentState extends State<SignupLoginContent>
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          InkWell(
-            onTap: () {},
-            borderRadius: BorderRadius.circular(20.0),
-            child: Image.asset('assets/images/facebook.png'),
-          ),
           const SizedBox(width: 24),
           InkWell(
-            onTap: () {},
+            onTap: () {
+              authActions.google();
+            },
             borderRadius: BorderRadius.circular(20.0),
             child: Image.asset('assets/images/google.png'),
           ),

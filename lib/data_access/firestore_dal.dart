@@ -35,10 +35,8 @@ class DataAccessService {
         .collection("users")
         .where('uid', isEqualTo: currUser?.uid)
         .get();
-    if (snapshot.docs.isEmpty) {
-      //TODO: commented out the print statement because it was printing too much
-      // print("User doesn't exist yet\n");
-    } else if (snapshot.docs.isNotEmpty) {
+
+    if (snapshot.docs.isNotEmpty) {
       return CustomUser.fromMap(snapshot.docs.first.data());
     }
     return null;

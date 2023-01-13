@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:time_z_money/data_access/auth.dart';
 import 'package:time_z_money/screens/Authenticate/components/profile_chooser.dart';
 import '../../data_access/firestore_dal.dart';
@@ -15,17 +16,17 @@ import '../models/CustomUser.dart';
 class AuthActions {
   final DataAccessService das = DataAccessService();
   final AuthService auth = AuthService();
+  static bool googleSignIn = false;
   static dynamic currUser;
 
-  static tryInitCurrUser(){
+  static tryInitCurrUser() {
     // TODO: consider to init currUser from the beginning
   }
-
-
 
   static setCurrUser(CustomUser user) {
     currUser = user.clone();
   }
+
 // TODO: catch the error and return it to the presentation layer
   login(CustomUser user) async {
     await auth.emailSignIn(user);
@@ -33,8 +34,8 @@ class AuthActions {
     setCurrUser(curr!);
   }
 
-  Future logInGoogle() async{
-
+  Future google() async {
+    await auth.googleSignUp();
   }
 
   /*
@@ -45,9 +46,18 @@ class AuthActions {
     return await auth.regularRegistration(currUser);
   }
 
-  Future<void> signupSecondStage() async {
-    currUser.hashPass = HelperFunctions.generateMd5(
-        currUser.hashPass); // to fireStore we insert the password hashed
+  Future<void> signupSecondStage({String userType = ""}) async {
+    if (currUser == null) {
+      // we in google signup, we don't gonna hold hash password for him
+      String username = auth.getCurrFireBaseUser().displayName ??
+          ""; // after ?? will never happened
+      String email = auth.getCurrFireBaseUser().email ?? "";
+      setCurrUser(CustomUser(
+          username: username, email: email, hashPass: "", userType: userType));
+    } else {
+      currUser.hashPass = HelperFunctions.generateMd5(
+          currUser.hashPass); // to fireStore we insert the password hashed
+    }
     currUser.uid = auth.getCurrUserUid(); // update the user uid for fireStore
     await das.createUser(currUser);
   }
@@ -61,10 +71,21 @@ class AuthActions {
     return await signupFirstStage();
   }
 
+  signOut() async {
+    if (googleSignIn) {
+      googleSignIn = false;
+      GoogleSignIn().signOut();
+    }
+    await FirebaseAuth.instance.signOut();
+  }
+
   /// This function will check if the uid of a firebase_auth user is already in fireStore
   ///  if it is - so we in signIn state
   ///  if not - we in signup second stage
   Future<bool> whichStateChange(User? firebaseUser) async {
+    if (currUser == null) {
+      googleSignIn = true;
+    }
     CustomUser? user = await das.getCustomUser(firebaseUser!);
     if (user == null) {
       return false;

@@ -7,6 +7,7 @@ import 'package:time_z_money/screens/scheduler/scheduler.dart';
 import 'package:time_z_money/screens/upload_job/upload_job_screen.dart';
 
 import '../business_Logic/actions/auth_actions.dart';
+import '../business_Logic/models/CustomUser.dart';
 import '../utils/helper_functions.dart';
 import '../utils/theme.dart';
 import 'home/home_screen.dart';
@@ -95,6 +96,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(AuthActions.currUser.toMap());
     return Scaffold(
       body: bodyBuilder(),
       bottomNavigationBar: Padding(

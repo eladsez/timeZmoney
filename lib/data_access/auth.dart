@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import '../business_Logic/actions/auth_actions.dart';
 import '../business_Logic/models/CustomUser.dart';
 
 enum AuthProblems { userNotFound, passwordNotValid, networkError }
@@ -16,8 +17,8 @@ class AuthService {
     return FirebaseAuth.instance.currentUser?.uid;
   }
 
-  User? getCurrFireBaseUser(){
-    return FirebaseAuth.instance.currentUser;
+  User getCurrFireBaseUser(){
+    return FirebaseAuth.instance.currentUser!;
   }
 
   Future<String> regularRegistration(CustomUser newUser) async {
@@ -59,7 +60,7 @@ class AuthService {
   }
 
 
-  Future googleSignIn(CustomUser user) async{
+  Future googleSignUp() async{
 
     final GoogleSignInAccount? googleUser = await GoogleSignIn(scopes: ["email"]).signIn();
     final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
@@ -67,6 +68,7 @@ class AuthService {
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
+    AuthActions.googleSignIn = true;
     await FirebaseAuth.instance.signInWithCredential(credential);
   }
 }
