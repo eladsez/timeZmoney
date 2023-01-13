@@ -3,7 +3,7 @@ This class represents a single job review
 called JobReview and not just Review because of a google package
  */
 class JobReview {
-  int stars;
+  double stars;
   String writer;
   String receiver;
   String work;
