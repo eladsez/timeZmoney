@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_maps_webservice/places.dart';
@@ -39,6 +40,7 @@ class _BuildUserReviewsState extends State<BuildUserReviews> {
 
   XenCardAppBar buildReviewBar() =>
       XenCardAppBar(
+        color: theme.appBarColor,
         shadow: const BoxShadow(color: Colors.transparent),
         child: Text(
           "Post Review",
@@ -111,7 +113,11 @@ class _BuildUserReviewsState extends State<BuildUserReviews> {
               hintStyle: TextStyle(color: theme.secondaryIconColor),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(5),
-                borderSide: const BorderSide(color: Colors.black12),
+                borderSide: BorderSide(color: theme.secondaryIconColor!),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5),
+                borderSide: BorderSide(color: theme.secondaryIconColor!),
               ),
             ),
           ),
@@ -125,7 +131,7 @@ class _BuildUserReviewsState extends State<BuildUserReviews> {
                     ? selectedJobOfReview
                     : "Never Cooperate",
                 child: DropdownButton(
-                  dropdownColor: theme.cardColor,
+                  dropdownColor: theme.appBarColor,
                   onChanged: (String? newJob) {
                     refresh(setState, newJob!);
                     selectedJobUid = jobsSnap.data
@@ -195,6 +201,7 @@ class _BuildUserReviewsState extends State<BuildUserReviews> {
               builder: (builder) =>
                   StatefulBuilder(builder: (context, setState) {
                     return XenPopupCard(
+                      cardBgColor: theme.cardColor,
                       relHeight: 0.17,
                       appBar: buildReviewBar(),
                       gutter: buildGutter(),

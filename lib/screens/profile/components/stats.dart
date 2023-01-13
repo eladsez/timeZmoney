@@ -1,14 +1,18 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:time_z_money/business_Logic/actions/jobs_actions.dart';
 import 'package:time_z_money/business_Logic/actions/review_actions.dart';
 import 'package:time_z_money/business_Logic/models/CustomUser.dart';
 import 'package:time_z_money/business_Logic/models/Review.dart';
-import 'package:time_z_money/screens/profile/components/job_list_view.dart';
 import 'package:time_z_money/screens/profile/components/review_list_view.dart';
+import 'package:time_z_money/screens/profile/components/xpopup/appbar.dart';
+import 'package:time_z_money/screens/profile/components/xpopup/card.dart';
 
 import '../../../business_Logic/models/Job.dart';
 import '../../../utils/helper_functions.dart';
 import '../../../utils/theme.dart';
+import '../../Loading_Screens/loading_screen.dart';
+import '../../jobs_dashboard/components/job_details.dart';
 
 class Stats extends StatefulWidget {
   const Stats({super.key, required this.user, required this.theme});
@@ -34,13 +38,15 @@ class _StatsState extends State<Stats> {
                 if (snapshot.hasData) {
                   List<JobReview> reviews = snapshot.data ?? [];
                   if (reviews.isEmpty) {
-                    return buildButton(context, "Reviews", 0);
+                    return buildPopUp("future", "Reviews", 0);
+                    // return buildButton(context, "Reviews", 0);
                   }
                   double average = reviews.map((review) => review.stars).reduce(
                           (firstStarts, secondStars) =>
                               firstStarts + secondStars) /
                       reviews.length;
-                  return buildButton(context, "Reviews", average);
+                  return buildPopUp("future", "Reviews", average);
+                  // return buildButton(context, "Reviews", average);
                 } else {
                   return const CircularProgressIndicator();
                 }
@@ -53,8 +59,8 @@ class _StatsState extends State<Stats> {
               builder: (context, AsyncSnapshot<List<Job>> snapshot) {
                 if (snapshot.hasData) {
                   int length = snapshot.data?.length ?? 0;
-                  return buildButton(
-                      context, "Current Jobs", length.toDouble());
+                  return buildPopUp("future", "Current Jobs", length.toDouble());
+                  // return buildButton(context, "Current Jobs", length.toDouble());
                 } else {
                   return const CircularProgressIndicator();
                 }
@@ -67,7 +73,8 @@ class _StatsState extends State<Stats> {
               builder: (context, AsyncSnapshot<List<Job>> snapshot) {
                 if (snapshot.hasData) {
                   int length = snapshot.data?.length ?? 0;
-                  return buildButton(context, "Past Jobs", length.toDouble());
+                  return buildPopUp('past', "Past Jobs", length.toDouble());
+                  // return buildButton(context, "Past Jobs", length.toDouble());
                 } else {
                   return const CircularProgressIndicator();
                 }
@@ -80,36 +87,22 @@ class _StatsState extends State<Stats> {
         child: VerticalDivider(),
       );
 
-  Widget buildButton(BuildContext context, String value, double toDisplay) =>
-      MaterialButton(
-        padding: const EdgeInsets.symmetric(vertical: 4),
-        onPressed: () => {
-          if (value.compareTo("Past Jobs") == 0)
-            {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          JobListViewer(kind: "past", user: widget.user)))
-            }
-          else if (value.compareTo("Current Jobs") == 0)
-            {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          JobListViewer(kind: "future", user: widget.user)))
-            }
-          else
-            {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          ReviewListViewer(user: widget.user)))
-            }
-        },
-        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+
+  Widget buildPopUp(String? kind, String value, double toDisplay) =>
+      GestureDetector(
+        onTap: () =>
+            showDialog(
+              context: context,
+              builder: (builder) =>
+                  StatefulBuilder(builder: (context, setState) {
+                    return XenPopupCard(
+                      cardBgColor: widget.theme.cardColor,
+                      relHeight: 0.17,
+                      appBar: buildTopBar(value),
+                      body: value == "Reviews" ? buildReviewsLists(kind!) : buildJobsLists(kind!),
+                    );
+                  }),
+            ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -132,4 +125,227 @@ class _StatsState extends State<Stats> {
           ],
         ),
       );
+
+  XenCardAppBar buildTopBar(String value) =>
+      XenCardAppBar(
+        color: widget.theme.appBarColor,
+        shadow: const BoxShadow(color: Colors.transparent),
+        child: Text( value == "Reviews" ? "Reviews" : value == "Current Jobs" ? "Current Jobs" : "Past Jobs",
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 28,
+              color: widget.theme.titleColor),
+        ),
+      );
+
+  Widget buildReviewsLists(String kind) {
+    return Column(
+      children: [
+        Expanded(
+          child: FutureBuilder(
+            future: reviewActions.getReviewsOnUser(widget.user),
+            builder: (context, AsyncSnapshot<List<JobReview>> snapshot) {
+              if (snapshot.hasData) {
+                var reviews = snapshot.data;
+                return ListView.builder(
+                    itemCount: reviews!.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 10),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 10),
+                        width: MediaQuery.of(context)
+                            .size
+                            .width *
+                            0.4,
+                        decoration: BoxDecoration(
+                            borderRadius:
+                            BorderRadius.circular(30),
+                            color: widget.theme.cardColor,
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.black
+                                      .withOpacity(0.5),
+                                  blurRadius: 10,
+                                  spreadRadius: 0,
+                                  offset:
+                                  const Offset(0, 1))
+                            ]),
+                        child: Column(
+                          children: [
+                            Text(reviews[index].stars.toString(), style: TextStyle(color: widget.theme.textFieldTextColor),),
+                            Text(reviews[index].content, style: TextStyle(color: widget.theme.textFieldTextColor)),
+                            Text(reviews[index].writer, style: TextStyle(color: widget.theme.textFieldTextColor))
+                          ],
+                        ),
+
+                      );
+                    }
+                );
+              } else {
+                return const Loading();
+              }
+            },
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget buildJobsLists(String kind) {
+    return Column(
+      children: [
+        Expanded(
+          child: FutureBuilder(
+            future: widget.user.userType?.compareTo("employer") == 0? (kind.compareTo("future") == 0? jobsActions.getFutureJobsCreated(widget.user): jobsActions.getPastJobsCreated(widget.user)):(kind.compareTo("future") == 0? jobsActions.getFutureJobsApproved(widget.user): jobsActions.getPastJobsApproved(widget.user)),
+            builder: (context, AsyncSnapshot<List<Job>> snapshot) {
+              if (snapshot.hasData) {
+                var job = snapshot.data;
+                return ListView.builder(
+                    itemCount: job!.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 5, vertical: 10),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 10),
+                        width: MediaQuery.of(context)
+                            .size
+                            .width *
+                            0.4,
+                        decoration: BoxDecoration(
+                            borderRadius:
+                            BorderRadius.circular(30),
+                            color: widget.theme.cardColor,
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Colors.black
+                                      .withOpacity(0.3),
+                                  blurRadius: 10,
+                                  spreadRadius: 0,
+                                  offset:
+                                  const Offset(0, 1))
+                            ]),
+                        child: OpenContainer(
+                          closedElevation: 0,
+                          middleColor: Colors.white,
+                          closedColor: Colors.transparent,
+                          closedBuilder: (context, action) => Row(
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  job[index].imageUrl != "None" ? ClipRRect(
+                                    borderRadius: BorderRadius.circular(15),
+                                    child: Image(
+                                        height: 80,
+                                        width: 140,
+                                        fit: BoxFit.cover,
+                                        image: ResizeImage(
+                                            NetworkImage(job[index].imageUrl),
+                                            height: 110,
+                                            width: 140)),
+                                  ) : Container(),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  SizedBox(
+                                    width: MediaQuery.of(context).size.width * 0.5,
+                                    child: Text(
+                                      job[index].title,
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: widget.theme.titleColor),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 6,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Icon(Icons.location_on,
+                                          color: widget.theme.secondaryIconColor),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      SizedBox(
+                                        width: MediaQuery.of(context).size.width * 0.5,
+                                        child: Text(
+                                          job[index].district,
+                                          style: TextStyle(
+                                              color: widget.theme.secondaryIconColor),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 6,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.attach_money,
+                                        color: widget.theme.secondaryIconColor,
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      SizedBox(
+                                        width: MediaQuery.of(context).size.width * 0.5,
+                                        child: Text(
+                                          "${job[index].salary} per ${job[index].per}",
+                                          style: TextStyle(
+                                              color: widget.theme.secondaryIconColor),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 6,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.date_range,
+                                        color: widget.theme.secondaryIconColor,
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        job[index].date
+                                            .toDate()
+                                            .toString()
+                                            .split(" ")[0],
+                                        style: TextStyle(
+                                            color: widget.theme.secondaryIconColor),
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          openBuilder: (context, action) =>
+                              JobDetails(job: job[index]),
+                        ),
+                      );
+                    }
+                );
+              } else {
+                return const Loading();
+              }
+            },
+          ),
+        )
+      ],
+    );
+  }
+
+
 }
