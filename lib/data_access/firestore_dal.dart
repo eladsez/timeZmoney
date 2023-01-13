@@ -209,7 +209,7 @@ class DataAccessService {
   Future<List<Job>> getFutureJobsAppliedByUid(String workerUid) async{
     QuerySnapshot<Map<String,dynamic>> seenJobsSnap = await _db.collection("jobs").where("approvedWorkers",arrayContains: "$workerUid,seen").get();
     QuerySnapshot<Map<String,dynamic>> unseenJobsSnap = await _db.collection("jobs").where("approvedWorkers",arrayContains: "$workerUid,unseen").get();
-    // merge to tow lists
+
     unseenJobsSnap.docs.addAll(seenJobsSnap.docs);
     return filterJobs(unseenJobsSnap, "future");
   }
