@@ -96,7 +96,6 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(AuthActions.currUser.toMap());
     return Scaffold(
       body: bodyBuilder(),
       bottomNavigationBar: Padding(

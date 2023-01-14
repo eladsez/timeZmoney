@@ -126,9 +126,6 @@ class ProfileScreenState extends State<ProfileScreen> {
         IconButton(
           icon: Icon(Icons.logout, size: 26, color: theme.mainIconColor),
           onPressed: () {
-            // Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-            //   return const ProfileSetting(); // add this shit
-            // }));
             AuthActions().signOut();
           },
         ),

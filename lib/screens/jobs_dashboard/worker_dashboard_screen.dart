@@ -47,14 +47,6 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
         builder: (context, majorsListSnap) => Container(
               decoration: BoxDecoration(
                 color: theme.backgroundColor,
-                // boxShadow: [
-                //   BoxShadow(
-                //     color: theme.backgroundColor!,
-                //     offset: const Offset(0.0, 0.75),
-                //     blurRadius: 20.0,
-                //     spreadRadius: 40.0,
-                //   ),
-                // ],
               ),
               child: ListView(
                 scrollDirection: Axis.horizontal,
@@ -80,7 +72,7 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 20, vertical: 10),
                                 margin: const EdgeInsets.symmetric(
-                                  horizontal: 10,
+                                  horizontal: 10, vertical: 10
                                 ),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20),
@@ -124,16 +116,18 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
         ),
         child: Column(
           children: [
-            const SizedBox(
-              height: 10,
-            ),
-            SizedBox(
+            Container(
+              decoration: const BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 2,
+                      offset: Offset(0, 1))
+                ],
+              ),
               width: MediaQuery.of(context).size.width,
-              height: 40,
+              height: 60,
               child: buildMajorTabs(),
-            ),
-            const SizedBox(
-              height: 5,
             ),
             Expanded(
               child: FutureBuilder(
