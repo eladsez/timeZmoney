@@ -44,6 +44,12 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
   }
 
+  updateSelectedNavBar(BottomNavigationBarState newState){
+    setState(() {
+      selectedNavBar = newState;
+    });
+  }
+
   // This method is responsible for the bottom navigation icons.
   List<Widget> buildNavigationIcons() {
     return AuthActions.currUser.userType == "worker"
@@ -78,7 +84,7 @@ class _MainScreenState extends State<MainScreen> {
       case BottomNavigationBarState.profile:
         return ProfileScreen(user: AuthActions.currUser, callBack: refresh,);
       case BottomNavigationBarState.jobPosting:
-        return const UploadJobScreen();
+        return UploadJobScreen(moveHome: updateSelectedNavBar,);
       case BottomNavigationBarState.scheduler:
         return const CalendarScreen();
       case BottomNavigationBarState.chat:

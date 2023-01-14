@@ -7,12 +7,15 @@ import '../../business_Logic/actions/auth_actions.dart';
 import '../../business_Logic/actions/jobs_actions.dart';
 import '../../utils/helper_functions.dart';
 import '../../utils/theme.dart';
+import '../main_screen.dart';
 import 'Component/button.dart';
 import 'Component/inputfiled.dart';
 import 'Component/places_search.dart';
 
 class UploadJobScreen extends StatefulWidget {
-  const UploadJobScreen({Key? key}) : super(key: key);
+  const UploadJobScreen({Key? key, required this.moveHome}) : super(key: key);
+
+  final Function moveHome;
 
   @override
   State<UploadJobScreen> createState() => _UploadJobScreenState();
@@ -328,6 +331,7 @@ class _UploadJobScreenState extends State<UploadJobScreen> {
                             ),
                           ]))))));
             }
+            widget.moveHome(BottomNavigationBarState.home);
           }),
     );
   }
