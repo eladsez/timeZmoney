@@ -194,6 +194,17 @@ class DataAccessService {
     await _db.collection("jobs").doc(jobUid).update({field: toUpdate});
   }
 
+  /*
+  lior don't write it in the server this function is used only for debuting
+   */
+  Future<void> updateAllJobs(String field, dynamic toUpdate) async {
+    await _db.collection("jobs").get().then((snap) => {
+          snap.docs.forEach((doc) {
+            doc.reference.update({field: toUpdate});
+          })
+        });
+  }
+
   Future<Job> getJobByUid(String jobUid) async {
     QuerySnapshot<Map<String, dynamic>> jobsSnap =
         await _db.collection("jobs").where("uid", isEqualTo: jobUid).get();

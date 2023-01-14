@@ -32,9 +32,6 @@ class _AppWrapperState extends State<AppWrapper> {
                   // check if we already had the user in fireStore
                   future: authActions.whichStateChange(user.data),
                   builder: (_, loginState) {
-                    print("Elad debug in signIp: ${loginState.data}");
-                    print("Elad debug in google state: ${AuthActions.googleSignIn}");
-                    print(AuthActions.currUser?.toMap);
                     if (loginState.hasData && loginState.data == false && AuthActions.googleSignIn){ // googleSignUp Stage
                       return const ProfileChooserScreen();
                     }

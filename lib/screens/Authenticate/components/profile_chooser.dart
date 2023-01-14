@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:time_z_money/utils/BackgroundGenerator.dart';
-
 import '../../../business_Logic/actions/auth_actions.dart';
 import '../../../utils/helper_functions.dart';
 import '../../../utils/theme.dart';
