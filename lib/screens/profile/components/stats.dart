@@ -8,7 +8,6 @@ import 'package:time_z_money/screens/profile/components/xpopup/appbar.dart';
 import 'package:time_z_money/screens/profile/components/xpopup/card.dart';
 
 import '../../../business_Logic/models/Job.dart';
-import '../../../utils/helper_functions.dart';
 import '../../../utils/theme.dart';
 import '../../Loading_Screens/loading_screen.dart';
 import '../../jobs_dashboard/components/job_details.dart';
@@ -18,6 +17,7 @@ class Stats extends StatefulWidget {
 
   final CustomUser user;
   final AppTheme theme;
+
   @override
   State<Stats> createState() => _StatsState();
 }
@@ -25,7 +25,6 @@ class Stats extends StatefulWidget {
 class _StatsState extends State<Stats> {
   JobsActions jobsActions = JobsActions();
   ReviewActions reviewActions = ReviewActions();
-
 
   @override
   Widget build(BuildContext context) => Row(
@@ -58,7 +57,8 @@ class _StatsState extends State<Stats> {
               builder: (context, AsyncSnapshot<List<Job>> snapshot) {
                 if (snapshot.hasData) {
                   int length = snapshot.data?.length ?? 0;
-                  return buildPopUp("future", "Current Jobs", length.toDouble());
+                  return buildPopUp(
+                      "future", "Current Jobs", length.toDouble());
                   // return buildButton(context, "Current Jobs", length.toDouble());
                 } else {
                   return const CircularProgressIndicator();
@@ -86,22 +86,21 @@ class _StatsState extends State<Stats> {
         child: VerticalDivider(),
       );
 
-
   Widget buildPopUp(String? kind, String value, double toDisplay) =>
       GestureDetector(
-        onTap: () =>
-            showDialog(
-              context: context,
-              builder: (builder) =>
-                  StatefulBuilder(builder: (context, setState) {
-                    return XenPopupCard(
-                      cardBgColor: widget.theme.cardColor,
-                      relHeight: 0.17,
-                      appBar: buildTopBar(value),
-                      body: value == "Reviews" ? buildReviewsLists(kind!) : buildJobsLists(kind!),
-                    );
-                  }),
-            ),
+        onTap: () => showDialog(
+          context: context,
+          builder: (builder) => StatefulBuilder(builder: (context, setState) {
+            return XenPopupCard(
+              cardBgColor: widget.theme.cardColor,
+              relHeight: 0.17,
+              appBar: buildTopBar(value),
+              body: value == "Reviews"
+                  ? buildReviewsLists(kind!)
+                  : buildJobsLists(kind!),
+            );
+          }),
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -119,17 +118,22 @@ class _StatsState extends State<Stats> {
             Text(
               value,
               style: TextStyle(
-                  color: widget.theme.textFieldTextColor, fontWeight: FontWeight.bold),
+                  color: widget.theme.textFieldTextColor,
+                  fontWeight: FontWeight.bold),
             ),
           ],
         ),
       );
 
-  XenCardAppBar buildTopBar(String value) =>
-      XenCardAppBar(
+  XenCardAppBar buildTopBar(String value) => XenCardAppBar(
         color: widget.theme.appBarColor,
         shadow: const BoxShadow(color: Colors.transparent),
-        child: Text( value == "Reviews" ? "Reviews" : value == "Current Jobs" ? "Current Jobs" : "Past Jobs",
+        child: Text(
+          value == "Reviews"
+              ? "Reviews"
+              : value == "Current Jobs"
+                  ? "Current Jobs"
+                  : "Past Jobs",
           style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 28,
@@ -154,34 +158,34 @@ class _StatsState extends State<Stats> {
                             horizontal: 20, vertical: 10),
                         padding: const EdgeInsets.symmetric(
                             vertical: 10, horizontal: 10),
-                        width: MediaQuery.of(context)
-                            .size
-                            .width *
-                            0.4,
+                        width: MediaQuery.of(context).size.width * 0.4,
                         decoration: BoxDecoration(
-                            borderRadius:
-                            BorderRadius.circular(30),
+                            borderRadius: BorderRadius.circular(30),
                             color: widget.theme.cardColor,
                             boxShadow: [
                               BoxShadow(
-                                  color: Colors.black
-                                      .withOpacity(0.5),
+                                  color: Colors.black.withOpacity(0.5),
                                   blurRadius: 10,
                                   spreadRadius: 0,
-                                  offset:
-                                  const Offset(0, 1))
+                                  offset: const Offset(0, 1))
                             ]),
                         child: Column(
                           children: [
-                            Text(reviews[index].stars.toString(), style: TextStyle(color: widget.theme.textFieldTextColor),),
-                            Text(reviews[index].content, style: TextStyle(color: widget.theme.textFieldTextColor)),
-                            Text(reviews[index].writer, style: TextStyle(color: widget.theme.textFieldTextColor))
+                            Text(
+                              reviews[index].stars.toString(),
+                              style: TextStyle(
+                                  color: widget.theme.textFieldTextColor),
+                            ),
+                            Text(reviews[index].content,
+                                style: TextStyle(
+                                    color: widget.theme.textFieldTextColor)),
+                            Text(reviews[index].writer,
+                                style: TextStyle(
+                                    color: widget.theme.textFieldTextColor))
                           ],
                         ),
-
                       );
-                    }
-                );
+                    });
               } else {
                 return const Loading();
               }
@@ -197,7 +201,13 @@ class _StatsState extends State<Stats> {
       children: [
         Expanded(
           child: FutureBuilder(
-            future: widget.user.userType?.compareTo("employer") == 0? (kind.compareTo("future") == 0? jobsActions.getFutureJobsCreated(widget.user): jobsActions.getPastJobsCreated(widget.user)):(kind.compareTo("future") == 0? jobsActions.getFutureJobsApproved(widget.user): jobsActions.getPastJobsApproved(widget.user)),
+            future: widget.user.userType?.compareTo("employer") == 0
+                ? (kind.compareTo("future") == 0
+                    ? jobsActions.getFutureJobsCreated(widget.user)
+                    : jobsActions.getPastJobsCreated(widget.user))
+                : (kind.compareTo("future") == 0
+                    ? jobsActions.getFutureJobsApproved(widget.user)
+                    : jobsActions.getPastJobsApproved(widget.user)),
             builder: (context, AsyncSnapshot<List<Job>> snapshot) {
               if (snapshot.hasData) {
                 var job = snapshot.data;
@@ -209,22 +219,16 @@ class _StatsState extends State<Stats> {
                             horizontal: 5, vertical: 10),
                         padding: const EdgeInsets.symmetric(
                             vertical: 10, horizontal: 10),
-                        width: MediaQuery.of(context)
-                            .size
-                            .width *
-                            0.4,
+                        width: MediaQuery.of(context).size.width * 0.4,
                         decoration: BoxDecoration(
-                            borderRadius:
-                            BorderRadius.circular(30),
+                            borderRadius: BorderRadius.circular(30),
                             color: widget.theme.cardColor,
                             boxShadow: [
                               BoxShadow(
-                                  color: Colors.black
-                                      .withOpacity(0.3),
+                                  color: Colors.black.withOpacity(0.3),
                                   blurRadius: 10,
                                   spreadRadius: 0,
-                                  offset:
-                                  const Offset(0, 1))
+                                  offset: const Offset(0, 1))
                             ]),
                         child: OpenContainer(
                           closedElevation: 0,
@@ -235,22 +239,27 @@ class _StatsState extends State<Stats> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  job[index].imageUrl != "None" ? ClipRRect(
-                                    borderRadius: BorderRadius.circular(15),
-                                    child: Image(
-                                        height: 80,
-                                        width: 140,
-                                        fit: BoxFit.cover,
-                                        image: ResizeImage(
-                                            NetworkImage(job[index].imageUrl),
-                                            height: 110,
-                                            width: 140)),
-                                  ) : Container(),
+                                  job[index].imageUrl != "None"
+                                      ? ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          child: Image(
+                                              height: 80,
+                                              width: 140,
+                                              fit: BoxFit.cover,
+                                              image: ResizeImage(
+                                                  NetworkImage(
+                                                      job[index].imageUrl),
+                                                  height: 110,
+                                                  width: 140)),
+                                        )
+                                      : Container(),
                                   const SizedBox(
                                     height: 10,
                                   ),
                                   SizedBox(
-                                    width: MediaQuery.of(context).size.width * 0.5,
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.5,
                                     child: Text(
                                       job[index].title,
                                       overflow: TextOverflow.ellipsis,
@@ -266,16 +275,20 @@ class _StatsState extends State<Stats> {
                                   Row(
                                     children: [
                                       Icon(Icons.location_on,
-                                          color: widget.theme.secondaryIconColor),
+                                          color:
+                                              widget.theme.secondaryIconColor),
                                       const SizedBox(
                                         width: 10,
                                       ),
                                       SizedBox(
-                                        width: MediaQuery.of(context).size.width * 0.5,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.5,
                                         child: Text(
                                           job[index].district,
                                           style: TextStyle(
-                                              color: widget.theme.secondaryIconColor),
+                                              color: widget
+                                                  .theme.secondaryIconColor),
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
@@ -294,11 +307,14 @@ class _StatsState extends State<Stats> {
                                         width: 10,
                                       ),
                                       SizedBox(
-                                        width: MediaQuery.of(context).size.width * 0.5,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.5,
                                         child: Text(
                                           "${job[index].salary} per ${job[index].per}",
                                           style: TextStyle(
-                                              color: widget.theme.secondaryIconColor),
+                                              color: widget
+                                                  .theme.secondaryIconColor),
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                       )
@@ -317,12 +333,14 @@ class _StatsState extends State<Stats> {
                                         width: 10,
                                       ),
                                       Text(
-                                        job[index].date
+                                        job[index]
+                                            .date
                                             .toDate()
                                             .toString()
                                             .split(" ")[0],
                                         style: TextStyle(
-                                            color: widget.theme.secondaryIconColor),
+                                            color: widget
+                                                .theme.secondaryIconColor),
                                       )
                                     ],
                                   ),
@@ -334,8 +352,7 @@ class _StatsState extends State<Stats> {
                               JobDetails(job: job[index]),
                         ),
                       );
-                    }
-                );
+                    });
               } else {
                 return const Loading();
               }
@@ -345,6 +362,4 @@ class _StatsState extends State<Stats> {
       ],
     );
   }
-
-
 }

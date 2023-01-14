@@ -39,6 +39,9 @@ class AppTheme {
 
   // buttons colors
   final Color? sendButtonColor;
+  final Color? emailButtonColor;
+  final Color? callButtonColor;
+
 
   //constants - (elevation, etc.)
   final double? elevation;
@@ -107,6 +110,8 @@ class AppTheme {
 
     // buttons colors
     this.sendButtonColor,
+    this.emailButtonColor,
+    this.callButtonColor,
 
     //constants - (elevation, etc.)
     this.elevation,
@@ -152,7 +157,7 @@ class DarkTheme extends AppTheme {
     // main colors
     Color accentColor = const Color(0xff9f85ff),
     Color appBarColor = const Color(0xff1d1b25),
-    Color backArrowColor = Colors.white,
+    Color backArrowColor = Colors.grey,
     Color backgroundColor = const Color(0xff272336),
     Color cardColor = const Color(0xff383152),
 
@@ -178,6 +183,8 @@ class DarkTheme extends AppTheme {
 
     // buttons colors
     Color sendButtonColor = Colors.white,
+    Color emailButtonColor = const Color(0xff383152),
+    Color callButtonColor = const Color(0xff272336),
 
     //constants - (elevation, etc.)
     double elevation = 1,
@@ -316,6 +323,8 @@ class LightTheme extends AppTheme {
 
     // buttons colors
     Color sendButtonColor = const Color(0xffEE5366),
+    Color emailButtonColor = const Color(0xff106e72),
+    Color callButtonColor = const Color(0xff09383a),
 
     // constants - (elevation, etc.)
     double elevation = 2,
