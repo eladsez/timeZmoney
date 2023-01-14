@@ -99,7 +99,7 @@ class EditProfileScreenState extends State<EditProfileScreen> {
                                 scrollController: FixedExtentScrollController(
                                     initialItem:
                                         ages.indexOf(AuthActions.currUser.age)),
-                                backgroundColor: theme.cardColor,
+                                backgroundColor: theme.backgroundColor,
                                 itemExtent: 32.0,
                                 onSelectedItemChanged: (int index) {
                                   setState(() {
@@ -119,7 +119,8 @@ class EditProfileScreenState extends State<EditProfileScreen> {
                       ],
                     )),
                 const SizedBox(width: 24),
-                SizedBox(
+                Container(
+                  color: theme.backgroundColor,
                     width: 150,
                     child: Column(
                       children: [
@@ -141,7 +142,7 @@ class EditProfileScreenState extends State<EditProfileScreen> {
                                 scrollController: FixedExtentScrollController(
                                     initialItem: genders
                                         .indexOf(AuthActions.currUser.gender)),
-                                backgroundColor: theme.cardColor,
+                                backgroundColor: theme.backgroundColor,
                                 itemExtent: 30.0,
                                 onSelectedItemChanged: (int index) {
                                   setState(() {
