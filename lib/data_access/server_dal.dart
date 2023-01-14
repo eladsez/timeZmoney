@@ -83,12 +83,10 @@ class ServerDataAccessService {
    * used to display the majors tabs
    */
   Future<List<String>> getMajors() async {
-    print("trying to send request");
     final response = await http.get(
-      Uri.parse("http://10.0.0.19:8000"),
+      Uri.parse("http://$IP:$port/"),
       headers:<String,String>{"request":"get_majors",},
     );
-    print("request sent");
     var str = response.body.split(',');
     List<String> majors = [];
     for(var i in str){
@@ -103,7 +101,7 @@ class ServerDataAccessService {
    */
   Future<List<Job>> getJobsOfEmployer(String employerUid) async {
     final response = await http.get(
-      Uri.parse("http://localhost:8000/"),
+      Uri.parse("http://$IP:$port/"),
       headers: <String, String>{"request":"get_jobs_of_employer","data":employerUid},
     );
     Iterable iter = json.decode(response.body);
@@ -159,10 +157,19 @@ class ServerDataAccessService {
    * currently relevant jobs are that its date has not passed and there is still place to insert more workers
    */
   Future<List<Job>> getAllRelevantJobs() async {
-    QuerySnapshot<Map<String, dynamic>> jobsSnap =
-        await _db.collection("jobs").get();
-
-    return filterRelevantJobs(jobsSnap);
+    final response = await http.get(
+      Uri.parse("http://$IP:$port/"),
+      headers: <String,String>{"request":"get_relevant_jobs"},
+    );
+    Iterable iter = json.decode(response.body);
+    for(var item in iter){
+      var split = item['location'].split(',');
+      double lat = double.parse(split[0]);
+      double long = double.parse(split[1]);
+      item['location'] = GeoPoint(lat,long);
+    }
+    List<Job> jobs = List<Job>.from(iter.map((job) => Job.fromMap(job)));
+    return filterRelevantJobsFromList(jobs);
   }
 
   /*
@@ -170,10 +177,16 @@ class ServerDataAccessService {
    */
   Future<List<Job>> getJobsOfMajor(String major) async {
     final response = await http.get(
-      Uri.parse("http://localhost:8000/"),
+      Uri.parse("http://$IP:$port/"),
       headers: <String, String>{"request":"get_relevant_jobs",},
     );
     Iterable iter = json.decode(response.body);
+    for(var item in iter){
+      var split = item['location'].split(',');
+      double lat = double.parse(split[0]);
+      double long = double.parse(split[1]);
+      item['location'] = GeoPoint(lat,long);
+    }
     List<Job> test = List<Job>.from(iter.map((job) => Job.fromMap(job)));
     return filterRelevantJobsFromList(test);
   }
