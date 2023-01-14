@@ -7,8 +7,9 @@ import '../models/Job.dart';
 import 'auth_actions.dart';
 
 class JobsActions {
+
   final DataAccessService das = DataAccessService();
-  final ServerDataAccessService server = ServerDataAccessService();
+  dynamic server = DataAccessService();
   final StorageActions storageActions = StorageActions();
   static List<String> majors = [];
   static int selectedMajorIndex = 0;
@@ -20,13 +21,13 @@ class JobsActions {
    */
   Future<List<Job>> getJobsOfTab(String majorTab) async {
     if (majorTab == "For You") {
-      return await das.getAllRelevantJobs();
+      return await server.getAllRelevantJobs();
     }
-    return das.getJobsOfMajor(majorTab);
+    return server.getJobsOfMajor(majorTab);
   }
 
   Future<List<Job>> getAllJobs() async {
-    return await das.getAllRelevantJobs();
+    return await server.getAllRelevantJobs();
   }
 
   /*
@@ -35,7 +36,7 @@ class JobsActions {
    */
   Future<List<String>> getJobsMajors() async {
     if (majors.isEmpty) {
-      majors = await das.getMajors();
+      majors = await server.getMajors();
       majors.remove("For You");
       majors.insert(0, "For You");
     }
@@ -46,18 +47,18 @@ class JobsActions {
    * function to retrieve all the jobs of the current employer
    */
   Future<List<Job>> getEmployerJobs() async {
-    return await das.getJobsOfEmployer(AuthActions.currUser.uid);
+    return await server.getJobsOfEmployer(AuthActions.currUser.uid);
   }
 
   /*
    * get job by uid
    */
   Future<Job?> getJobByUid(String jobUid) async {
-    return await das.getJobByUid(jobUid);
+    return await server.getJobByUid(jobUid);
   }
 
   Future<void> addUserToWaitList(Job job) async {
-    await das.addWorkerToWaitList(job, AuthActions.currUser.uid);
+    await server.addWorkerToWaitList(job, AuthActions.currUser.uid);
     job.signedWorkers.add(AuthActions.currUser.uid);
   }
 
