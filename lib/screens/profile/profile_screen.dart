@@ -6,6 +6,7 @@ import 'package:time_z_money/utils/helper_functions.dart';
 import '../../business_Logic/actions/auth_actions.dart';
 import '../../utils/theme.dart';
 import 'components/build_user_reviews.dart';
+import 'components/contact_button.dart';
 import 'components/profile_circle.dart';
 import 'components/stats.dart';
 import 'edit_profile_screen.dart';
@@ -28,6 +29,9 @@ class ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: (AuthActions.currUser.uid != widget.user.uid && widget.user.userType == 'employer')
+          ? ContactButton(user: widget.user, theme: theme)
+          : Container(),
       backgroundColor: theme.backgroundColor,
       appBar: AuthActions.currUser.uid != widget.user.uid
           ? AppBar(
@@ -83,6 +87,7 @@ class ProfileScreenState extends State<ProfileScreen> {
           AuthActions.currUser.uid == widget.user.uid
               ? Container()
               : BuildUserReviews(user: widget.user),
+
         ],
       ),
     );
