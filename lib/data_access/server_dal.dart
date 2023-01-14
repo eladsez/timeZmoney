@@ -7,44 +7,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ServerDataAccessService {
-  final FirebaseFirestore _db = FirebaseFirestore.instance;
-  final String IP = '10.0.0.19';
+  final String IP = '192.168.43.77';
   final int port = 8000;
-  Future<void> createUser(CustomUser newUser) async {
-    await _db.collection("users").add(newUser.toMap());
-  }
 
-  Future<void> updateUser(String? uid, String field, dynamic toUpdate) async {
-    await _db
-        .collection("users")
-        .where("uid", isEqualTo: uid)
-        .get()
-        .then((result) => {
-              if (result.size > 0)
-                {
-                  result.docs.forEach((userDoc) => {
-                        _db
-                            .collection("users")
-                            .doc(userDoc.id)
-                            .update({field: toUpdate})
-                      })
-                }
-            });
-  }
-
-  Future<CustomUser?> getCustomUser(User? currUser) async {
-    QuerySnapshot<Map<String, dynamic>> snapshot = await _db
-        .collection("users")
-        .where('uid', isEqualTo: currUser?.uid)
-        .get();
-    if (snapshot.docs.isEmpty) {
-      //TODO: commentted out the print statement because it was printing too much
-      // print("User doesn't exist yet\n");
-    } else if (snapshot.docs.isNotEmpty) {
-      return CustomUser.fromMap(snapshot.docs.first.data());
-    }
-    return null;
-  }
 
   /*
    * Get a CustomUser by his uid
@@ -64,19 +29,6 @@ class ServerDataAccessService {
     }
   }
 
-  /*
-   * This function responsible to create a new job in the jobs collection
-   */
-  Future<void> createJob(Job job) async {
-    if (!(await getMajors()).contains(job.major)) {
-      // the major doesn't exist yet
-      await _db.collection("jobsMajors").add({"major": job.major});
-    }
-    await _db.collection("jobs").add(job.toMap()).then((value) async {
-      await _db.collection("jobs").doc(value.id).update({"uid": value.id});
-      job.uid = value.id;
-    });
-  }
 
   /*
    * This function return list of string
@@ -260,10 +212,6 @@ class ServerDataAccessService {
     job.signedWorkers.add(workerUid);
   }
 
-  Future<void> updateJob(String jobUid, String field, dynamic toUpdate) async {
-    await _db.collection("jobs").doc(jobUid).update({field: toUpdate});
-  }
-
   Future<Job> getJobByUid(String jobUid) async {
     final response = await http.get(
       Uri.parse("http://$IP:$port/"),
@@ -294,34 +242,6 @@ class ServerDataAccessService {
   }
 
   /*
-  Get all the jobs the user with this uid is approved in
-   */
-  Future<List<Job>> getFutureJobsAppliedByUid(String workerUid) async{
-    QuerySnapshot<Map<String,dynamic>> jobsSnap = await _db.collection("jobs").where("approvedWorkers",arrayContains: workerUid).get();
-    return filterJobs(jobsSnap, "future");
-  }
-
-  Future<List<Job>> getFutureJobsCreatedByUid(String employerUid) async{
-    QuerySnapshot<Map<String,dynamic>> jobsSnap = await _db.collection("jobs").where("employerUid",isEqualTo:employerUid ).get();
-    return filterJobs(jobsSnap, "future");
-  }
-
-  Future<List<Job>> getPastJobsCreatedByUid(String employerUid) async{
-    QuerySnapshot<Map<String,dynamic>> jobsSnap = await _db.collection("jobs").where("employerUid",isEqualTo:employerUid ).get();
-    return filterJobs(jobsSnap, "past");
-  }
-
-  /*
-   * get all the approval jobs of a worker (past and future)
-  */
-  Future<List<Job>> getAllWorkerApprovalJobs(String workerUid) async{
-    List<Job> past = await getPastJobsAppliedByUid(workerUid);
-    List<Job> future = await getFutureJobsAppliedByUid(workerUid);
-    past.addAll(future);
-    return past;
-  }
-
-  /*
   Get all reviews written on UID
    */
   Future<List<JobReview>> getReviewsOnUid(String uid) async{
@@ -340,10 +260,4 @@ class ServerDataAccessService {
     return reviews;
   }
 
-  /*
-  Add review to database
-   */
-  Future<void> createReview(JobReview review) async{
-    await _db.collection("reviews").add(review.toMap());
-  }
 }
