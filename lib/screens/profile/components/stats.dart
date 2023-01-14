@@ -174,7 +174,7 @@ class _StatsState extends State<Stats> {
             builder: (context, AsyncSnapshot<List<JobReview>> snapshot) {
               if (snapshot.hasData) {
                 var reviews = snapshot.data;
-                return ListView.builder(
+                return reviews!.length > 0 ? ListView.builder(
                     itemCount: reviews!.length,
                     itemBuilder: (context, index) {
                       return Container(
@@ -215,7 +215,7 @@ class _StatsState extends State<Stats> {
                           ],
                         ),
                       );
-                    });
+                    }) : Center(child: Text("No reviews yet", style: TextStyle(color: widget.theme.textFieldTextColor),),);
               } else {
                 return const Loading();
               }
@@ -242,7 +242,7 @@ class _StatsState extends State<Stats> {
             builder: (context, AsyncSnapshot<List<Job>> snapshot) {
               if (snapshot.hasData) {
                 var job = snapshot.data;
-                return ListView.builder(
+                return job!.length > 0 ? ListView.builder(
                     itemCount: job!.length,
                     itemBuilder: (context, index) {
                       return Container(
@@ -383,7 +383,7 @@ class _StatsState extends State<Stats> {
                               JobDetails(job: job[index]),
                         ),
                       );
-                    });
+                    }) : Center(child: Text("No jobs yet", style: TextStyle(color: widget.theme.textFieldTextColor),),);
               } else {
                 return const Loading();
               }
