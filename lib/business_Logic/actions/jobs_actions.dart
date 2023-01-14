@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:time_z_money/business_Logic/actions/storage_actions.dart';
 import 'package:time_z_money/data_access/server_dal.dart';
 import '../../data_access/firestore_dal.dart';
@@ -123,7 +124,13 @@ class JobsActions {
   }
 
   Future<List<Job>> getRelevantJobsByTitle(String title) async{
-    return await das.getRelevantJobsByFiled("title", title);
+    List<Job> jobs = await das.getAllRelevantJobs();
+    jobs.removeWhere((job) {
+      return !job.title.toLowerCase().startsWith(title.toLowerCase());
+    });
+
+    // jobs.sort((a ,b) {return a.title.toLowerCase().compareTo(b.title.toLowerCase());});
+    return jobs;
   }
 
   Future<List<NeatCleanCalendarEvent>> getCurrUserEvent() async {
