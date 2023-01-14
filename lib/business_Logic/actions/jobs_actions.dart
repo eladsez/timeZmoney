@@ -20,13 +20,13 @@ class JobsActions {
    */
   Future<List<Job>> getJobsOfTab(String majorTab) async {
     if (majorTab == "For You") {
-      return await das.getAllRelevantJobs();
+      return await server.getAllRelevantJobs();
     }
-    return das.getJobsOfMajor(majorTab);
+    return server.getJobsOfMajor(majorTab);
   }
 
   Future<List<Job>> getAllJobs() async {
-    return await das.getAllRelevantJobs();
+    return await server.getAllRelevantJobs();
   }
 
   /*
@@ -35,7 +35,7 @@ class JobsActions {
    */
   Future<List<String>> getJobsMajors() async {
     if (majors.isEmpty) {
-      majors = await das.getMajors();
+      majors = await server.getMajors();
       majors.remove("For You");
       majors.insert(0, "For You");
     }
@@ -46,14 +46,14 @@ class JobsActions {
    * function to retrieve all the jobs of the current employer
    */
   Future<List<Job>> getEmployerJobs() async {
-    return await das.getJobsOfEmployer(AuthActions.currUser.uid);
+    return await server.getJobsOfEmployer(AuthActions.currUser.uid);
   }
 
   /*
    * get job by uid
    */
   Future<Job?> getJobByUid(String jobUid) async {
-    return await das.getJobByUid(jobUid);
+    return await server.getJobByUid(jobUid);
   }
 
   Future<void> addUserToWaitList(Job job) async {
@@ -89,7 +89,7 @@ class JobsActions {
   Get all the jobs the current user did
    */
   Future<List<Job>> getPastJobsApproved(CustomUser user) async {
-    return await das.getPastJobsAppliedByUid(user.uid!);
+    return await server.getPastJobsAppliedByUid(user.uid!);
   }
 
   /*

@@ -5,6 +5,7 @@ import '../business_Logic/models/CustomUser.dart';
 import '../business_Logic/models/Review.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+
 class ServerDataAccessService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final String IP = '10.0.0.19';
@@ -106,15 +107,36 @@ class ServerDataAccessService {
     );
     Iterable iter = json.decode(response.body);
     for(var item in iter){
-      var split = item['location'].split(',');
-      double lat = double.parse(split[0]);
-      double long = double.parse(split[1]);
-      item['location'] = GeoPoint(lat,long);
+
+      item['date'] = parseTimeStamp(item['date']);
+      item['location'] = parseLocation(item['location']);
     }
     List<Job> jobs = List<Job>.from(iter.map((job) => Job.fromMap(job)));
     return jobs;
   }
 
+  Timestamp parseTimeStamp(String date)
+  {
+    var splitDate = date.split(' ');
+    int year = int.parse(splitDate[3]);
+    int dayOfMonth = int.parse(splitDate[1]);
+    int month = getMonthFromString(splitDate[2]);
+    var splitHour = splitDate[4].split(':');
+    int hour = int.parse(splitHour[0]);
+    int minutes= int.parse(splitHour[1]);
+    int seconds =int.parse(splitHour[2]);
+    DateTime test = DateTime(year, month,dayOfMonth,hour,minutes,seconds);
+    Timestamp stamp = Timestamp(test.millisecondsSinceEpoch~/1000, 0);
+    return stamp;
+  }
+
+  GeoPoint parseLocation(String location)
+  {
+    var splitLocation = location.split(',');
+    double lat = double.parse(splitLocation[0]);
+    double long = double.parse(splitLocation[1]);
+    return GeoPoint(lat,long);
+  }
   /*
    * Filter jobsSnap and return the relevant jobs
    * currently relevant jobs are that its date has not passed
@@ -132,17 +154,38 @@ class ServerDataAccessService {
     return jobs;
   }
 
-  List<Job> filterRelevantJobsFromList(List<Job> toCheck) {
+  List<Job> filterRelevantJobsFromList(List<Job> toCheck,String type) {
     List<Job> jobs = [];
     for (var jobDoc in toCheck) {
-      if (jobDoc.date.compareTo(Timestamp.now()) < 0) {
-        continue;
+      if(type.compareTo('future') == 0)
+        {
+          if (jobDoc.date.compareTo(Timestamp.now()) < 0) {
+            continue;
+          }
+          jobs.add(jobDoc);
+        }
+     else{
+        if (jobDoc.date.compareTo(Timestamp.now()) > 0) {
+          continue;
+        }
+        jobs.add(jobDoc);
       }
-      jobs.add(jobDoc);
+
     }
     return jobs;
   }
 
+  /*
+  Function for month
+   */
+  int getMonthFromString(String month)
+  {
+    if(month.compareTo('Jan') == 0)
+      {
+        return 1;
+      }
+    return 0;
+  }
   /*
   Filter jobs according to type(future or past)
    */
@@ -163,13 +206,11 @@ class ServerDataAccessService {
     );
     Iterable iter = json.decode(response.body);
     for(var item in iter){
-      var split = item['location'].split(',');
-      double lat = double.parse(split[0]);
-      double long = double.parse(split[1]);
-      item['location'] = GeoPoint(lat,long);
+      item['date'] = parseTimeStamp(item['date']);
+      item['location'] = parseLocation(item['location']);
     }
     List<Job> jobs = List<Job>.from(iter.map((job) => Job.fromMap(job)));
-    return filterRelevantJobsFromList(jobs);
+    return filterRelevantJobsFromList(jobs,'future');
   }
 
   /*
@@ -178,17 +219,15 @@ class ServerDataAccessService {
   Future<List<Job>> getJobsOfMajor(String major) async {
     final response = await http.get(
       Uri.parse("http://$IP:$port/"),
-      headers: <String, String>{"request":"get_relevant_jobs",},
+      headers: <String, String>{"request":"get_jobs_of_major",'data':major},
     );
     Iterable iter = json.decode(response.body);
     for(var item in iter){
-      var split = item['location'].split(',');
-      double lat = double.parse(split[0]);
-      double long = double.parse(split[1]);
-      item['location'] = GeoPoint(lat,long);
+      item['date'] = parseTimeStamp(item['date']);
+      item['location'] = parseLocation(item['location']);
     }
     List<Job> test = List<Job>.from(iter.map((job) => Job.fromMap(job)));
-    return filterRelevantJobsFromList(test);
+    return filterRelevantJobsFromList(test,'future');
   }
 
   Future<void> addWorkerToWaitList(Job job, String uid) async {
@@ -222,17 +261,32 @@ class ServerDataAccessService {
   }
 
   Future<Job> getJobByUid(String jobUid) async {
-    QuerySnapshot<Map<String, dynamic>> jobsSnap =
-        await _db.collection("jobs").where("uid", isEqualTo: jobUid).get();
-    return Job.fromMap(jobsSnap.docs.first.data());
+    final response = await http.get(
+      Uri.parse("http://$IP:$port/"),
+      headers: <String,String>{"request":"get_job_by_uid","data":jobUid},
+    );
+    Map<String,dynamic> job = json.decode(response.body);
+    job['date'] = parseTimeStamp(job['date']);
+    job['location'] = parseLocation(job['location']);
+    return Job.fromMap(job);
   }
 
   /*
   Get all the jobs the worker user with this uid did in the past
    */
   Future<List<Job>> getPastJobsAppliedByUid(String workerUid) async{
-    QuerySnapshot<Map<String,dynamic>> jobsSnap = await _db.collection("jobs").where("approvedWorkers",arrayContains: workerUid).get();
-    return filterJobs(jobsSnap, "past");
+    final response = await http.get(
+      Uri.parse("http://$IP:$port/"),
+      headers: <String,String>{"request":"get_past_jobs_approved_to","data":workerUid},
+    );
+    //print(response.body);
+    Iterable iter = json.decode(response.body);
+    for(var item in iter){
+      item['date'] = parseTimeStamp(item['date']);
+      item['location'] = parseLocation(item['location']);
+    }
+    List<Job> test = List<Job>.from(iter.map((job) => Job.fromMap(job)));
+    return filterRelevantJobsFromList(test,'past');
   }
 
   /*
@@ -267,12 +321,19 @@ class ServerDataAccessService {
   Get all reviews written on UID
    */
   Future<List<JobReview>> getReviewsOnUid(String uid) async{
-    QuerySnapshot<Map<String,dynamic>> reviewsSnap = await _db.collection("reviews").where("receiver",isEqualTo: uid).get();
-    List<JobReview> reviews = [];
-    for(var review in reviewsSnap.docs)
+    final response = await http.get(
+      Uri.parse("http://$IP:$port/"),
+      headers: <String,String>{"request":"get_reviews_on_uid","data":uid},
+    );
+    Iterable iter = json.decode(response.body);
+    print("before list");
+    for(var item in iter)
       {
-        reviews.add(JobReview.fromMap(review.data()));
+        print(item);
       }
+    List<JobReview> reviews = List<JobReview>.from(iter.map((e) => JobReview.fromMap(e)));
+    print("after list");
+
     return reviews;
   }
 
