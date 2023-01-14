@@ -29,9 +29,9 @@ enum BottomNavigationBarState {
  Here we will check which user is connected and build the screens for him (also depend if he is worker or employer)
  */
 class MainScreen extends StatefulWidget {
-  MainScreen({Key? key, required this.theme}) : super(key: key);
+  MainScreen({Key? key}) : super(key: key);
 
-  AppTheme theme;
+  AppTheme theme = HelperFunctions.isDarkMode ? DarkTheme() : LightTheme();
   @override
   State<MainScreen> createState() => _MainScreenState();
 }
@@ -42,6 +42,12 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
+  }
+
+  updateSelectedNavBar(BottomNavigationBarState newState){
+    setState(() {
+      selectedNavBar = newState;
+    });
   }
 
   // This method is responsible for the bottom navigation icons.
@@ -78,7 +84,7 @@ class _MainScreenState extends State<MainScreen> {
       case BottomNavigationBarState.profile:
         return ProfileScreen(user: AuthActions.currUser, callBack: refresh,);
       case BottomNavigationBarState.jobPosting:
-        return const UploadJobScreen();
+        return UploadJobScreen(moveHome: updateSelectedNavBar,);
       case BottomNavigationBarState.scheduler:
         return const CalendarScreen();
       case BottomNavigationBarState.chat:
@@ -96,7 +102,6 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(AuthActions.currUser.toMap());
     return Scaffold(
       body: bodyBuilder(),
       bottomNavigationBar: Padding(

@@ -58,7 +58,7 @@ class _CoWorkersListState extends State<CoWorkersList> {
         constraints:
         BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.41),
         child: FutureBuilder<List<CustomUser>>(
-            future: userActions.getUsersFromUid(widget.job.approvedWorkers),
+            future: userActions.getUsersFromUid(widget.job.approvedWorkers.map((uid_s) => uid_s.split(",")[0]).toList()),
             builder: (context, AsyncSnapshot<List<CustomUser>> snapshot) {
               if (snapshot.hasData) {
                 if (snapshot.data!.isNotEmpty && snapshot.data!.length > 1) {
@@ -67,13 +67,13 @@ class _CoWorkersListState extends State<CoWorkersList> {
                   applicants!.removeWhere((element) => element.uid == AuthActions.currUser!.uid);
                   return ListView.builder(
                       shrinkWrap: true,
-                      itemCount: applicants?.length,
+                      itemCount: applicants.length,
                       itemBuilder: (context, userIndex) => ListTile(
                           contentPadding:
                           const EdgeInsets.symmetric(horizontal: -1),
                           leading: CircleAvatar(
                             backgroundImage: NetworkImage(
-                                applicants![userIndex].profileImageURL),
+                                applicants[userIndex].profileImageURL),
                             radius: 13,
                           ),
                           title: SizedBox(

@@ -210,9 +210,11 @@ class _JobDetailsState extends State<JobDetails> {
                   ),
                   // if the current user is an employer, show a list of workers who applied for this job
                   AuthActions.currUser.userType == "worker"
-                      ? (widget.job.approvedWorkers
-                              .contains(AuthActions.currUser.uid)
-                          ? CoWorkersList(job: widget.job)
+                      ? ((widget.job.approvedWorkers
+                              .contains(AuthActions.currUser.uid + ",seen") || widget.job.approvedWorkers
+                      .contains(AuthActions.currUser.uid + ",unseen") || widget.job.approvedWorkers
+                      .contains(AuthActions.currUser.uid))
+                      ? CoWorkersList(job: widget.job)
                           : ApplyToJob(job: widget.job))
                       : AuthActions.currUser.uid == widget.job.employerUid
                           ? BuildApplicantsList(job: widget.job)

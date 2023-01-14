@@ -71,6 +71,13 @@ class DataAccessService {
     });
   }
 
+  Future<List<Job>> getRelevantJobsByFiled(String filed, dynamic equalTo) async{
+    QuerySnapshot<Map<String, dynamic>> jobsSnapshot =
+        await _db.collection("jobs").where(filed, isGreaterThanOrEqualTo: equalTo).get();
+
+    return filterRelevantJobs(jobsSnapshot);
+  }
+
   /*
    * This function return list of string
    * the list contain the job majors available in the database
@@ -194,6 +201,17 @@ class DataAccessService {
     await _db.collection("jobs").doc(jobUid).update({field: toUpdate});
   }
 
+  /*
+  lior don't write it in the server this function is used only for debuting
+   */
+  Future<void> updateAllJobs(String field, dynamic toUpdate) async {
+    await _db.collection("jobs").get().then((snap) => {
+          snap.docs.forEach((doc) {
+            doc.reference.update({field: toUpdate});
+          })
+        });
+  }
+
   Future<Job> getJobByUid(String jobUid) async {
     QuerySnapshot<Map<String, dynamic>> jobsSnap =
         await _db.collection("jobs").where("uid", isEqualTo: jobUid).get();
@@ -204,34 +222,23 @@ class DataAccessService {
   Get all the jobs the worker user with this uid did in the past
    */
   Future<List<Job>> getPastJobsAppliedByUid(String workerUid) async {
-    QuerySnapshot<Map<String, dynamic>> seenJobsSnap = await _db
+    QuerySnapshot<Map<String, dynamic>> jobsSnap = await _db
         .collection("jobs")
-        .where("approvedWorkers", arrayContains: "$workerUid,seen")
+        .where("approvedWorkers", arrayContainsAny: ["$workerUid,seen", "$workerUid,unseen", workerUid])
         .get();
-    QuerySnapshot<Map<String, dynamic>> unseenJobsSnap = await _db
-        .collection("jobs")
-        .where("approvedWorkers", arrayContains: "$workerUid,unseen")
-        .get();
-    // merge to tow lists
-    seenJobsSnap.docs.addAll(unseenJobsSnap.docs);
-    return filterJobs(unseenJobsSnap, "past");
+
+    return filterJobs(jobsSnap, "past");
   }
 
   /*
   Get all the jobs the user with this uid is approved in
    */
   Future<List<Job>> getFutureJobsAppliedByUid(String workerUid) async {
-    QuerySnapshot<Map<String, dynamic>> seenJobsSnap = await _db
+    QuerySnapshot<Map<String, dynamic>> jobsSnap = await _db
         .collection("jobs")
-        .where("approvedWorkers", arrayContains: "$workerUid,seen")
+        .where("approvedWorkers", arrayContainsAny: ["$workerUid,seen", "$workerUid,unseen", workerUid])
         .get();
-    QuerySnapshot<Map<String, dynamic>> unseenJobsSnap = await _db
-        .collection("jobs")
-        .where("approvedWorkers", arrayContains: "$workerUid,unseen")
-        .get();
-
-    unseenJobsSnap.docs.addAll(seenJobsSnap.docs);
-    return filterJobs(unseenJobsSnap, "future");
+    return filterJobs(jobsSnap, "future");
   }
 
   Future<List<Job>> getFutureJobsCreatedByUid(String employerUid) async {

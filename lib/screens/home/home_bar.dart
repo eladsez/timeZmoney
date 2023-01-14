@@ -124,15 +124,18 @@ class _State extends State<HomeAppbar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.135,
+      height: MediaQuery.of(context).size.height * 0.09,
       decoration: BoxDecoration(
         color: theme.appBarColor,
         boxShadow: const [
-          BoxShadow(color: Colors.black12, blurRadius: 5, offset: Offset(0, 1))
+         BoxShadow(
+                  color: Colors.black12, blurRadius: 10, offset: Offset(0, 1))
         ],
       ),
-      padding: EdgeInsets.only(
-          top: MediaQuery.of(context).padding.top, //for responsive
+      margin: EdgeInsets.only(top: MediaQuery.of(context).
+          padding.top),
+      padding: EdgeInsets.only(//for responsive
+        top: 5,
           left: MediaQuery.of(context).padding.bottom),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

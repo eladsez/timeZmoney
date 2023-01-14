@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:time_z_money/utils/BackgroundGenerator.dart';
-
 import '../../../business_Logic/actions/auth_actions.dart';
 import '../../../utils/helper_functions.dart';
 import '../../../utils/theme.dart';
@@ -109,14 +107,8 @@ class _ProfileChooserScreenState extends State<ProfileChooserScreen> {
                     userType: (selectedUserProfile == UserProfile.employer)
                         ? "employer"
                         : "worker");
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MainScreen(
-                          theme: HelperFunctions.isDarkMode
-                              ? DarkTheme()
-                              : LightTheme()),
-                    ));
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => MainScreen()));
               }
             }),
         // body: CustomPaint(

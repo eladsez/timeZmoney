@@ -45,10 +45,10 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
     return FutureBuilder(
         future: jobsActions.getJobsMajors(),
         builder: (context, majorsListSnap) => Container(
-          decoration: BoxDecoration(
-            color: theme.backgroundColor,
-          ),
-          child: ListView(
+              decoration: BoxDecoration(
+                color: theme.backgroundColor,
+              ),
+              child: ListView(
                 scrollDirection: Axis.horizontal,
                 physics: const BouncingScrollPhysics(),
                 controller: scrollController,
@@ -72,7 +72,7 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 20, vertical: 10),
                                 margin: const EdgeInsets.symmetric(
-                                  horizontal: 10,
+                                  horizontal: 10, vertical: 10
                                 ),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20),
@@ -82,12 +82,10 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
                                       : theme.cardColor,
                                   boxShadow: [
                                     BoxShadow(
-                                        color: Colors.black
-                                            .withOpacity(0.1),
+                                        color: Colors.black.withOpacity(0.1),
                                         blurRadius: 1,
                                         spreadRadius: 0,
-                                        offset:
-                                        const Offset(0, 1)),
+                                        offset: const Offset(0, 1)),
                                   ],
                                 ),
                                 child: Text(
@@ -103,8 +101,7 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
                         .toList()
                     : [],
               ),
-        )
-    );
+            ));
   }
 
   @override
@@ -119,16 +116,18 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
         ),
         child: Column(
           children: [
-            const SizedBox(
-              height: 10,
-            ),
-            SizedBox(
+            Container(
+              decoration: const BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 2,
+                      offset: Offset(0, 1))
+                ],
+              ),
               width: MediaQuery.of(context).size.width,
-              height: 40,
+              height: 60,
               child: buildMajorTabs(),
-            ),
-            const SizedBox(
-              height: 5,
             ),
             Expanded(
               child: FutureBuilder(
@@ -145,7 +144,8 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
                             (e) => FutureBuilder(
                               future: jobsActions.getJobsOfTab(
                                   jobsMajorsSnap.data![selectedMajorIndex]),
-                              builder: (context, jobsListSnap) => GridView.count(
+                              builder: (context, jobsListSnap) =>
+                                  GridView.count(
                                 childAspectRatio: 0.7,
                                 controller:
                                     ScrollController(keepScrollOffset: false),
@@ -158,14 +158,18 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
                                             effects: const [
                                               FadeEffect(),
                                               SlideEffect(
-                                                  duration:
-                                                      Duration(milliseconds: 200))
+                                                  duration: Duration(
+                                                      milliseconds: 200))
                                             ],
                                             child: Container(
-                                              margin: const EdgeInsets.symmetric(
-                                                  horizontal: 20, vertical: 10),
-                                              padding: const EdgeInsets.symmetric(
-                                                  vertical: 10, horizontal: 10),
+                                              margin:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 20,
+                                                      vertical: 10),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 10,
+                                                      horizontal: 10),
                                               width: MediaQuery.of(context)
                                                       .size
                                                       .width *
@@ -187,147 +191,158 @@ class _WorkerDashboardScreenState extends State<WorkerDashboardScreen> {
                                               child: OpenContainer(
                                                   closedElevation: 0,
                                                   middleColor: Colors.white,
-                                                  closedColor: Colors.transparent,
-                                                  closedBuilder: (context,
-                                                          action) =>
-                                                      Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          job.imageUrl != "None"
-                                                              ? ClipRRect(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              15),
-                                                                  child: Image(
-                                                                      height: 80,
-                                                                      width: 140,
-                                                                      fit: BoxFit
-                                                                          .cover,
-                                                                      image: ResizeImage(
-                                                                          NetworkImage(job
-                                                                              .imageUrl),
-                                                                          height:
-                                                                              110,
-                                                                          width:
-                                                                              140)),
-                                                                )
-                                                              : SizedBox(
-                                                                  height: 83,
-                                                                  child: Center(
-                                                                    child: Text(
-                                                                        "Employer didn't provide image",
-                                                                        style: TextStyle(
-                                                                            color: theme.textFieldTextColor)),
-                                                                  ),
-                                                                ),
-                                                          const SizedBox(
-                                                            height: 10,
-                                                          ),
-                                                          Text(
-                                                            job.title,
-                                                            overflow: TextOverflow
-                                                                .ellipsis,
-                                                            maxLines: 1,
-                                                            style: TextStyle(
-                                                              color: theme.titleColor,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                          ),
-                                                          cardSpace,
-                                                          Row(
+                                                  closedColor:
+                                                      Colors.transparent,
+                                                  closedBuilder:
+                                                      (context, action) =>
+                                                          Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
                                                             children: [
-                                                              Icon(
-                                                                  Icons
-                                                                      .location_on,
-                                                                  color: theme.secondaryIconColor),
+                                                              job.imageUrl !=
+                                                                      "None"
+                                                                  ? ClipRRect(
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              15),
+                                                                      child: Image(
+                                                                          height:
+                                                                              80,
+                                                                          width:
+                                                                              140,
+                                                                          fit: BoxFit
+                                                                              .cover,
+                                                                          image: ResizeImage(
+                                                                              NetworkImage(job.imageUrl),
+                                                                              height: 110,
+                                                                              width: 140)),
+                                                                    )
+                                                                  : SizedBox(
+                                                                      height:
+                                                                          83,
+                                                                      child:
+                                                                          Center(
+                                                                        child: Text(
+                                                                            "Employer didn't provide image",
+                                                                            style:
+                                                                                TextStyle(color: theme.textFieldTextColor)),
+                                                                      ),
+                                                                    ),
                                                               const SizedBox(
-                                                                width: 10,
+                                                                height: 10,
                                                               ),
-                                                              Flexible(
-                                                                  child: Text(
-                                                                job.district,
+                                                              Text(
+                                                                job.title,
                                                                 overflow:
                                                                     TextOverflow
                                                                         .ellipsis,
                                                                 maxLines: 1,
                                                                 style: TextStyle(
-                                                                    color: theme.secondaryIconColor),
-                                                              )),
+                                                                    color: theme
+                                                                        .titleColor,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold),
+                                                              ),
+                                                              cardSpace,
+                                                              Row(
+                                                                children: [
+                                                                  Icon(
+                                                                      Icons
+                                                                          .location_on,
+                                                                      color: theme
+                                                                          .secondaryIconColor),
+                                                                  const SizedBox(
+                                                                    width: 10,
+                                                                  ),
+                                                                  Flexible(
+                                                                      child:
+                                                                          Text(
+                                                                    job.district,
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                    maxLines: 1,
+                                                                    style: TextStyle(
+                                                                        color: theme
+                                                                            .secondaryIconColor),
+                                                                  )),
+                                                                ],
+                                                              ),
+                                                              cardSpace,
+                                                              Row(
+                                                                children: [
+                                                                  Icon(
+                                                                    Icons
+                                                                        .attach_money,
+                                                                    color: theme
+                                                                        .secondaryIconColor,
+                                                                  ),
+                                                                  const SizedBox(
+                                                                    width: 10,
+                                                                  ),
+                                                                  SizedBox(
+                                                                    width: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width *
+                                                                        0.2,
+                                                                    child: Text(
+                                                                      "${job.salary} per ${job.per}",
+                                                                      style: TextStyle(
+                                                                          color:
+                                                                              theme.secondaryIconColor),
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis,
+                                                                    ),
+                                                                  )
+                                                                ],
+                                                              ),
+                                                              cardSpace,
+                                                              Row(
+                                                                children: [
+                                                                  Icon(
+                                                                    Icons
+                                                                        .date_range,
+                                                                    color: theme
+                                                                        .secondaryIconColor,
+                                                                  ),
+                                                                  const SizedBox(
+                                                                    width: 10,
+                                                                  ),
+                                                                  Text(
+                                                                    job.date
+                                                                        .toDate()
+                                                                        .toString()
+                                                                        .split(
+                                                                            " ")[0],
+                                                                    style: TextStyle(
+                                                                        color: theme
+                                                                            .secondaryIconColor),
+                                                                  )
+                                                                ],
+                                                              ),
+                                                              // Center(
+                                                              //   child: ElevatedButton(
+                                                              //     style: ElevatedButton
+                                                              //         .styleFrom(
+                                                              //       backgroundColor:
+                                                              //           const Color(
+                                                              //               0xff01b2b8),
+                                                              //       shape:
+                                                              //           const CircleBorder(),
+                                                              //     ),
+                                                              //     onPressed: () {},
+                                                              //     // TODO: add map logic
+                                                              //     child: const Icon(
+                                                              //         Icons.directions),
+                                                              //   ),
+                                                              // ),
                                                             ],
                                                           ),
-                                                          cardSpace,
-                                                          Row(
-                                                            children: [
-                                                              Icon(
-                                                                Icons
-                                                                    .attach_money,
-                                                                color: theme
-                                                                    .secondaryIconColor,
-                                                              ),
-                                                              const SizedBox(
-                                                                width: 10,
-                                                              ),
-                                                              SizedBox(
-                                                                width: MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .width *
-                                                                    0.2,
-                                                                child: Text(
-                                                                  "${job.salary} per ${job.per}",
-                                                                  style: TextStyle(
-                                                                      color: theme.secondaryIconColor),
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                ),
-                                                              )
-                                                            ],
-                                                          ),
-                                                          cardSpace,
-                                                          Row(
-                                                            children: [
-                                                              Icon(
-                                                                Icons.date_range,
-                                                                color: theme.secondaryIconColor,
-                                                              ),
-                                                              const SizedBox(
-                                                                width: 10,
-                                                              ),
-                                                              Text(
-                                                                job.date
-                                                                    .toDate()
-                                                                    .toString()
-                                                                    .split(
-                                                                        " ")[0],
-                                                                style: TextStyle(
-                                                                    color: theme.secondaryIconColor),
-                                                              )
-                                                            ],
-                                                          ),
-                                                          // Center(
-                                                          //   child: ElevatedButton(
-                                                          //     style: ElevatedButton
-                                                          //         .styleFrom(
-                                                          //       backgroundColor:
-                                                          //           const Color(
-                                                          //               0xff01b2b8),
-                                                          //       shape:
-                                                          //           const CircleBorder(),
-                                                          //     ),
-                                                          //     onPressed: () {},
-                                                          //     // TODO: add map logic
-                                                          //     child: const Icon(
-                                                          //         Icons.directions),
-                                                          //   ),
-                                                          // ),
-                                                        ],
-                                                      ),
-                                                  openBuilder: (context, action) {
+                                                  openBuilder:
+                                                      (context, action) {
                                                     return JobDetails(job: job);
                                                   }),
                                             ),
