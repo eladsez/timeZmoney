@@ -2,11 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:time_z_money/business_Logic/models/CustomUser.dart';
 import 'package:time_z_money/utils/helper_functions.dart';
+
 import '../../business_Logic/actions/auth_actions.dart';
 import '../../utils/theme.dart';
 import 'components/build_user_reviews.dart';
-import 'components/stats.dart';
 import 'components/profile_circle.dart';
+import 'components/stats.dart';
 import 'edit_profile_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -22,23 +23,27 @@ class ProfileScreen extends StatefulWidget {
 // TODO: render the image after it change
 class ProfileScreenState extends State<ProfileScreen> {
   AppTheme theme = HelperFunctions.isDarkMode ? DarkTheme() : LightTheme();
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: theme.backgroundColor,
-      appBar: AuthActions.currUser.uid != widget.user.uid ? AppBar(
-        leading: BackButton(color: theme.backArrowColor),
-        backgroundColor: theme.appBarColor,
-        elevation: theme.elevation,
-        toolbarHeight: (MediaQuery.of(context).size.height * 0.135)/2,
-      ): AppBar(
-        backgroundColor: theme.appBarColor,
-        elevation: theme.elevation,
-        toolbarHeight: (MediaQuery.of(context).size.height * 0.135)/2,
-        actions: [
-          buildTrailingButtons(widget.user),
-        ],
-      ),
+      appBar: AuthActions.currUser.uid != widget.user.uid
+          ? AppBar(
+              leading: BackButton(color: theme.backArrowColor),
+              backgroundColor: theme.appBarColor,
+              elevation: theme.elevation,
+              toolbarHeight: (MediaQuery.of(context).size.height * 0.135) / 2,
+            )
+          : AppBar(
+              backgroundColor: theme.appBarColor,
+              elevation: theme.elevation,
+              toolbarHeight: (MediaQuery.of(context).size.height * 0.135) / 2,
+              actions: [
+                buildTrailingButtons(widget.user),
+              ],
+            ),
       body: ListView(
         physics: const BouncingScrollPhysics(),
         children: [
@@ -96,7 +101,8 @@ class ProfileScreenState extends State<ProfileScreen> {
           Text(
             user.email,
             style: TextStyle(
-                color: theme.emailColor,),
+              color: theme.emailColor,
+            ),
           )
         ],
       );
@@ -118,15 +124,12 @@ class ProfileScreenState extends State<ProfileScreen> {
           ),
         ),
         IconButton(
-          icon: Icon(
-              Icons.logout,
-              size: 26,
-              color: theme.mainIconColor),
+          icon: Icon(Icons.logout, size: 26, color: theme.mainIconColor),
           onPressed: () {
             // Navigator.of(context).push(MaterialPageRoute(builder: (context) {
             //   return const ProfileSetting(); // add this shit
             // }));
-            FirebaseAuth.instance.signOut();
+            AuthActions().signOut();
           },
         ),
       ],
@@ -158,7 +161,9 @@ class ProfileScreenState extends State<ProfileScreen> {
               style: TextStyle(
                   fontSize: 16,
                   height: 1.4,
-                  color: user.about == "Empty" ? Colors.red : theme.textFieldTextColor),
+                  color: user.about == "Empty"
+                      ? Colors.red
+                      : theme.textFieldTextColor),
             ),
           ],
         ),
@@ -170,6 +175,5 @@ class ProfileScreenState extends State<ProfileScreen> {
       theme = HelperFunctions.isDarkMode ? DarkTheme() : LightTheme();
       widget.callBack!(theme);
     });
-
   }
 }

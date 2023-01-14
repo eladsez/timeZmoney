@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:time_z_money/business_Logic/models/Job.dart';
+import 'package:time_z_money/screens/Authenticate/components/profile_chooser.dart';
 import '../business_Logic/models/CustomUser.dart';
 import '../business_Logic/models/Review.dart';
 
@@ -34,10 +35,8 @@ class DataAccessService {
         .collection("users")
         .where('uid', isEqualTo: currUser?.uid)
         .get();
-    if (snapshot.docs.isEmpty) {
-      //TODO: commentted out the print statement because it was printing too much
-      // print("User doesn't exist yet\n");
-    } else if (snapshot.docs.isNotEmpty) {
+
+    if (snapshot.docs.isNotEmpty) {
       return CustomUser.fromMap(snapshot.docs.first.data());
     }
     return null;
@@ -116,12 +115,20 @@ class DataAccessService {
   /*
   Filter jobs according to type(future or past)
    */
-  List<Job> filterJobs(QuerySnapshot<Map<String, dynamic>> jobsSnap,String type){
-    List<Job> jobs = type.compareTo("future") == 0 ?
-    jobsSnap.docs.map((snap) => Job.fromMap(snap.data())).where((element) => element.date.compareTo(Timestamp.now()) > 0).toList():
-    jobsSnap.docs.map((snap) => Job.fromMap(snap.data())).where((element) => element.date.compareTo(Timestamp.now()) < 0).toList();
+  List<Job> filterJobs(
+      QuerySnapshot<Map<String, dynamic>> jobsSnap, String type) {
+    List<Job> jobs = type.compareTo("future") == 0
+        ? jobsSnap.docs
+            .map((snap) => Job.fromMap(snap.data()))
+            .where((element) => element.date.compareTo(Timestamp.now()) > 0)
+            .toList()
+        : jobsSnap.docs
+            .map((snap) => Job.fromMap(snap.data()))
+            .where((element) => element.date.compareTo(Timestamp.now()) < 0)
+            .toList();
     return jobs;
   }
+
   /*
    * get all relevant jobs in the job collection (for you major)
    * currently relevant jobs are that its date has not passed and there is still place to insert more workers
@@ -172,7 +179,8 @@ class DataAccessService {
 
   Future<void> removeWorker(Job job, String workerUid) async {
     _db.collection("jobs").doc(job.uid).update({
-      "approvedWorkers": FieldValue.arrayRemove(["$workerUid,unseen", "$workerUid,seen", workerUid]),
+      "approvedWorkers": FieldValue.arrayRemove(
+          ["$workerUid,unseen", "$workerUid,seen", workerUid]),
       "signedWorkers": FieldValue.arrayUnion([workerUid])
     });
     // update the job object
@@ -195,9 +203,15 @@ class DataAccessService {
   /*
   Get all the jobs the worker user with this uid did in the past
    */
-  Future<List<Job>> getPastJobsAppliedByUid(String workerUid) async{
-    QuerySnapshot<Map<String,dynamic>> seenJobsSnap = await _db.collection("jobs").where("approvedWorkers",arrayContains: "$workerUid,seen").get();
-    QuerySnapshot<Map<String,dynamic>> unseenJobsSnap = await _db.collection("jobs").where("approvedWorkers",arrayContains: "$workerUid,unseen").get();
+  Future<List<Job>> getPastJobsAppliedByUid(String workerUid) async {
+    QuerySnapshot<Map<String, dynamic>> seenJobsSnap = await _db
+        .collection("jobs")
+        .where("approvedWorkers", arrayContains: "$workerUid,seen")
+        .get();
+    QuerySnapshot<Map<String, dynamic>> unseenJobsSnap = await _db
+        .collection("jobs")
+        .where("approvedWorkers", arrayContains: "$workerUid,unseen")
+        .get();
     // merge to tow lists
     seenJobsSnap.docs.addAll(unseenJobsSnap.docs);
     return filterJobs(unseenJobsSnap, "past");
@@ -206,51 +220,100 @@ class DataAccessService {
   /*
   Get all the jobs the user with this uid is approved in
    */
-  Future<List<Job>> getFutureJobsAppliedByUid(String workerUid) async{
-    QuerySnapshot<Map<String,dynamic>> seenJobsSnap = await _db.collection("jobs").where("approvedWorkers",arrayContains: "$workerUid,seen").get();
-    QuerySnapshot<Map<String,dynamic>> unseenJobsSnap = await _db.collection("jobs").where("approvedWorkers",arrayContains: "$workerUid,unseen").get();
-    // merge to tow lists
+  Future<List<Job>> getFutureJobsAppliedByUid(String workerUid) async {
+    QuerySnapshot<Map<String, dynamic>> seenJobsSnap = await _db
+        .collection("jobs")
+        .where("approvedWorkers", arrayContains: "$workerUid,seen")
+        .get();
+    QuerySnapshot<Map<String, dynamic>> unseenJobsSnap = await _db
+        .collection("jobs")
+        .where("approvedWorkers", arrayContains: "$workerUid,unseen")
+        .get();
+
     unseenJobsSnap.docs.addAll(seenJobsSnap.docs);
     return filterJobs(unseenJobsSnap, "future");
   }
 
-  Future<List<Job>> getFutureJobsCreatedByUid(String employerUid) async{
-    QuerySnapshot<Map<String,dynamic>> jobsSnap = await _db.collection("jobs").where("employerUid",isEqualTo:employerUid ).get();
+  Future<List<Job>> getFutureJobsCreatedByUid(String employerUid) async {
+    QuerySnapshot<Map<String, dynamic>> jobsSnap = await _db
+        .collection("jobs")
+        .where("employerUid", isEqualTo: employerUid)
+        .get();
     return filterJobs(jobsSnap, "future");
   }
 
-  Future<List<Job>> getPastJobsCreatedByUid(String employerUid) async{
-    QuerySnapshot<Map<String,dynamic>> jobsSnap = await _db.collection("jobs").where("employerUid",isEqualTo:employerUid ).get();
+  Future<List<Job>> getPastJobsCreatedByUid(String employerUid) async {
+    QuerySnapshot<Map<String, dynamic>> jobsSnap = await _db
+        .collection("jobs")
+        .where("employerUid", isEqualTo: employerUid)
+        .get();
     return filterJobs(jobsSnap, "past");
   }
 
   /*
    * get all the approval jobs of a worker (past and future)
   */
-  Future<List<Job>> getAllWorkerApprovalJobs(String workerUid) async{
+  Future<List<Job>> getAllWorkerApprovalJobs(String workerUid) async {
     List<Job> past = await getPastJobsAppliedByUid(workerUid);
     List<Job> future = await getFutureJobsAppliedByUid(workerUid);
     past.addAll(future);
     return past;
   }
 
+  Future<List<Job>> getCoOperateJobs(
+      CustomUser currUser, CustomUser operateUser) async {
+    late QuerySnapshot<Map<String, dynamic>> jobSnap;
+    if (currUser.userType == "worker" && operateUser.userType == "employer") {
+      jobSnap = await _db
+          .collection("jobs")
+          .where("employerUid", isEqualTo: operateUser.uid)
+          .where("approvedWorkers", arrayContainsAny: [
+        "${currUser.uid!},seen",
+        "${currUser.uid!},unseen",
+      ]).get();
+    }
+
+    if (currUser.userType == "employer" && operateUser.userType == "worker") {
+      jobSnap = await _db
+          .collection("jobs")
+          .where("employerUid", isEqualTo: currUser.uid)
+          .where("approvedWorkers", arrayContainsAny: [
+        "${operateUser.uid!},seen",
+        "${operateUser.uid!},unseen",
+      ]).get();
+    }
+
+    if (currUser.userType == "worker" && operateUser.userType == "worker") {
+      jobSnap = await _db
+          .collection("jobs")
+          .where("approvedWorkers", arrayContainsAny: [
+        "${operateUser.uid!},seen",
+        "${operateUser.uid!},unseen",
+        "${currUser.uid!},seen",
+        "${currUser.uid!},unseen",
+      ]).get();
+    }
+
+    return jobSnap.docs.map((jobDoc) => Job.fromMap(jobDoc.data())).toList();
+  }
+
   /*
   Get all reviews written on UID
    */
-  Future<List<JobReview>> getReviewsOnUid(String uid) async{
-    QuerySnapshot<Map<String,dynamic>> reviewsSnap = await _db.collection("reviews").where("receiver",isEqualTo: uid).get();
+  Future<List<JobReview>> getReviewsOnUid(String uid) async {
+    QuerySnapshot<Map<String, dynamic>> reviewsSnap =
+        await _db.collection("reviews").where("receiver", isEqualTo: uid).get();
     List<JobReview> reviews = [];
-    for(var review in reviewsSnap.docs)
-      {
-        reviews.add(JobReview.fromMap(review.data()));
-      }
+    for (var review in reviewsSnap.docs) {
+      reviews.add(JobReview.fromMap(review.data()));
+    }
     return reviews;
   }
 
   /*
   Add review to database
    */
-  Future<void> createReview(JobReview review) async{
+  Future<void> createReview(JobReview review) async {
     await _db.collection("reviews").add(review.toMap());
   }
 }

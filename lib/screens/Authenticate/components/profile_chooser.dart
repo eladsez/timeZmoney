@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:time_z_money/utils/BackgroundGenerator.dart';
 
 import '../../../business_Logic/actions/auth_actions.dart';
+import '../../../utils/helper_functions.dart';
+import '../../../utils/theme.dart';
 import '../../home/home_screen.dart';
+import '../../main_screen.dart';
 
 enum UserProfile {
   worker,
@@ -90,16 +93,25 @@ class _ProfileChooserScreenState extends State<ProfileChooserScreen> {
               if (selectedUserProfile == null) {
                 return; // in case he didn't choose anything (should be popup or something)
               }
-              String firstSignUpCode =
-                  await authActions.chooseProfile(selectedUserProfile!);
-              if (firstSignUpCode != "OK") {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  content: Text(firstSignUpCode),
-                  backgroundColor: Colors.red,
-                  duration: const Duration(milliseconds: 1500),
-                ));
+              if (!AuthActions.googleSignIn) {
+                String firstSignUpCode =
+                    await authActions.chooseProfile(selectedUserProfile!);
+                if (firstSignUpCode != "OK") {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text(firstSignUpCode),
+                    backgroundColor: Colors.red,
+                    duration: const Duration(milliseconds: 1500),
+                  ));
+                }
+                Navigator.pop(context); // pop the profileChooserScreen
+              } else {
+                await authActions.signupSecondStage(
+                    userType: (selectedUserProfile == UserProfile.employer)
+                        ? "employer"
+                        : "worker");
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => MainScreen()));
               }
-              Navigator.pop(context); // pop the profileChooserScreen
             }),
         // body: CustomPaint(
         //   painter: GreenPainter(),
@@ -109,9 +121,9 @@ class _ProfileChooserScreenState extends State<ProfileChooserScreen> {
                 gradient: LinearGradient(
               begin: Alignment.topRight,
               end: Alignment.bottomLeft,
-              stops: [0.1,0.9],
+              stops: [0.1, 0.9],
               colors: [
-                 Color(0xff60f8ff),
+                Color(0xff60f8ff),
                 Colors.yellow,
               ],
             )),

@@ -131,22 +131,17 @@ class _SignupLoginContentState extends State<SignupLoginContent>
   Widget logos() {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          InkWell(
-            onTap: () {},
-            borderRadius: BorderRadius.circular(20.0),
-            child: Image.asset('assets/images/facebook.png'),
+      child:
+          Center(
+            child: InkWell(
+              onTap: () {
+                authActions.google();
+              },
+              borderRadius: BorderRadius.circular(20.0),
+              child: Image.asset('assets/images/google.png'),
+            ),
           ),
-          const SizedBox(width: 24),
-          InkWell(
-            onTap: () {},
-            borderRadius: BorderRadius.circular(20.0),
-            child: Image.asset('assets/images/google.png'),
-          ),
-        ],
-      ),
+
     );
   }
 
