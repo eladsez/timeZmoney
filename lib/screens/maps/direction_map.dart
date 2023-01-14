@@ -27,23 +27,9 @@ class MapDirectionState extends State<MapDirection> {
   LocationData? currentLocation;
 
   updateCurrLocation() async {
-    GoogleMapController googleMapController = await _controller.future;
     location.onLocationChanged.listen(
       (newLoc) {
         currentLocation = newLoc;
-        googleMapController.animateCamera(
-          CameraUpdate.newCameraPosition(
-            CameraPosition(
-              zoom: 18,
-              target: LatLng(
-                newLoc.latitude!,
-                newLoc.longitude!,
-              ),
-            ),
-          ),
-        );
-        setState(() {
-        });
       },
     );
   }
@@ -52,6 +38,24 @@ class MapDirectionState extends State<MapDirection> {
     currentLocation = await location.getLocation();
     setState(() {});
     getPolyPoints();
+  }
+
+  goToCurrLocation() async{
+    GoogleMapController googleMapController = await _controller.future;
+    googleMapController.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+          zoom: 18,
+          target: LatLng(
+            currentLocation!.latitude!,
+            currentLocation!.longitude!,
+          ),
+        ),
+      ),
+    );
+    setState(() {
+    });
+
   }
 
   Future<void> getPolyPoints() async {
