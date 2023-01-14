@@ -102,7 +102,7 @@ class _SearchJobScreen extends State<SearchJobScreen> {
                     onPressed: () {
                       FocusScope.of(context).requestFocus(FocusNode());
                     },
-                    icon: const Icon(Icons.search),
+                    icon: Icon(Icons.search, color: theme.themeIconColor),
                   ),
                 ),
               ],
@@ -125,13 +125,9 @@ class _SearchJobScreen extends State<SearchJobScreen> {
                       itemBuilder: (context, index) {
                         return Container(
                           margin: const EdgeInsets.symmetric(
-                              horizontal: 5, vertical: 10),
+                              horizontal: 25, vertical: 10),
                           padding: const EdgeInsets.symmetric(
                               vertical: 10, horizontal: 10),
-                          width: MediaQuery.of(context)
-                              .size
-                              .width *
-                              0.4,
                           decoration: BoxDecoration(
                               borderRadius:
                               BorderRadius.circular(30),
@@ -150,21 +146,11 @@ class _SearchJobScreen extends State<SearchJobScreen> {
                             middleColor: Colors.white,
                             closedColor: Colors.transparent,
                             closedBuilder: (context, action) => Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    job[index].imageUrl != "None" ? ClipRRect(
-                                      borderRadius: BorderRadius.circular(15),
-                                      child: Image(
-                                          height: 80,
-                                          width: 140,
-                                          fit: BoxFit.cover,
-                                          image: ResizeImage(
-                                              NetworkImage(job[index].imageUrl),
-                                              height: 110,
-                                              width: 140)),
-                                    ) : Container(),
                                     const SizedBox(
                                       height: 10,
                                     ),
@@ -187,7 +173,7 @@ class _SearchJobScreen extends State<SearchJobScreen> {
                                         Icon(Icons.location_on,
                                             color: theme.secondaryIconColor),
                                         const SizedBox(
-                                          width: 10,
+                                          width: 5,
                                         ),
                                         SizedBox(
                                           width: MediaQuery.of(context).size.width * 0.5,
@@ -210,30 +196,23 @@ class _SearchJobScreen extends State<SearchJobScreen> {
                                           color: theme.secondaryIconColor,
                                         ),
                                         const SizedBox(
-                                          width: 10,
+                                          width: 5,
                                         ),
                                         SizedBox(
-                                          width: MediaQuery.of(context).size.width * 0.5,
                                           child: Text(
                                             "${job[index].salary} per ${job[index].per}",
                                             style: TextStyle(
                                                 color: theme.secondaryIconColor),
                                             overflow: TextOverflow.ellipsis,
                                           ),
-                                        )
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 6,
-                                    ),
-                                    Row(
-                                      children: [
+                                        ),
+                                        const SizedBox(width: 10,),
                                         Icon(
                                           Icons.date_range,
                                           color: theme.secondaryIconColor,
                                         ),
                                         const SizedBox(
-                                          width: 10,
+                                          width: 5,
                                         ),
                                         Text(
                                           job[index].date
@@ -244,6 +223,9 @@ class _SearchJobScreen extends State<SearchJobScreen> {
                                               color: theme.secondaryIconColor),
                                         )
                                       ],
+                                    ),
+                                    const SizedBox(
+                                      height: 6,
                                     ),
                                   ],
                                 ),
