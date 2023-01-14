@@ -1,4 +1,5 @@
 import 'package:time_z_money/business_Logic/actions/storage_actions.dart';
+import 'package:time_z_money/data_access/server_dal.dart';
 import '../../data_access/firestore_dal.dart';
 import '../../screens/scheduler/components/neat_and_clean_calendar_event.dart';
 import '../models/CustomUser.dart';
@@ -7,6 +8,7 @@ import 'auth_actions.dart';
 
 class JobsActions {
   final DataAccessService das = DataAccessService();
+  final ServerDataAccessService server = ServerDataAccessService();
   final StorageActions storageActions = StorageActions();
   static List<String> majors = [];
   static int selectedMajorIndex = 0;
