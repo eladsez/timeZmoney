@@ -1,11 +1,10 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:google_maps_webservice/places.dart';
 import 'package:time_z_money/business_Logic/actions/review_actions.dart';
 import 'package:time_z_money/screens/profile/components/xpopup/appbar.dart';
 import 'package:time_z_money/screens/profile/components/xpopup/card.dart';
 import 'package:time_z_money/screens/profile/components/xpopup/gutter.dart';
+
 import '../../../business_Logic/actions/auth_actions.dart';
 import '../../../business_Logic/actions/jobs_actions.dart';
 import '../../../business_Logic/models/CustomUser.dart';
@@ -38,8 +37,7 @@ class _BuildUserReviewsState extends State<BuildUserReviews> {
     });
   }
 
-  XenCardAppBar buildReviewBar() =>
-      XenCardAppBar(
+  XenCardAppBar buildReviewBar() => XenCardAppBar(
         color: theme.appBarColor,
         shadow: const BoxShadow(color: Colors.transparent),
         child: Text(
@@ -51,8 +49,7 @@ class _BuildUserReviewsState extends State<BuildUserReviews> {
         ),
       );
 
-  XenCardGutter buildGutter() =>
-      XenCardGutter(
+  XenCardGutter buildGutter() => XenCardGutter(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: InkWell(
@@ -71,7 +68,7 @@ class _BuildUserReviewsState extends State<BuildUserReviews> {
                     receiver: widget.user.uid!,
                     work: selectedJobUid!,
                     writer: AuthActions.currUser.uid!,
-                stars: selectedRate));
+                    stars: selectedRate));
               }
               reviewController.text = '';
               selectedJobUid = null;
@@ -124,49 +121,47 @@ class _BuildUserReviewsState extends State<BuildUserReviews> {
         ),
         FutureBuilder(
           future: jobsActions.getCoOperateJobs(widget.user),
-          builder: (context, jobsSnap) =>
-              InputField(
-                title: "",
-                hint: jobsSnap.data != null && jobsSnap.data!.isNotEmpty
-                    ? selectedJobOfReview
-                    : "Never Cooperate",
-                child: DropdownButton(
-                  dropdownColor: theme.appBarColor,
-                  onChanged: (String? newJob) {
-                    refresh(setState, newJob!);
-                    selectedJobUid = jobsSnap.data
-                        ?.singleWhere((job) => job.title == newJob)
-                        .uid;
-                  },
-                  items: jobsSnap.data != null && jobsSnap.data!.isNotEmpty
-                      ? jobsSnap.data!
+          builder: (context, jobsSnap) => InputField(
+            title: "",
+            hint: jobsSnap.data != null && jobsSnap.data!.isNotEmpty
+                ? selectedJobOfReview
+                : "Never Cooperate",
+            child: DropdownButton(
+              dropdownColor: theme.appBarColor,
+              onChanged: (String? newJob) {
+                refresh(setState, newJob!);
+                selectedJobUid = jobsSnap.data
+                    ?.singleWhere((job) => job.title == newJob)
+                    .uid;
+              },
+              items: jobsSnap.data != null && jobsSnap.data!.isNotEmpty
+                  ? jobsSnap.data!
                       .map<DropdownMenuItem<String>>(
-                        (job) =>
-                        DropdownMenuItem<String>(
+                        (job) => DropdownMenuItem<String>(
                           value: job.title,
                           child: Text(
                             job.title,
                             style: TextStyle(color: theme.textFieldTextColor),
                           ),
                         ),
-                  )
+                      )
                       .toList()
-                      : <DropdownMenuItem<String>>[
-                    DropdownMenuItem<String>(
-                        child: Text("",
-                            style:
-                            TextStyle(color: theme.textFieldTextColor)))
-                  ],
-                  icon: Icon(
-                    Icons.keyboard_arrow_down,
-                    size: 32,
-                    color: theme.secondaryIconColor,
-                  ),
-                  elevation: 3,
-                  underline: Container(height: 0),
-                  borderRadius: BorderRadius.circular(15),
-                ),
+                  : <DropdownMenuItem<String>>[
+                      DropdownMenuItem<String>(
+                          child: Text("",
+                              style:
+                                  TextStyle(color: theme.textFieldTextColor)))
+                    ],
+              icon: Icon(
+                Icons.keyboard_arrow_down,
+                size: 32,
+                color: theme.secondaryIconColor,
               ),
+              elevation: 3,
+              underline: Container(height: 0),
+              borderRadius: BorderRadius.circular(15),
+            ),
+          ),
         ),
         const SizedBox(
           height: 30,
@@ -179,8 +174,7 @@ class _BuildUserReviewsState extends State<BuildUserReviews> {
             allowHalfRating: true,
             itemCount: 5,
             itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-            itemBuilder: (context, _) =>
-            const Icon(
+            itemBuilder: (context, _) => const Icon(
               Icons.star,
               color: Colors.amber,
             ),
@@ -193,22 +187,19 @@ class _BuildUserReviewsState extends State<BuildUserReviews> {
     );
   }
 
-  Widget postReviewPopUp() =>
-      GestureDetector(
-        onTap: () =>
-            showDialog(
-              context: context,
-              builder: (builder) =>
-                  StatefulBuilder(builder: (context, setState) {
-                    return XenPopupCard(
-                      cardBgColor: theme.cardColor,
-                      relHeight: 0.17,
-                      appBar: buildReviewBar(),
-                      gutter: buildGutter(),
-                      body: buildForm(setState),
-                    );
-                  }),
-            ),
+  Widget postReviewPopUp() => GestureDetector(
+        onTap: () => showDialog(
+          context: context,
+          builder: (builder) => StatefulBuilder(builder: (context, setState) {
+            return XenPopupCard(
+              cardBgColor: theme.cardColor,
+              relHeight: 0.17,
+              appBar: buildReviewBar(),
+              gutter: buildGutter(),
+              body: buildForm(setState),
+            );
+          }),
+        ),
         child: Container(
           padding: const EdgeInsets.only(left: 5, right: 5, top: 7, bottom: 7),
           decoration: BoxDecoration(
@@ -251,46 +242,12 @@ class _BuildUserReviewsState extends State<BuildUserReviews> {
   Widget build(BuildContext context) {
     return Column(children: [
       const SizedBox(
-        height: 50,
-      ),
-      const SizedBox(
-        height: 20,
+        height: 70,
       ),
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30),
-        child: Row(children: [
-          Text(
-            "Reviews",
-            style: TextStyle(
-                fontSize: 24,
-                color: theme.titleColor,
-                fontWeight: FontWeight.bold),
-            textAlign: TextAlign.left,
-          ),
-          const Spacer(),
-          postReviewPopUp(),
-        ]),
+        child: postReviewPopUp(),
       ),
-      // add separator
-      Container(
-        height: 0.5,
-        width: double.infinity,
-        color: Colors.black12,
-        margin: const EdgeInsets.symmetric(vertical: 5),
-      ),
-      ListView.builder(
-          shrinkWrap: true,
-          itemCount: 3,
-          itemBuilder: (context, index) {
-            //TODO: add the reviews to the firestore so we can get them from there.
-            return ListTile(
-              // put a dammy review
-              title: Text(
-                "This is a review",
-                style: TextStyle(fontSize: 18, color: theme.textFieldTextColor),
-              ),
-            );
-          }),
     ]);
   }
 }

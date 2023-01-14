@@ -2,10 +2,12 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:time_z_money/business_Logic/actions/jobs_actions.dart';
 import 'package:time_z_money/business_Logic/actions/review_actions.dart';
+import 'package:time_z_money/business_Logic/actions/user_actions.dart';
 import 'package:time_z_money/business_Logic/models/CustomUser.dart';
 import 'package:time_z_money/business_Logic/models/Review.dart';
 import 'package:time_z_money/screens/profile/components/xpopup/appbar.dart';
 import 'package:time_z_money/screens/profile/components/xpopup/card.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import '../../../business_Logic/models/Job.dart';
 import '../../../utils/theme.dart';
@@ -25,6 +27,28 @@ class Stats extends StatefulWidget {
 class _StatsState extends State<Stats> {
   JobsActions jobsActions = JobsActions();
   ReviewActions reviewActions = ReviewActions();
+  UserActions userActions = UserActions();
+
+  List usernames = []; // the usernames of the currUser's reviews
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    List<String> uids = [];
+    reviewActions.getReviewsOnUser(widget.user).then((value) {
+      for (var review in value) {
+        uids.add(review.writer);
+      }
+      userActions.getUsersFromUid(uids).then((value) {
+        setState(() {
+          for (var user in value) {
+            usernames.add(user.username);
+          }
+        });
+      });
+     });
+  }
+
 
   @override
   Widget build(BuildContext context) => Row(
@@ -171,17 +195,23 @@ class _StatsState extends State<Stats> {
                             ]),
                         child: Column(
                           children: [
-                            Text(
-                              reviews[index].stars.toString(),
-                              style: TextStyle(
-                                  color: widget.theme.textFieldTextColor),
+                            RatingBarIndicator(
+                              rating: reviews[index].stars,
+                              itemBuilder: (context, index) => const Icon(
+                                Icons.star,
+                                color: Colors.amber,
+                              ),
+                              itemCount: 5,
+                              itemSize: 20.0,
+                              direction: Axis.horizontal,
                             ),
                             Text(reviews[index].content,
                                 style: TextStyle(
                                     color: widget.theme.textFieldTextColor)),
-                            Text(reviews[index].writer,
+                            Text(usernames[index],
                                 style: TextStyle(
-                                    color: widget.theme.textFieldTextColor))
+                                  fontWeight: FontWeight.bold,
+                                    color: widget.theme.titleColor))
                           ],
                         ),
                       );
@@ -195,6 +225,7 @@ class _StatsState extends State<Stats> {
       ],
     );
   }
+
 
   Widget buildJobsLists(String kind) {
     return Column(

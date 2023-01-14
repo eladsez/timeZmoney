@@ -16,19 +16,7 @@ class ContactButton extends StatefulWidget {
 }
 
 class _ContactButtonState extends State<ContactButton> {
-  bool _hasCallSupport = false;
   Future<void>? _launched;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    canLaunchUrl(Uri(scheme: 'tel', path: '123')).then((bool result) {
-      setState(() {
-        _hasCallSupport = result;
-      });
-    });
-  }
 
   Future<void> _makePhoneCall(String phoneNumber) async {
     final Uri launchUri = Uri(
@@ -49,7 +37,8 @@ class _ContactButtonState extends State<ContactButton> {
   @override
   Widget build(BuildContext context) {
     return SpeedDial(
-      animatedIcon: AnimatedIcons.menu_close,
+      // animatedIcon: AnimatedIcons.menu_close,
+      icon: Icons.call,
       animatedIconTheme: const IconThemeData(size: 22.0),
       backgroundColor: widget.theme.accentColor,
       visible: true,
