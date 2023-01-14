@@ -231,26 +231,30 @@ class ServerDataAccessService {
   }
 
   Future<void> addWorkerToWaitList(Job job, String uid) async {
-    await _db.collection("jobs").doc(job.uid).update({
-      "signedWorkers": FieldValue.arrayUnion([uid])
-    });
+    final response = await http.post(
+      Uri.parse("http://$IP:$port/"),
+      headers: <String, String>{"request":"add_worker_to_wait_list"},
+      body: <String,String>{"work":job.uid,"worker":uid}
+    );
+    print(response.statusCode);
   }
 
   Future<void> approveWorker(Job job, String workerUid) async {
-    _db.collection("jobs").doc(job.uid).update({
-      "signedWorkers": FieldValue.arrayRemove([workerUid]),
-      "approvedWorkers": FieldValue.arrayUnion([workerUid])
-    });
-    // update the job object
+    final response = await http.post(
+        Uri.parse("http://$IP:$port/"),
+        headers: <String, String>{"request":"approve_worker"},
+        body: <String,String>{"work":job.uid,"worker":workerUid}
+    );
     job.signedWorkers.remove(workerUid);
-    job.approvedWorkers.add(workerUid);
+    job.approvedWorkers.add("$workerUid,unseen");
   }
 
   Future<void> removeWorker(Job job, String workerUid) async {
-    _db.collection("jobs").doc(job.uid).update({
-      "approvedWorkers": FieldValue.arrayRemove([workerUid]),
-      "signedWorkers": FieldValue.arrayUnion([workerUid])
-    });
+    final response = await http.post(
+        Uri.parse("http://$IP:$port/"),
+        headers: <String, String>{"request":"remove_worker"},
+        body: <String,String>{"work":job.uid,"worker":workerUid}
+    );
     // update the job object
     job.approvedWorkers.remove(workerUid);
     job.signedWorkers.add(workerUid);
@@ -326,14 +330,13 @@ class ServerDataAccessService {
       headers: <String,String>{"request":"get_reviews_on_uid","data":uid},
     );
     Iterable iter = json.decode(response.body);
-    print("before list");
-    for(var item in iter)
-      {
-        print(item);
-      }
+    Map check = iter.elementAt(0);
+    print(check);
+    for(var key in check.keys){
+      print(check[key].runtimeType);
+      print(check[key]);
+    }
     List<JobReview> reviews = List<JobReview>.from(iter.map((e) => JobReview.fromMap(e)));
-    print("after list");
-
     return reviews;
   }
 
