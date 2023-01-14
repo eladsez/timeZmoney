@@ -71,6 +71,13 @@ class DataAccessService {
     });
   }
 
+  Future<List<Job>> getRelevantJobsByFiled(String filed, dynamic equalTo) async{
+    QuerySnapshot<Map<String, dynamic>> jobsSnapshot =
+        await _db.collection("jobs").where(filed, isGreaterThanOrEqualTo: equalTo).get();
+
+    return filterRelevantJobs(jobsSnapshot);
+  }
+
   /*
    * This function return list of string
    * the list contain the job majors available in the database
