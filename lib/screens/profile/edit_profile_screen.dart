@@ -4,6 +4,7 @@ import '../../business_Logic/actions/auth_actions.dart';
 import '../../business_Logic/actions/user_actions.dart';
 import '../../utils/helper_functions.dart';
 import '../../utils/theme.dart';
+import '../upload_job/Component/inputfiled.dart';
 import 'components/profile_circle.dart';
 import 'components/textfield_widget.dart';
 
@@ -22,6 +23,7 @@ class EditProfileScreenState extends State<EditProfileScreen> {
   late final TextEditingController aboutController;
   late final TextEditingController ageController;
   late final TextEditingController genderController;
+  late final TextEditingController phoneController;
   final userActions = UserActions();
 
   @override
@@ -34,6 +36,7 @@ class EditProfileScreenState extends State<EditProfileScreen> {
         : AuthActions.currUser.about;
     genderController.text = AuthActions.currUser.gender;
     ageController.text = AuthActions.currUser.age.toString();
+    phoneController = TextEditingController();
     super.initState();
   }
 
@@ -42,6 +45,7 @@ class EditProfileScreenState extends State<EditProfileScreen> {
     aboutController.dispose();
     genderController.dispose();
     ageController.dispose();
+    phoneController.dispose();
     super.dispose();
   }
 
@@ -160,6 +164,13 @@ class EditProfileScreenState extends State<EditProfileScreen> {
               ],
             ),
             const SizedBox(height: 24),
+            InputField(
+              keyboardType: TextInputType.number,
+              title: 'Tel',
+              hint: 'Enter a phone number',
+              fieldController: phoneController,
+            ),
+            const SizedBox(height: 24),
             TextFieldWidget(
               align: TextAlign.left,
               label: 'About',
@@ -170,9 +181,8 @@ class EditProfileScreenState extends State<EditProfileScreen> {
             const SizedBox(height: 20),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: theme.accentColor,
+                foregroundColor: Colors.white, backgroundColor: theme.accentColor,
                 shape: const StadiumBorder(),
-                onPrimary: Colors.white,
                 padding:
                     const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
               ),
@@ -181,6 +191,7 @@ class EditProfileScreenState extends State<EditProfileScreen> {
                     "age", int.parse(ageController.text));
                 userActions.updateCurrUser("about", aboutController.text);
                 userActions.updateCurrUser("gender", genderController.text);
+                userActions.updateCurrUser("phone", phoneController.text);
                 widget.updateProfile("dummy");
                 Navigator.of(context).pop();
               },
