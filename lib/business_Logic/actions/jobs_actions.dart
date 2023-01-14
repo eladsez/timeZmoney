@@ -121,6 +121,10 @@ class JobsActions {
     await das.updateUnseenToSeen(job, AuthActions.currUser.uid!);
   }
 
+  Future<List<Job>> getRelevantJobsByTitle(String title) async{
+    return await das.getRelevantJobsByFiled("title", title);
+  }
+
   Future<List<NeatCleanCalendarEvent>> getCurrUserEvent() async {
     List<Job> jobs = AuthActions.currUser.userType == "worker"
         ? await das.getAllWorkerApprovalJobs(AuthActions.currUser.uid!)

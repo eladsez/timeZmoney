@@ -11,8 +11,9 @@ This class is made to handle everything that is connected to the reviews collect
 class ReviewActions{
   final DataAccessService das = DataAccessService();
   final ServerDataAccessService server = ServerDataAccessService();
+
   Future<List<JobReview>> getReviewsOnUser(CustomUser user) async{
-    return server.getReviewsOnUid(user.uid!);
+    return das.getReviewsOnUid(user.uid!);
   }
 
   Future<void> postReview(JobReview review) async {
