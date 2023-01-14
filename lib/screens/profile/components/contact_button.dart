@@ -38,6 +38,14 @@ class _ContactButtonState extends State<ContactButton> {
     await launchUrl(launchUri);
   }
 
+  Future<void> _sendEmail(String email) async {
+    final Uri launchUri = Uri(
+      scheme: 'mailto',
+      path: email,
+    );
+    await launchUrl(launchUri);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SpeedDial(
@@ -52,7 +60,10 @@ class _ContactButtonState extends State<ContactButton> {
           backgroundColor: widget.theme.emailButtonColor,
           label: 'Email',
           labelStyle: const TextStyle(fontSize: 18.0),
-          onTap: () => print('FIRST CHILD'),
+          onTap: () => setState(() {
+            _launched = _sendEmail(widget.user.email);
+          }),
+
         ),
         SpeedDialChild(
           child: const Icon(Icons.phone),
