@@ -20,6 +20,7 @@ TimeZmoney is a job searching app for various types of jobs such as babysitting,
 
 ## How To Run
 1. Download the most recent release of TimeZmoney from the Github repository.
+2. Run Pub get command in Android Studio to import dependencies.
 2. Install the app on your device.
 3. Open the app and sign in or create a new account as either an employer or worker.
 4. Browse and apply for jobs or post your own job listing.
