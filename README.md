@@ -25,4 +25,6 @@ TimeZmoney is a job searching app for various types of jobs such as babysitting,
 3. Open the app and sign in or create a new account as either an employer or worker.
 4. Browse and apply for jobs or post your own job listing.
 
+For Screenshots and videos go the TimeZmoney Presentation !
+
 
