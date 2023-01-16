@@ -15,7 +15,6 @@ TimeZmoney is a job searching app for various types of jobs such as babysitting,
 - Api: The app uses APIs to fetch job listings and user data.
 - MVVM: The app follows the Model-View-ViewModel architecture for a more organized and efficient codebase.
 - Tier Architecture: The app is built using a 3-tier architecture with a presentation layer, a business logic layer, and a data access layer.
-- MVC: The app follows the Model-View-Controller pattern for a more organized and efficient codebase.
 - Layers Architecture: The app is built using a layered architecture with a presentation layer, a business logic layer, and a data access layer.
 - Software Engineering: The app is built using best practices in software engineering to ensure a robust and maintainable codebase.
 
